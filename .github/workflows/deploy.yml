@@ -23,7 +23,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install markdown Jinja2 setuptools frontmatter
+          pip install markdown Jinja2 setuptools python-frontmatter
 
       - name: Run build script
         run: python scripts/build/build.py
