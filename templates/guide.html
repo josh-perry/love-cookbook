@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LÖVE cookbook | {{ title }}</title>
+    <link rel="stylesheet" href="/styles/fonts.css">
+    <link rel="stylesheet" href="/styles/main.css">
+    <link rel="stylesheet" href="/styles/prism.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-lua.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <div class="container">
+      <div class="navbar">
+        <a href="/index.html">Homepage</a>
+      </div>
+      <section class="guide-toc">
+        <h1>Table of contents</h1>
+        <div id="toc">
+          {{ toc | safe }}
+        </div>
+      </section>
+      <article class="guide">
+        <header class="guide-header">
+          <h1 class="guide-title">{{ title }}</h1>
+        </header>
+        <hr>
+        <section class="guide-content">
+          {{ content | safe }}
+        </section>
+        <footer class="guide-footer">
+          <p>Author: <em>{{ author }}</em></p>
+          <p>Created on: <em>{{ date }}</em></p>
+        </footer>
+      </article>
+    </div>
+  </body>
+</html>
