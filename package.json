@@ -1,0 +1,25 @@
+{
+  "name": "love-cookbook",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "eleventy",
+    "serve": "eleventy --serve"
+  },
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Diminim/love-cookbook/fork"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Diminim/love-cookbook/fork/issues"
+  },
+  "homepage": "https://github.com/Diminim/love-cookbook/fork#readme",
+  "description": "",
+  "dependencies": {
+    "@11ty/eleventy": "^3.0.0"
+  }
+}

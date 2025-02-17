@@ -1,2 +1,2 @@
-# Build files
-site/
+node_modules
+build

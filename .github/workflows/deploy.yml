@@ -1,62 +1,41 @@
-name: Deploy Love2D Cookbook
+name: Build and Deploy
 
 on:
   push:
     branches:
-      - main  # Change this if you're using a different branch
-  pull_request:
-    branches:
-      - main
+      - master
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v2
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
+      - name: Setup Node
+        uses: actions/setup-node@v3
         with:
-          python-version: "3.x"
+          node-version: "22"
 
-      - name: Install dependencies
-        run: |
-          pip install markdown Jinja2 setuptools python-frontmatter
-
-      - name: Run build script
-        run: python scripts/build/build.py
-
-      - name: Upload built site
-        uses: actions/upload-artifact@v4
+      - name: Persist npm cache
+        uses: actions/cache@v3
         with:
-          name: site
-          path: site/
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package.json') }}
 
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    permissions:
-      pages: write
-      id-token: write
-
-    steps:
-      - name: Download built site
-        uses: actions/download-artifact@v4
+      - name: Persist Eleventy .cache
+        uses: actions/cache@v3
         with:
-          name: site
-          path: site/
+          path: ./.cache
+          key: ${{ runner.os }}-eleventy-fetch-cache
 
-      - name: Deploy to GitHub Pages
-        uses: actions/configure-pages@v3
-
-      - name: Upload to GitHub Pages
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: site/
+      - run: npm install
+      - run: npm run build
 
       - name: Deploy
-        uses: actions/deploy-pages@v2
-
-
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          publish_dir: _site 
+          publish_branch: gh-pages
+          github_token: ${{ secrets.GITHUB_TOKEN }}
