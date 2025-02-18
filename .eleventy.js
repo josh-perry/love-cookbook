@@ -6,12 +6,17 @@ export default function (eleventyConfig) {
 
     const usedIds = new Set();
 
-    eleventyConfig.addPairedShortcode("love", (content, width = 600, height = 450) => {
+    const getId = () => {
         let id;
         do {
             id = Math.floor(Math.random() * 1000);
         } while (usedIds.has(id));
         usedIds.add(id);
+        return id;
+    }
+
+    eleventyConfig.addPairedShortcode("love", (content, width = 600, height = 450) => {
+        const id = getId();
 
         // Note: No indenting to prevent rendering as code block.
         return `
@@ -19,7 +24,6 @@ export default function (eleventyConfig) {
 <script>
 const iframe_${id} = document.getElementById('love-iframe-${id}');
 iframe_${id}.addEventListener('load', function() {
-console.log('iframe loaded');
 iframe_${id}.contentWindow.postMessage({lua: \`love.window.setMode(${width}, ${height})${content.replace(/`/g, '\\`')}\`}, '*');
 });
 </script>
