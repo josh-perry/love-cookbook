@@ -34,6 +34,12 @@ iframe_${id}.contentWindow.postMessage({lua: \`love.window.setMode(${width}, ${h
         `;
     });
 
+    eleventyConfig.addShortcode("api", (name) => {
+        const nameWithoutParantheses = name.replace(/\(.*\)$/, "");
+        const url = `https://love2d.org/wiki/${nameWithoutParantheses}`;
+        return `<a href="${url}" target="_blank"><code>${name}</code></a>`;
+    });
+
     return {
         pathPrefix: "/love-cookbook",
         dir: {
