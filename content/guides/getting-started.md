@@ -35,4 +35,8 @@ end
 ```
 This will show this:
 
-![Hello, World!](https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwangoon.github.io%2Fstatic%2F5cc320a5cabfb4ab334f3cbc9fdcc797%2Fad00e%2Flove2d-hello.png&f=1&nofb=1&ipt=40ee5cdd995f77a64d1162773193ac85b12fed8f568f602d8c95d78d79f68b8d&ipo=images)
+{% love 600, 450 %}
+function love.draw()
+    love.graphics.print("Hello, World!", 300, 225)
+end
+{% endlove %}
