@@ -1,6 +1,8 @@
 import { EleventyHtmlBasePlugin } from "@11ty/eleventy";
 import markdownIt from "markdown-it";
 import markdownItGithubAlerts from "markdown-it-github-alerts";
+import fs from "fs";
+import matter from "gray-matter";
 
 export default function (eleventyConfig) {
     eleventyConfig.addPassthroughCopy("assets");
@@ -10,6 +12,21 @@ export default function (eleventyConfig) {
         .use(markdownItGithubAlerts);
 
     eleventyConfig.setLibrary("md", markdownLibrary);
+
+    const getTitleFromFrontMatter = (chapter) => {
+        const filePath = `./content/guides/${chapter}.md`;
+        if (fs.existsSync(filePath)) {
+            const fileContent = fs.readFileSync(filePath, "utf-8");
+            const { data } = matter(fileContent);
+            return data.title || chapter;
+        }
+        return chapter;
+    }
+
+    eleventyConfig.addShortcode("see", (chapter) => {
+        const title = getTitleFromFrontMatter(chapter);
+        return `see [${title}](/guides/${chapter})`;
+    });
 
     const usedIds = new Set();
 
