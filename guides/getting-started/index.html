@@ -29,6 +29,8 @@
                 <a href="/love-cookbook/">Introduction</a>
             </li><li>
                 <a href="/love-cookbook/guides/getting-started/">Getting started</a>
+            </li><li>
+                <a href="/love-cookbook/guides/drawing-image/">Drawing an image</a>
             </li></ul>
       </section>
       <article class="guide">
@@ -59,7 +61,17 @@ function love.draw()
 end
 </code></pre>
 <p>This will show this:</p>
-<p><img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwangoon.github.io%2Fstatic%2F5cc320a5cabfb4ab334f3cbc9fdcc797%2Fad00e%2Flove2d-hello.png&amp;f=1&amp;nofb=1&amp;ipt=40ee5cdd995f77a64d1162773193ac85b12fed8f568f602d8c95d78d79f68b8d&amp;ipo=images" alt="Hello, World!"></p>
+<iframe id="love-iframe-54" src="/love-cookbook/assets/love/love-js" width="600" height="450"></iframe>
+<script>
+const iframe_54 = document.getElementById('love-iframe-54');
+iframe_54.addEventListener('load', function() {
+iframe_54.contentWindow.postMessage({lua: `love.window.setMode(600, 450) 
+function love.draw()
+    love.graphics.print("Hello, World!", 300, 225)
+end
+`}, '*');
+});
+</script>
 
 </section>
 
