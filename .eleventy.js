@@ -19,6 +19,7 @@ export default function (eleventyConfig) {
         const id = getId();
 
         content = content
+            .replace(/(\n){2,}/g, '\n')
             .replace(/(\r\n){2,}/g, '\r\n')
             .replace(/`/g, '\\`')
 
