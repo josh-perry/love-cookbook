@@ -39,21 +39,21 @@ export default function (eleventyConfig) {
         return id;
     }
 
-    eleventyConfig.addPairedShortcode("love", (content, width = 800, height = 600) => {
+    eleventyConfig.addPairedShortcode("love", (content, width = 800, height = 600, code = false) => {
         const id = getId();
 
-        content = content
+        const formattedContent = content
             .replace(/(\n){2,}/g, '\n')
             .replace(/(\r\n){2,}/g, '\r\n')
             .replace(/`/g, '\\`')
 
         // Note: No indenting to prevent rendering as code block.
-        return `
+        return `${code ? `\`\`\`lua${content}\`\`\`` : ''}
 <iframe id="love-iframe-${id}" src="/assets/love/love-js" width="${width}" height="${height}"></iframe>
 <script>
 const iframe_${id} = document.getElementById('love-iframe-${id}');
 iframe_${id}.addEventListener('load', function() {
-iframe_${id}.contentWindow.postMessage({lua: \`love.window.setMode(${width}, ${height}) ${content}\`}, '*');
+iframe_${id}.contentWindow.postMessage({lua: \`love.window.setMode(${width}, ${height}) ${formattedContent}\`}, '*');
 });
 </script>
         `;
