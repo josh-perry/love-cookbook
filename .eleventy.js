@@ -1,8 +1,15 @@
 import { EleventyHtmlBasePlugin } from "@11ty/eleventy";
+import markdownIt from "markdown-it";
+import markdownItGithubAlerts from "markdown-it-github-alerts";
 
 export default function (eleventyConfig) {
     eleventyConfig.addPassthroughCopy("assets");
     eleventyConfig.addPlugin(EleventyHtmlBasePlugin);
+
+    const markdownLibrary = markdownIt({ html: true })
+        .use(markdownItGithubAlerts);
+
+    eleventyConfig.setLibrary("md", markdownLibrary);
 
     const usedIds = new Set();
 
