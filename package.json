@@ -20,6 +20,7 @@
   "homepage": "https://github.com/Diminim/love-cookbook/fork#readme",
   "description": "",
   "dependencies": {
-    "@11ty/eleventy": "^3.0.0"
+    "@11ty/eleventy": "^3.0.0",
+    "markdown-it-github-alerts": "^0.3.0"
   }
 }
