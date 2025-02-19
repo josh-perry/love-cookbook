@@ -1,3 +1,6 @@
 {
-    "layout": "guide.njk"
+    "layout": "guide.njk",
+    "tags": [
+        "guide"
+    ]
 }

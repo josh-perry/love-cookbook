@@ -1,0 +1,14 @@
+[
+    {
+        "guide_urls": [
+            "/guides/getting-started/"
+        ]
+    },
+    {
+        "name": "Basics",
+        "summary_url": "/guides/basics/",
+        "guide_urls": [
+            "/guides/basic/drawing-image/"
+        ]
+    }
+]

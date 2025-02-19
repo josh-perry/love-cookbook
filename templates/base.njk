@@ -29,10 +29,17 @@
             <li>
                 <a href="/">Introduction</a>
             </li>
-            {%- for guide in collections.guide -%}
+
+            {%- for group in guide_groups -%}
+            {%- if group.name -%}
+            <span class="group-header">{{ group.name }}</span>
+            {%- endif -%}
+            {%- for guide_url in group.guide_urls -%}
             <li>
-                <a href={{guide.url}}>{{ guide.data.title }}</a>
+                {%- set guide_template = collections.guide | filterByUrl(guide_url) | first -%}
+                <a href="{{ guide_template.url }}">{{ guide_template.data.title }}</a>
             </li>
+            {%- endfor -%}
             {%- endfor -%}
         </ul>
       </section>
