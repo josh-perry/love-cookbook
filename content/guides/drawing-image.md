@@ -35,7 +35,7 @@ function love.draw()
 end
 ```
 
-{% love 600, 450 %}
+{% love 800, 300 %}
 local image
 
 function love.load()
@@ -54,7 +54,7 @@ Whale done! ;)
 
 Make the whale move back and forth!
 
-{% love 600, 450 %}
+{% love 800, 300 %}
 local image
 local x, dir = 0, 1
 
@@ -64,9 +64,9 @@ function love.load()
 end
 
 function love.update(dt)
-    x = x + 300 * dt * dir
-    if x > 500 then
-        x = 500
+    x = x + 400 * dt * dir
+    if x > 700 then
+        x = 700
         dir = -1
     elseif x < 0 then
         x = 0

@@ -15,7 +15,7 @@ export default function (eleventyConfig) {
         return id;
     }
 
-    eleventyConfig.addPairedShortcode("love", (content, width = 600, height = 450) => {
+    eleventyConfig.addPairedShortcode("love", (content, width = 800, height = 600) => {
         const id = getId();
 
         content = content
