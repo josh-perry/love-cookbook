@@ -5,9 +5,12 @@ date: 2025-02-19
 tags: [guide]
 ---
 
-In this tutorial we will draw this whale. Right click to download it.
+In this tutorial we will draw this whale. 
+
 
 <img src="/assets/love/assets/whale.png"/>
+
+Create an `assets` folder in the same directory as your `main.lua`. Then right click the image to save it in your assets folder. This way you keep scripts and assets nicely separated.
 
 To draw the image, we first need to load it. We do this with {% api "love.graphics.newImage(image)" %}.
 ```lua
@@ -20,7 +23,7 @@ end
 
 The variable `image` is now our {% api "Image" %} object.
 
-We can draw the image with {% api "love.graphics.draw(image, x, y)" %}
+We can draw the image with {% api "love.graphics.draw(image, x, y)" %}.
 
 ```lua
 local image
