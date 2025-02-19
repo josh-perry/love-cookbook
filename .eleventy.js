@@ -65,7 +65,7 @@ iframe_${id}.contentWindow.postMessage({lua: \`love.window.setMode(${width}, ${h
         return `<a href="${url}" target="_blank"><code>${name}</code></a>`;
     });
 
-    eleventyConfig.addNunjucksFilter("filterByUrl", function(collection, url) {
+    eleventyConfig.addNunjucksFilter("filterByUrl", function (collection, url) {
         const results = collection.filter(item => item.url === url);
 
         if (results.length === 0) {
