@@ -2,7 +2,6 @@
 title: "Drawing an image"
 authors: [Sheepolution]
 date: 2025-02-19
-tags: [guide]
 ---
 
 In this tutorial we will draw this whale. 

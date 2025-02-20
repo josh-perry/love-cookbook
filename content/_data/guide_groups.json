@@ -5,12 +5,63 @@
         ]
     },
     {
-        "name": "Basics",
-        "summary_url": "/guides/basics/",
+        "name": "Installation",
+        "summary_url": "/guides/installation/",
         "guide_urls": [
-            "/guides/basic/drawing-image/",
-            "/guides/basic/variables/",
-            "/guides/basic/functions/"
+            "/guides/installation/love/",
+            "/guides/installation/vscode/"
+        ]
+    },
+    {
+        "name": "Fundamentals",
+        "guide_urls": [
+            "/guides/fundamentals/lua/",
+            "/guides/fundamentals/variables/",
+            "/guides/fundamentals/functions/",
+            "/guides/fundamentals/if-statements/",
+            "/guides/fundamentals/tables/",
+            "/guides/fundamentals/for-loops/"
+        ]
+    },
+    {
+        "name": "LÖVE",
+        "guide_urls": [
+            "/guides/love/drawing-a-rectangle/",
+            "/guides/love/drawing-image/",
+            "/guides/love/playing-sound/",
+            "/guides/love/input/",
+            "/guides/love/filesystem/",
+            "/guides/love/deltatime/",
+            "/guides/love/reading-errors/"
+        ]
+    },
+    {
+        "name": "Basics",
+        "guide_urls": [
+            "/guides/basic/aabb/",
+            "/guides/basic/angle-and-distance/",
+            "/guides/basic/tiles/",
+            "/guides/basic/animation/",
+            "/guides/basic/saving-and-loading/",
+            "/guides/basic/canvases/",
+            "/guides/basic/stencil-modes/"
+        ]
+    },
+    {
+        "name": "Intermediate",
+        "guide_urls": [
+            "/guides/intermediate/oop/",
+            "/guides/intermediate/metatables/",
+            "/guides/intermediate/collision-resolving/",
+            "/guides/intermediate/stencil-states/",
+            "/guides/intermediate/coroutines/"
+        ]
+    },
+    {
+        "name": "Advanced",
+        "guide_urls": [
+            "/guides/advanced/physics/",
+            "/guides/advanced/threads/"
         ]
     }
 ]
