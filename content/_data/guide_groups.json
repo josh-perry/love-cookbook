@@ -9,7 +9,8 @@
         "summary_url": "/guides/installation/",
         "guide_urls": [
             "/guides/installation/love/",
-            "/guides/installation/vscode/"
+            "/guides/installation/vscode/",
+			"/guides/installation/neovim/"
         ]
     },
     {
