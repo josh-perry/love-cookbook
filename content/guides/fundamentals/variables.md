@@ -98,26 +98,6 @@ test = nil -- We assign nil to remove the value.
 print(test) -- Output: nil
 ```
 
-## Usage
-
-By using variables we can keep track of a value. For example, your ammo can be a variable, and when you shoot we subtract from that value to keep track of how many bullets you have left.
-
-Another great thing about variables is that when we use one in multiple places, we only need to change one value for it to be applied those place. In the code below we can change the `width` and `height` variables to change the width and height of all rectangles.
-
-{% love 800, 200, true %}
-function love.load()
-    width = 100
-    height = 75
-end
-
-function love.draw()
-    love.graphics.rectangle("fill", 10, 10, width, height)
-    love.graphics.rectangle("fill", 130, 10, width, height)
-    love.graphics.rectangle("fill", 250, 10, width, height)
-    love.graphics.rectangle("fill", 370, 10, width, height)
-end
-{% endlove %}
-
 ## Naming variables
 
 The word in which you store a value can be almost anything.
@@ -223,3 +203,25 @@ end
 {% endlove %}
 
 Because it is good practice, we will use local variables throughout this codebook.
+
+## Usage
+
+By using variables we can keep track of a value. For example, your ammo can be a variable, and when you shoot we subtract from that value to keep track of how many bullets you have left.
+
+Another great thing about variables is that when we use one in multiple places, we only need to change one value for it to be applied those place. In the code below we can change the `width` and `height` variables to change the width and height of all rectangles.
+
+{% love 800, 200, true %}
+local width, height
+
+function love.load()
+    width = 100
+    height = 75
+end
+
+function love.draw()
+    love.graphics.rectangle("fill", 10, 10, width, height)
+    love.graphics.rectangle("fill", 130, 10, width, height)
+    love.graphics.rectangle("fill", 250, 10, width, height)
+    love.graphics.rectangle("fill", 370, 10, width, height)
+end
+{% endlove %}
