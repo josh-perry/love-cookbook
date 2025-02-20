@@ -75,7 +75,7 @@ print(five) -- Output: 5
 When a function reaches the `return` keyword, it is the end of that function call, and `end` should follow. Trying to place code after the `return` will cause an error.
 
 ```lua
-function sum(a, b)
+local function sum(a, b)
     return a + b
     print(a, b) -- Error!
 end
