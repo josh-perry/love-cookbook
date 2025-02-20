@@ -98,7 +98,7 @@ test = nil -- We assign nil to remove the value.
 print(test) -- Output: nil
 ```
 
-## Using variables
+## Usage
 
 By using variables we can keep track of a value. For example, your ammo can be a variable, and when you shoot we subtract from that value to keep track of how many bullets you have left.
 
