@@ -4,6 +4,9 @@ authors: [Jasper]
 date: 2025-02-20
 ---
 
+> [!CAUTION]
+> This guide is made for löve 12.0!
+
 With **shaders** you can create fun graphical effects for your game.
 
 There are multiple types of shaders available to be used in löve
@@ -14,6 +17,37 @@ There are multiple types of shaders available to be used in löve
 A shader is a piece of code the GPU executes, like when drawing images or text.
 
 You can make new shaders using `love.graphics.newShader` and `love.graphics.newComputeShader`.
+
+## Syntax
+
+löve shaders are written in GLSL    
+
+### Types
+
+Scalar types:
+* `float`: 32-bit floating point number, for storing fractional values
+* `int`: 32-bit integer value
+* `uint`: unsigned version of int, meaning it can't be negative, allowing for twice the range of values
+* `bool`: boolean value (`true` or `false`)
+
+Vector types:
+* `vecn`: float type vector
+* `ivecn`: integer type vector
+* `uvecn`: unsigned integer type vector
+* `bvecn`: boolean type vector
+
+Matrix types:
+* mat*n*x*m*: n columns, m rows (column major) 
+
+>[!IMPORTANT]
+> When doing math in shaders, make sure to use the correct literal number formatting        
+> `1 / 2 = 0` Values without type suffixes will be interpreted as integers      
+> `1.0 / 2.0 = 0.5` Floating point division
+
+Type suffixes
+* `float`: *x*.;*x*.0;*x*.f (1. ; 1.0 ; 1.f)
+* `int`: *x* ( 1 )
+* `uint` *x*u ( 1u )
 
 ## The Fragment shader
 This shader is executed for every pixel your effect covers.
@@ -68,7 +102,7 @@ end
 
 ### Uniform values
 
-Uniform values are a way to send data from the CPU to the GPU **Not the other way around**
+Uniform values are a way to send data from the CPU to the GPU **Not the other way around!**     
 Let's edit our shader to change the color of our image over time, using a uniform value.
 
 > [!IMPORTANT]
@@ -105,5 +139,218 @@ function love.draw()
 
     love.graphics.setShader(shader)
     love.graphics.draw(image)
+end
+```
+
+### Box blur
+
+Let's step things up again by creating a multi pass shader and by moving it to another file.
+Start by creating a file called `boxBlur.fs` (fs = fragment shader)
+
+`boxBlur.fs`:
+
+```glsl
+uniform vec2 Offset;
+uniform int SampleCount;
+uniform Image SourceTexture;
+
+vec4 effect(vec4 color, Image tex, vec2 texture_coords, vec2 screen_coords)
+{
+    // Keep a sum of all samples
+    vec3 sum = vec3(0.0);
+
+    // Type conversions are not done automatically in GLSL ES 
+    // Knowing when they happen can help understanding your code better and improve compatability
+    vec2 texel_size = 1.0 / vec2(love_ScreenSize.xy);
+
+    for (int sample = 0; sample < SampleCount; sample++)
+    {
+        sum += Texel(SourceTexture, texture_coords + (Offset * float(sample)) * texel_size).rgb;
+    }
+
+    sum /= float(SampleCount);
+
+    return vec4(sum, 1.0);
+}
+```
+
+`main.lua`:
+```lua
+local image = love.graphics.newImage("gambar.png")
+local shader = love.graphics.newShader("boxBlur.fs")
+local mainCanvas = love.graphics.newCanvas()
+
+-- Since we are applying the shader twice, we need to store the image in between passes
+local blurCanvas = love.graphics.newCanvas()
+-- Size of the entire box will be (n * 2 + 1) x (n * 2 + 1) (n to each side + center)
+shader:send("SampleCount", 16)
+
+
+-- Quick helper function to draw a 1x1 image full-screen
+-- Which avoids having to create a mesh with uv's, since images have that by default
+local img = love.graphics.newImage(love.image.newImageData(1, 1))
+function drawFullscreen()
+    love.graphics.draw(img, 0, 0, 0, love.graphics.getDimensions())
+end
+
+function love.draw()
+    love.graphics.setCanvas(mainCanvas)
+    love.graphics.clear()
+    love.graphics.draw(image)
+
+    love.graphics.setCanvas(blurCanvas)
+    love.graphics.clear()
+    love.graphics.setShader(shader)
+
+    -- Blur on the X-axis
+    shader:send("Offset", { 1.0, 0.0 })
+    shader:send("SourceTexture", mainCanvas)
+
+    drawFullscreen()
+    love.graphics.setCanvas(mainCanvas)
+
+    -- Blur on the Y-axis
+    shader:send("Offset", { 0.0, 1.0 })
+    shader:send("SourceTexture", blurCanvas)
+    drawFullscreen()
+
+    love.graphics.setCanvas()
+    love.graphics.setShader()
+    love.graphics.draw(mainCanvas)
+end
+```
+
+## Vertex shaders
+
+Vertex shaders are small programs which calculate the final position of a vertex on screen.     
+The output of a vertex shader is in NDC-space (Normalised Device Coordinates),          
+which is just a fancy name for [-1 to 1], though it is important to keep in mind.       
+As a post processing step to the vertex shader, the gpu divides the output vertex coordinates by the w component and brings the coordinates to [0 to 1], which is the final position of the vertex on-screen.
+
+Let's start with the standard shader löve uses and break it down.
+
+```glsl
+varying vec4 vpos;
+
+vec4 position( mat4 transform_projection, vec4 vertex_position )
+{
+    vpos = vertex_position;
+    return transform_projection * vertex_position;
+}
+```
+
+`varying` is a keyword which defines a variable that will be shared between the vertex and fragment shader stage.       
+for example, if you have three vertices forming a triangle and you give each a different color, Red, Green, Blue, and store those values in a `varying` value, the GPU will interpolate those values for each pixel and draw something like this:
+
+{% love 200, 200, true %}
+local PI13 = math.pi * 2 / 3
+local mesh = love.graphics.newMesh({
+    { 100 + math.cos(PI13 * 2 + math.pi / 6) * 100, 120 + math.sin(PI13 * 2 + math.pi / 6) * 100, 0, 0, 1, 0, 0 },
+    { 100 + math.cos(PI13 * 3 + math.pi / 6) * 100, 120 + math.sin(PI13 * 3 + math.pi / 6) * 100, 0, 0, 0, 1, 0 },
+    { 100 + math.cos(PI13 + math.pi / 6) * 100,     120 + math.sin(PI13 + math.pi / 6) * 100,     0, 1, 0, 0, 1 },
+}, "triangles", "static")
+
+function love.draw()
+    love.graphics.draw(mesh)
+end
+
+{% endlove %}
+
+`mat4 transform_projection` is the variable which is doing all of the hard work,        
+it's the matrix which stores the current coordinate system transform, so translation, rotation and scale and the projection matrix.         
+By default löve uses an orthographic projection matrix which goes [-10, 10] on the z-axis, meaning if your objects are outside of that range, they won't be visible anymore.        
+This is because the z values of the pixels will lie outside of the [-1 to 1] range and the gpu will "clip" the fragments.
+
+`vec4 vertex_position` is the input vertex's position, by default `w = 1`, and any time you want to multiply a position with a projection matrix, it should be `1` otherwise it will cause issues.
+
+Let's do some shader magic and create a vertex shader which automatically covers the entire screen with a single triangle, instead of having to create a 1x1 image like we did before.
+
+## Fullscreen triangle
+
+This shader uses an entry point which is introduced in 12.0, it allows us to completely skip löves default inputs and outputs
+
+```glsl
+// Store UV-Coordinates to be used in the fragment shader
+varying vec2 VarVertexCoord;
+#ifdef VERTEX
+void vertexmain() {
+    // We want a triangle which covers the entire screen, so we need to generate a triangle with vertices at the positions:
+    // [0, 0], [0, 2], [2, 0]
+    
+    // Bit shifting magic to create these coordinates
+    VarVertexCoord = vec2((love_VertexID << 1) & 2, love_VertexID & 2);
+
+    vec4 VarScreenPosition = vec4(VarVertexCoord.xy * vec2(2.0) + vec2(-1.0), 0.0, 1.0);
+
+    gl_Position = VarScreenPosition;
+}
+#endif
+```
+
+## Effects
+
+### Nearest color
+
+To lock the colors we can have in our image, and still have artistic control over those colors, we're going to create an image with all possible colors our output can be, then use a fragment shader to select one which fits the best using a simple approximation.
+
+```lua
+local shader = love.graphics.newShader [[
+    uniform sampler2D Palette;
+
+    vec4 effect(vec4 color, Image tex, vec2 texture_coords, vec2 screen_coords) {
+        ivec2 size = textureSize(Palette, 0);
+
+        // Store the color our image was originally going to be
+        vec4 defaultColor = color * Texel(tex, texture_coords);
+        // Store the "Distance" To the current closest color
+        vec4 closestColor = vec4(1.0);
+
+        // In LDR (Low Dynamic Range), the maximum distance is 1.0
+        float closestDist = 1.0;
+
+        // Loop over all colors in the palette
+        for (int i = 0; i < size.x; i++) {
+            vec4 paletteColor = texelFetch(Palette, ivec2(i, 0), 0);
+
+            // FYI, this is a very simple color distance calculation
+            // The visual difference between colors is not linear
+            // and not all channels are equal
+
+            float dist = distance(paletteColor.rgb, defaultColor.rgb);
+
+            // If this color is closer than the previous closest, use it
+            if (dist < closestDist) {
+                closestDist = dist;
+                closestColor = paletteColor;
+            }
+        }
+
+        // Then just return the color
+        return closestColor;
+    }
+]]
+
+-- Calculate a palette with some colors
+-- You should create your own palette if you want to have better control over the final result
+local channels = 4
+local paletteData = love.image.newImageData(channels * channels * channels, 1)
+
+for red = 0, channels - 1 do
+    for green = 0, channels - 1 do
+        for blue = 0, channels - 1 do
+            local x = red + green * channels + blue * channels * channels
+            paletteData:setPixel(x, 0, red / (channels - 1), green / (channels - 1), blue / (channels - 1), 1)
+        end
+    end
+end
+
+local palette = love.graphics.newImage(paletteData)
+shader:send('Palette', palette)
+local image = love.graphics.newImage('YourImage.png')
+
+function love.draw()
+    love.graphics.setShader(shader)
+    love.graphics.draw(image, 0, 0)
+    love.graphics.setShader()
 end
 ```
