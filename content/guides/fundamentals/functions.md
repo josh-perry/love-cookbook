@@ -2,7 +2,6 @@
 title: "Functions"
 authors: [Sheepolution]
 date: 2025-02-19
-tags: [guide]
 ---
 
 With **functions** you can store a piece of code to be executed at different times, and multiple times.

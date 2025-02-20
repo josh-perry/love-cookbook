@@ -2,7 +2,6 @@
 title: "Variables"
 authors: [Sheepolution]
 date: 2025-02-19
-tags: [guide]
 ---
 
 **Variables** are words that contain a value, like a number for example.
