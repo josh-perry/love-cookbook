@@ -164,6 +164,12 @@ wHaLe = 200
 > in        local     nil       not       or
 > repeat    return    then      true      until     while
 > ```
+> Note that `print` is not a keyword. It is a standard variable. You want to avoid overriding these standard variables.
+> ```lua
+> print = "hello"
+> a = 5
+> print(a) -- Error!
+> ```
 
 ## Local variables
 
