@@ -64,19 +64,26 @@ Functions can **return** a value. This means that, upon calling the function, it
 
 ```lua
 -- We can create multiple parameters by separating them with a comma.
-local function sum(a, b)
-    return a + b
+local function give_me_five()
+    return 5
 end
 
--- We can pass multiple arguments by separating them with a comma.
-local value = sum(10, 20)
-print(value) -- Output: 30
-
--- It is not necessary to store the returned value into a variable first.
-print(sum(2, 3)) -- Output: 5
+local five = give_me_five()
+print(five) -- Output: 5
 ```
 
-A function can return multiple values at once by separating them with a comma.
+When a function reaches the `return` keyword, it is the end of that function call, and `end` should follow. Trying to place code after the `return` will cause an error.
+
+```lua
+function sum(a, b)
+    return a + b
+    print(a, b) -- Error!
+end
+
+sum(10, 20)
+```
+
+A function can have multiple parameters, arguments, and return values, by separating them with a comma.
 
 ```lua
 local function arithmetics(a, b)
@@ -84,6 +91,7 @@ local function arithmetics(a, b)
     a = a * 2
     -- 'b' becomes the value of 'b'  divided by 2.
     b = b / 2
+
     return a, b
 end
 
