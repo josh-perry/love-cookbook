@@ -45,6 +45,8 @@ export default function (eleventyConfig) {
         const formattedContent = content
             .replace(/(\n){2,}/g, '\n')
             .replace(/(\r\n){2,}/g, '\r\n')
+            .replace(/(\t){2,}/g, ' ')
+            .replace(/(\s){2,}/g, ' ')
             .replace(/`/g, '\\`')
 
         // Note: No indenting to prevent rendering as code block.

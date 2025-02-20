@@ -98,26 +98,6 @@ test = nil -- We assign nil to remove the value.
 print(test) -- Output: nil
 ```
 
-## Using variables
-
-By using variables we can keep track of a value. For example, your ammo can be a variable, and when you shoot we subtract from that value to keep track of how many bullets you have left.
-
-Another great thing about variables is that when we use one in multiple places, we only need to change one value for it to be applied those place. In the code below we can change the `width` and `height` variables to change the width and height of all rectangles.
-
-{% love 800, 200, true %}
-function love.load()
-    width = 100
-    height = 75
-end
-
-function love.draw()
-    love.graphics.rectangle("fill", 10, 10, width, height)
-    love.graphics.rectangle("fill", 130, 10, width, height)
-    love.graphics.rectangle("fill", 250, 10, width, height)
-    love.graphics.rectangle("fill", 370, 10, width, height)
-end
-{% endlove %}
-
 ## Naming variables
 
 The word in which you store a value can be almost anything.
@@ -163,28 +143,85 @@ wHaLe = 200
 > in        local     nil       not       or
 > repeat    return    then      true      until     while
 > ```
+> Note that `print` is not a keyword. It is a standard variable. You want to avoid overriding these standard variables.
+> ```lua
+> print = "hello"
+> a = 5
+> print(a) -- Error!
+> ```
 
 ## Local variables
 
 By default, all variables are **global**. This means that they can be used everywhere in your project. That sounds like a good thing, but it can get messy when you have a big project with many variables.
 
-With **local** variables, we can create a variable that is only accessible where it is declared. We call this its *scope*. In a later chapter you will learn more about scope, but in simple terms it means the *code block* it is in, or otherwise the file.
+Because of that, we often use **local** variables. We can create a local variable by putting the keyword `local` in front.
 
 ```lua
--- This variable is not defined inside a code block
+local a = 0
+-- We can reassign a value to our local variable, and it will remain local.
+a = 10
+
+-- You can declare a local variable without assigning it a value right away.
+local b
+b = 20
+```
+
+
+Local variables are only accessible where they are declared. We call this its *scope*. In a later chapter you will learn more about scope, but in simple terms it means the *code block* it is in, or otherwise the file.
+
+> [!TIP]
+> Every time you see and `end`, then that is the end of a *code block*.
+
+> [!NOTE]
+> Scope can be complicated as a beginner. Don't worry if you have trouble understanding it. In a later chapter we will talk about scope in more detail.
+
+{% love 800, 100, true %}
+-- This variable is not declared inside a code block
 -- Because of that, it's accessible in all of main.lua
 local one = 1
 
+-- A function is an example of a code block.
 function love.load()
-    -- A function is an example of a code block.
-    -- The variable is only accessible in this function.
+    -- The variable 'two' is only accessible in this code block.
     local two = 2
     print(one, two) -- Output: 1, 2
 end -- 'end' closes the code block.
 
--- We are outside of the code block the local variable 'two' was declared in.
--- Because of that, 'two' is not accessible.
-print(one, two) -- Output: 1, nil
-```
+function love.draw()
+    -- We are inside a different code block.
+    love.graphics.print(one, 10, 10)
+
+    -- This would give an error, because 'two' holds no value.
+    -- love.graphics.print(two, 10, 30) -- Error!
+
+    -- Careful! This is now declared as a global variable!
+    -- Because the original declaration was inside a different code block.
+    two = 20
+
+    love.graphics.print(two, 10, 50)
+end
+{% endlove %}
 
 Because it is good practice, we will use local variables throughout this codebook.
+
+## Usage
+
+By using variables we can keep track of a value. For example, your ammo can be a variable, and when you shoot we subtract from that value to keep track of how many bullets you have left.
+
+Another great thing about variables is that when we use one in multiple places, we only need to change one value for it to be applied those place. In the code below we can change the `width` and `height` variables to change the width and height of all rectangles.
+
+{% love 800, 200, true %}
+local width, height
+
+function love.load()
+    width = 100
+    height = 75
+end
+
+function love.draw()
+    love.graphics.rectangle("fill", 10, 10, width, height)
+    love.graphics.rectangle("fill", 130, 10, width, height)
+    love.graphics.rectangle("fill", 250, 10, width, height)
+    love.graphics.rectangle("fill", 370, 10, width, height)
+end
+{% endlove %}
