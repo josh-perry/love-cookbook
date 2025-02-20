@@ -4,9 +4,7 @@ date: 2025-02-20
 authors: [Nykenik]
 ---
 
-If you use NeoVim and want to make games in LÖVE, you probably want to have lsp autocompletion of love methods, variables, etc.
-
-There is a plugin for that, made by S1M0N38 called `love2d.nvim`.
+When using NeoVim for LÖVE we need to use S1M0N38's [`love2d.nvim`](https://github.com/S1M0N38/love2d.nvim) plugin.
 
 ## Disclaimer
 This guide already supposes you have a proper [lsp configuration](https://github.com/neovim/nvim-lspconfig), `lua_lsp` installed and a plugin manager.
