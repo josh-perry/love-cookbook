@@ -1,6 +1,8 @@
 import { EleventyHtmlBasePlugin } from "@11ty/eleventy";
 import markdownIt from "markdown-it";
 import markdownItGithubAlerts from "markdown-it-github-alerts";
+import fs from "fs";
+import matter from "gray-matter";
 
 export default function (eleventyConfig) {
     eleventyConfig.addPassthroughCopy("assets");
@@ -10,6 +12,21 @@ export default function (eleventyConfig) {
         .use(markdownItGithubAlerts);
 
     eleventyConfig.setLibrary("md", markdownLibrary);
+
+    const getTitleFromFrontMatter = (chapter) => {
+        const filePath = `./content/guides/${chapter}.md`;
+        if (fs.existsSync(filePath)) {
+            const fileContent = fs.readFileSync(filePath, "utf-8");
+            const { data } = matter(fileContent);
+            return data.title || chapter;
+        }
+        return chapter;
+    }
+
+    eleventyConfig.addShortcode("see", (chapter) => {
+        const title = getTitleFromFrontMatter(chapter);
+        return `see [${title}](/guides/${chapter})`;
+    });
 
     const usedIds = new Set();
 
@@ -22,21 +39,21 @@ export default function (eleventyConfig) {
         return id;
     }
 
-    eleventyConfig.addPairedShortcode("love", (content, width = 800, height = 600) => {
+    eleventyConfig.addPairedShortcode("love", (content, width = 800, height = 600, code = false) => {
         const id = getId();
 
-        content = content
+        const formattedContent = content
             .replace(/(\n){2,}/g, '\n')
             .replace(/(\r\n){2,}/g, '\r\n')
             .replace(/`/g, '\\`')
 
         // Note: No indenting to prevent rendering as code block.
-        return `
+        return `${code ? `\`\`\`lua${content}\`\`\`` : ''}
 <iframe id="love-iframe-${id}" src="/assets/love/love-js" width="${width}" height="${height}"></iframe>
 <script>
 const iframe_${id} = document.getElementById('love-iframe-${id}');
 iframe_${id}.addEventListener('load', function() {
-iframe_${id}.contentWindow.postMessage({lua: \`love.window.setMode(${width}, ${height}) ${content}\`}, '*');
+iframe_${id}.contentWindow.postMessage({lua: \`love.window.setMode(${width}, ${height}) ${formattedContent}\`}, '*');
 });
 </script>
         `;
@@ -48,7 +65,7 @@ iframe_${id}.contentWindow.postMessage({lua: \`love.window.setMode(${width}, ${h
         return `<a href="${url}" target="_blank"><code>${name}</code></a>`;
     });
 
-    eleventyConfig.addNunjucksFilter("filterByUrl", function(collection, url) {
+    eleventyConfig.addNunjucksFilter("filterByUrl", function (collection, url) {
         const results = collection.filter(item => item.url === url);
 
         if (results.length === 0) {
