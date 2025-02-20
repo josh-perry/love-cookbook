@@ -98,6 +98,25 @@ end
 print(arithmetics(5, 40)) -- Ouput: 10, 20
 ```
 
+## Usage
+
+Functions allow us to execute the same code in different places, without having to copy that code. Instead we can call the function. If we ever want to change how the code works, we only need to change the function.
+
+In the example below we draw multiple rectangles. If we ever want to change the shape of the rectangle, we only need to change the function.
+
+{% love 800, 200, true %}
+local function draw_rectangle(x)
+    love.graphics.rectangle("fill", x, 10, 100, 75)
+end
+
+function love.draw()
+    draw_rectangle(10)
+    draw_rectangle(130)
+    draw_rectangle(250)
+    draw_rectangle(370)
+end
+{% endlove %}
+
 ## Challenge
 
 Can you figure out what the code below will output?
