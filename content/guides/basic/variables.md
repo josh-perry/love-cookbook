@@ -24,7 +24,7 @@ print(a) -- Output: 10
 > 
 > When you give a variable a value, we call that an **assignment**.
 >
-> So we __declared__ the variable `a` and __assigned__ it the value `10`.
+> So we <ins>declared</ins> the variable `a` and <ins>assigned</ins> it the value `10`.
 
 We can change the value of a variable, hence the name *variable*.
 
