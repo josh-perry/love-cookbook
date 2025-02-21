@@ -126,7 +126,7 @@ Let's edit our shader to change the color of our image over time, using a unifor
 > [!NOTE]
 > Uniform values can get optimised out of shader code,      
 > if shader:send is encountering an error even though the uniform is defined,
-> make sure it's contributing to the final output of the shader
+> make sure it's contributing to the final output of the shader.
 
 ```lua
 local image = love.graphics.newImage("YourImage.png")
@@ -172,7 +172,6 @@ However, because of how this effect scales, larger blur radiuses become really c
 Due to the way this effect works, we can do it in two passes, one on the x-axis and one on the y-axis, effectively changing the amount of pixels to so sample per pixel from Count^2 to Count * 2
 
 `boxBlur.fs`:
-
 ```glsl
 uniform vec2 Offset;
 uniform int SampleCount;
@@ -200,7 +199,7 @@ vec4 effect(vec4 color, Image tex, vec2 texture_coords, vec2 screen_coords)
 
 `main.lua`:
 ```lua
-local image = love.graphics.newImage("gambar.png")
+local image = love.graphics.newImage("YourImage.png")
 local shader = love.graphics.newShader("boxBlur.fs")
 local mainCanvas = love.graphics.newCanvas()
 
@@ -293,6 +292,7 @@ Let's do some shader magic and create a vertex shader which automatically covers
 
 This shader uses an entry point which is introduced in 12.0, it allows us to completely skip löves default inputs and outputs
 
+`fullscreenTriangle.vs`
 ```glsl
 // Store UV-Coordinates to be used in the fragment shader
 varying vec2 VarVertexCoord;
@@ -317,42 +317,46 @@ void vertexmain() {
 
 To lock the colors we can have in our image, and still have artistic control over those colors, we're going to create an image with all possible colors our output can be, then use a fragment shader to select one which fits the best using a simple approximation.
 
-```lua
-local shader = love.graphics.newShader [[
-    uniform sampler2D Palette;
+`paletteShader.fs`
+```glsl
+uniform sampler2D Palette;
 
-    vec4 effect(vec4 color, Image tex, vec2 texture_coords, vec2 screen_coords) {
-        ivec2 size = textureSize(Palette, 0);
+vec4 effect(vec4 color, Image tex, vec2 texture_coords, vec2 screen_coords) {
+    ivec2 size = textureSize(Palette, 0);
 
-        // Store the color our image was originally going to be
-        vec4 defaultColor = color * Texel(tex, texture_coords);
-        // Store the "Distance" To the current closest color
-        vec4 closestColor = vec4(1.0);
+    // Store the color our image was originally going to be
+    vec4 defaultColor = color * Texel(tex, texture_coords);
+    // Store the "Distance" To the current closest color
+    vec4 closestColor = vec4(1.0);
 
-        // In LDR (Low Dynamic Range), the maximum distance is 1.0
-        float closestDist = 1.0;
+    // In LDR (Low Dynamic Range), the maximum distance is 1.0
+    float closestDist = 1.0;
 
-        // Loop over all colors in the palette
-        for (int i = 0; i < size.x; i++) {
-            vec4 paletteColor = texelFetch(Palette, ivec2(i, 0), 0);
+    // Loop over all colors in the palette
+    for (int i = 0; i < size.x; i++) {
+        vec4 paletteColor = texelFetch(Palette, ivec2(i, 0), 0);
 
-            // FYI, this is a very simple color distance calculation
-            // The visual difference between colors is not linear
-            // and not all channels are equal
+        // FYI, this is a very simple color distance calculation
+        // The visual difference between colors is not linear
+        // and not all channels are equal
 
-            float dist = distance(paletteColor.rgb, defaultColor.rgb);
+        float dist = distance(paletteColor.rgb, defaultColor.rgb);
 
-            // If this color is closer than the previous closest, use it
-            if (dist < closestDist) {
-                closestDist = dist;
-                closestColor = paletteColor;
-            }
+        // If this color is closer than the previous closest, use it
+        if (dist < closestDist) {
+            closestDist = dist;
+            closestColor = paletteColor;
         }
-
-        // Then just return the color
-        return closestColor;
     }
-]]
+
+    // Then just return the color
+    return closestColor;
+}
+```
+
+`main.lua`
+```lua
+local shader = love.graphics.newShader("paletteShader.fs")
 
 -- Calculate a palette with some colors
 local channels = 4
@@ -386,8 +390,8 @@ For this effect we'll run a shader to average the results of every 2x2 block, ef
 We can use a trick to improve the memory efficiency of our effect by storing the results of that average in a half resolution image, since all pixels in that 2x2 block will have the same average.     
 To increase the amount of pixelation our effect allows for we can keep downscaling like that until we achieve our desired resolution.
 
-```lua
-local pixelationShaderCode = [[
+`pixelationShader.fs`
+```glsl
 vec4 effect(vec4 color, Image tex, vec2 texture_coords, vec2 screen_coords) {
     // This shader will run on a half-resolution canvas
     // meaning the texture_coords are in the center of a 2x2 pixel block
@@ -426,9 +430,11 @@ vec4 effect(vec4 color, Image tex, vec2 texture_coords, vec2 screen_coords) {
 
     return average;
 }
-]]
+```
 
-local pixelationShader = love.graphics.newShader(pixelationShaderCode)
+`main.lua`
+```lua
+local pixelationShader = love.graphics.newShader("pixelationShader.fs")
 
 -- pixelScale must be an integer and a power of two
 -- pixelationCanvases can just be a table we define outside of our main loop
@@ -497,8 +503,8 @@ There are almost an infinite amount of ways to create an outline shader but we'l
 
 The first implementation requires that objects with an outline are drawn to a black canvas, which a shader then calculates the outlines for and overlays over the game.
 
-```lua
-local outlineShaderCode = [[
+`outlineShader.fs`
+```glsl
 // radius in pixels of the outline
 uniform float radius;
 uniform vec4 OutlineColor;
@@ -540,9 +546,11 @@ vec4 effect(vec4 color, Image tex, vec2 texture_coords, vec2 screen_coords) {
 
     return vec4(0.0, 0.0, 0.0, 0.0);
 }
-]]
+```
 
-local outlineShader = love.graphics.newShader(outlineShaderCode)
+`main.lua`
+```lua
+local outlineShader = love.graphics.newShader("outlineShader.fs")
 
 function outline(gameCanvas)
     love.graphics.setShader(outlineShader)
@@ -566,8 +574,8 @@ The next method does not need a contrast between our image and pure black to wor
 This one works by calculating the average of the difference in color around the center pixel
 and applying the outline color if it crosses a certain threshold.
 
-```lua
-local outlineShaderCode = [[
+`outlineShader.fs`
+```glsl
 // radius in pixels of the outline
 uniform float radius;
 uniform vec4 OutlineColor;
@@ -615,9 +623,10 @@ vec4 effect(vec4 color, Image tex, vec2 texture_coords, vec2 screen_coords) {
 
     return vec4(0.0, 0.0, 0.0, 0.0);
 }
-]]
+```
 
-local outlineShader = love.graphics.newShader(outlineShaderCode)
+```lua
+local outlineShader = love.graphics.newShader("outlineShader.fs")
 local outlineColor = { 1, 0, 0, 0.7 }
 
 function outline(gameCanvas)
