@@ -17,10 +17,20 @@ There are multiple types of shaders available to be used in löve
 A shader is a piece of code the GPU executes, like when drawing images or text.
 
 Shaders can be created using `love.graphics.newShader` and `love.graphics.newComputeShader`.
+Compute shaders won't be covered here.
 
 ## Syntax
 
-löve shaders are written in GLSL    
+löve shaders are written in GLSL, which is quite a bit different to lua.
+Some notable difference are that GLSL is statically typed, semicolon line breaks, curly brackets to define code blocks instead of `then / do`, `end`.       
+
+There are some limitations to take in to consideration when writing shader code, the main one is that, due to the way GPUs work the entire register usage needs to be known beforehand, meaning dynamic memory allocations like these:
+```glsl
+uniform int IntCount;
+uniform int[IntCount] UniformIntegers
+```
+aren't allowed.     
+Which leads to another limitation, recursive code is not allowed either, use a stack and a while loop instead.
 
 ### Types
 
@@ -374,4 +384,7 @@ While shader optimisation is an incredibly advanced topic, these are still some 
 * The gpu is great at doing a lot of small tasks at the same time, so try to avoid really long for loops or huge shaders.
 * Implicit conversions, while doing a multiplication two different types is fine, try to avoid it in a for loop if possible, converting an int to a float once is better than 100x!
 * Precision qualifiers, these don't do anything on desktop gpus but mobile devices do calculations a lot faster at lower precisions.
+
+These are also useful but might not be as relevant when creating normal effects.
 * Data packing, instead of using 4 32-bit integers to store 4 8-bit integer values, if the size is known beforehand, they can be packed before writing and unpacked before reading.
+* Register usage, using more registers (determined by the maximum amount of values used at any point in your shader) *can* cause your shader to run slower.
