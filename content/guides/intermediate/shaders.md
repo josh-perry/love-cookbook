@@ -59,6 +59,8 @@ Type suffixes
 * `int`: *x* ( 1 )
 * `uint` *x*u ( 1u )
 
+[This](https://learnwebgl.brown37.net/12_shader_language/glsl_mathematical_operations.html) page explains operators.
+
 ## The Fragment shader
 This shader is executed for every pixel the effect covers.
 Let's make a simple fragment shader from a string to show it's functionality.
