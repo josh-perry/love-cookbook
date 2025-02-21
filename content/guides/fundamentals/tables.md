@@ -1,10 +1,10 @@
 ---
-title: "Tables"
+title: "Tables and For-loops"
 authors: [Sheepolution]
-date: 2025-02-19
+date: 2025-02-20
 ---
 
-Tables are a type of value in which you can store multiple values. We create a table by using curly braces.
+**Tables** are a type of value in which you can store multiple values. We create a table by using curly braces.
 
 ```lua
 local fruits = {}
@@ -57,7 +57,7 @@ But this is very inefficient. Imagine if we had a hundred items. Luckily, there 
 
 ## For-loops
 
-A for-loop is a type of statement that allows you to repeat certain code a number of times.
+A **for-loop** is a type of statement that allows you to repeat certain code a number of times.
 
 ```lua
 for i = 1, 10 do
@@ -108,6 +108,68 @@ end
 print(i) -- Output: nil
 ```
 
+### While-loops
+
+Besides the for-loops there is also a **while-loop**. It's like an if-statement and for-loop combined.
+
+```lua
+local a = 0
+
+while a < 5 do
+    a = a + 1
+    print(a) -- Output: 1, 2, 3, 4, 5
+end
+```
+
+The loop repeats as long as the condition is true.
+
+> [!WARNING]
+> Be careful! If the condition never becomes false, the while-loop will repeat indefintely, causing LÖVE to hang.
+
+It is possible to exit a loop early by using a `break`. It's somewhat similar to how you exit a function with `return`.
+
+```lua
+local a = 0
+
+while true do
+    a = a + 1
+    print(a) -- Output: 1, 2, 3, 4, 5
+
+    if a > 5 then
+        break
+    end
+end
+
+print("Escaped the infinite loop!")
+```
+
+A for-loop is useful when you know how many steps to take. A while-loop is useful when you know the end condition. For example, what if we want to calculate the power-of-2-sequence up to a million? We don't know how many steps it will take, but we do know when we want to end it.
+
+```lua
+local a = 1
+
+while a < 1000000 do
+    a = a * 2
+    print(a) -- Output: 2, 4, 8, 16, 32, .... 524288, 1048576
+end
+```
+
+There is one more type of loop. A **repeat-until loop**.
+
+```lua
+
+local x = 0
+
+repeat
+    x = x + 1
+until x > 5
+```
+
+It's similar to a while loop, except it always executes what's inside the loop at least once.
+
+> [!NOTE]
+> Even if we won't use these alternative loops as much, it's good to know of their existence.
+
 ## Looping through tables
 
 Now that we understand for-loops, we can use them to loop through our table.
@@ -136,7 +198,7 @@ end
 
 ## Editing tables
 
-We have already learned that we can use `table.insert(table, value)` to insert value into our table. Similarly, we can use `table.remove(table, index)` to remove a value.
+We have already learned that we can use `table.insert(table, value)` to insert a value into our table. Similarly, we can use `table.remove(table, index)` to remove a value.
 
 ```lua
 local fruits = { "apple", "pear", "tomato" }
@@ -148,7 +210,7 @@ for i = 1, #fruits do
 end
 ```
 
-We can edit a value, by accessing refering to that values index.
+We can edit a value, by referring to that value's index.
 
 ```lua
 local fruits = { "apple", "pear", "tomato" }
@@ -161,7 +223,7 @@ for i = 1, #fruits do
 end
 ```
 
-This is also yet another way to add a value to your table.
+This is also yet another way to add a value to our table.
 
 ```lua
 local fruits = { "apple", "pear", "tomato" }
@@ -218,24 +280,108 @@ The variable `i` becomes the index of that iteration, and the variable `v` becom
 > for index, value of ipairs(fruits) do
 > ```
 
+## Objects
+
+Tables can be used as a list, where we use numbers as indexes, but we can also use strings as indexes.
+
+```lua
+local rectangle = {}
+rectangle["width"] = 50
+```
+
+When using a string as the index, we call that a <ins>property</ins>. This property has `"width"` as its <ins>key</ins>, and `50` as its <ins>value</ins>.
+
+A table with properties is also called an **Object**.
+
+A shorter way to assign a property is to use a dot.
+
+```lua
+local rectangle = {}
+
+rectangle.width = 50
+print(rectangle.width) -- 50
+
+-- We can still access it with the string.
+print(rectangle["width"]) -- 50
+```
+
+We can also add properties when creating the table.
+
+```lua
+local rectangle = {
+    x = 10,
+    y = 20,
+    width = 50,
+    height = 120
+}
+```
+
 ## Usage
 
 By using tables, we can store multiple items in a single variable. If we have multiple enemies in our game, we won't need to make a separate variable for each of them. We can store these enemies inside our table (and remove them when defeated).
 
-In the demo below we add a string "hello" to our table each time we press space (make sure you click on it first). We use the variable `i` to position all the strings. For example, the fourth "hello" will be drawn on position `50 * 4`.
+In the demo below, we combine all the fundamentals we learned. We create a moving rectangle each time we press the left or right arrow key (make sure you click on it first). Based on the arrow key, it moves either left or right. 
 
-{% love 800, 100, true %}
-local hellos = {}
+> [!TIP]
+> Don't be discouraged if you have trouble understanding the code below. Learning individual concepts is one thing, but learning how to use them combined is a challenge on its own. Reread the chapters, experiment with the demos, try to make things yourself, and dare to take the next step even if you feel like you're not ready. Because that's how you learn.
 
-function love.keypressed(key)
-    if key == "space" then
-        table.insert(hellos, "hello")
+{% love 800, 200, true %}
+-- We declare the local variable rectangles, and assign a table as its value.
+local rectangeList = {}
+
+-- We create the function createRectangle.
+local function createRectangle(direction)
+
+    -- We create a new local variable named rectangle.
+    -- It won't be available outside of this function.
+    local rectangle = {
+        -- We make it an object, and give it these properties.
+        x = 375,
+        y = 20,
+        width = 50,
+        height = 120,
+        -- This will be either "left" or "right",
+        -- based on what is passed as argument.
+        direction = direction
+    }
+
+    -- We return the rectangle
+    return rectangle
+end
+
+function love.update()
+    -- We loop through the list of rectangles
+    for i, rectangle in ipairs(rectangeList) do
+        -- Move the rectangle to the left or right based on its direction.
+        if rectangle.direction == "left" then
+            rectangle.x = rectangle.x - 1
+        elseif rectangle.direction == "right" then
+            rectangle.x = rectangle.x + 1
+        end
     end
 end
 
 function love.draw()
-    for i, v in ipairs(hellos) do
-        love.graphics.print(v .. i, 50 * i, 40)
+    -- We loop through the list of rectangles
+    for i, rectangle in ipairs(rectangeList) do
+        -- Draw the rectangle using its properties.
+        love.graphics.rectangle("fill", rectangle.x, rectangle.y,
+            rectangle.width, rectangle.height)
     end
+end
+
+function love.keypressed(key)
+    -- If the key pressed is not "left" and is not "right"...
+    if key ~= "left" and key ~= "right" then
+        -- Go out of this function.
+        return
+    end
+
+    -- We are still here, so the key is either "left" or "right".
+    -- Because of the 'return', we don't need to use an 'else'.
+
+    -- Call createRectangle, and pass the key as argument.
+    -- We add its returned value to the list of rectangles.
+    table.insert(rectangeList, createRectangle(key))
 end
 {% endlove %}
