@@ -6,18 +6,20 @@ date: 2025-02-21
 > [!CAUTION]
 > This guide is made for löve 12.0!
 
-Compute shaders are a more general way to do calculations on the GPU, as opposed to the vertex and fragment shader, which are a lot more constrained.
+**Compute shaders** are a more general way to do calculations on the GPU, as opposed to the vertex and fragment shader, which are a lot more constrained.
 
-To edit data outside of the shader, we can use SSBO's (Shader storage buffer object) and textures.
+To edit data outside of the shader, we can use **SSBO's** (Shader storage buffer object) and textures.
 Textures need to be marked as computewritable with the `computewrite` tag, but we'll get to that.
 
-SSBO's are a way to store a large amount of data.
+**SSBO's** are a way to store a large amount of data.
 A compute shader can perform `read` and `write` operations on these `buffers`.
 
 One of the things we're going to encounter sometimes when writing compute shaders is issues with memory read and write operations.
 This is because we don't have complete control over when threads are accessing data.
 
-Let's go over some of the different types of buffers, these can be combined if need be.
+## Buffer types
+
+Let's go over some of the different types of `buffers`, these can be combined if need be.
 * `shaderstorage`, allows the buffer to be read and written to and from in a shader 
 (we can read in fragment, vertex and compute shaders, but only write in compute shaders). One thing to keep in mind is memory alignment of 4 bytes
 
@@ -29,11 +31,15 @@ the format can only be `uint16` and `uint32`.
 
 * `indirectarguments`, allows the buffer to be used parameters for a draw command, effectively allowing the gpu to generate it's own work without needing readbacks.
 
-> [!NOTE] When defining buffers in GLSL, löve automatically adds the std430 qualifier, which allows for better packing of data. So we don't have to add that.
+> [!NOTE] When defining `buffers` in GLSL, löve automatically adds the std430 qualifier, which allows for better packing of data. So we don't have to add that.
+
+## Thread groups
 
 Compute shaders are executed in three dimensional thread groups, each group has N amount of threads, which we can define using `local_size_n = m` in the compute shader later.
 Defining the local size to amount to 64 threads per thread group is usually optimal, threads within a thread group can communicate between eachother using `shared` variables
 They can also be synced meaning every thread has to be at the same point in execution to continue, though this should be done sparingly.
+
+### Built-in variables
 
 The local position in the thread group is stored in the `gl_LocalInvocationID` `uvec3`,     
 The position of the entire group is stored in the `gl_WorkGroupID` `uvec3`,      
@@ -42,6 +48,10 @@ And finally the global position (group pos + local pos in group) is stored in th
 ## Particles
 
 let's start with a ~~small~~ compute shader for moving particles around on the screen.
+We have two shader files,       
+`updateParticles.glsl` Is the compute shader which edits the particle data stored in our SSBO, by moving them around.        
+`drawParticles.glsl` Is the **vertex** and **fragment shader** which draw the particles to the screen.      
+Finally, our `main.lua` file will tell the gpu how to update our particles and where they spawn initially.      
 
 `updateParticles.glsl`
 ```glsl
