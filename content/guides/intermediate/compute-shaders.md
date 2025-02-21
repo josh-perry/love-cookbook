@@ -43,91 +43,95 @@ And finally the global position (group pos + local pos in group) is stored in th
 
 let's start with a ~~small~~ compute shader for moving particles around on the screen.
 
+`updateParticles.glsl`
+```c
+// A final local size amounting to 64 is optimal.
+layout(local_size_x = 64, local_size_y = 1, local_size_z = 1) in;
+
+// Let's define a struct for our particles
+struct Particle {
+    vec2 Position;
+    vec2 Velocity;
+    vec4 Color;
+};
+
+// The buffer will be called "Particles" when sending it from the CPU
+restrict buffer Particles {
+    // An array of the `Particle` struct with an unknown size.
+    Particle particles[];
+};
+
+uniform mediump float DeltaTime;
+uniform mediump uint ParticleCount;
+
+// Min-X, min-Y, max-X, max-Y
+uniform mediump vec4 WorldSize;
+
+void computemain() {
+    // get the ID of this thread, which we'll use as the index of the particle to simulate.
+    uint index = gl_GlobalInvocationID.x;
+
+    // Since this compute shader has a group size bigger than 1 (Which we should always use),
+    // The Particle count might not be evenly divisible by the group size,
+    // causing us to launch a few extra threads that won't be doing anything.
+    if (index >= ParticleCount)
+        return;
+
+    // Move the particle
+    particles[index].Position += particles[index].Velocity * DeltaTime;
+
+    // Let's make the particles bounce around the screen.
+
+    vec2 Position = particles[index].Position;
+
+    if (Position.x < WorldSize[0]) particles[index].Velocity.x = abs(particles[index].Velocity.x);
+    if (Position.x > WorldSize[2]) particles[index].Velocity.x = -abs(particles[index].Velocity.x);
+
+    if (Position.y < WorldSize[1]) particles[index].Velocity.y = abs(particles[index].Velocity.y);
+    if (Position.y > WorldSize[3]) particles[index].Velocity.y = -abs(particles[index].Velocity.y);
+}
+```
+
+`drawParticles.glsl`
+```c
+#pragma language glsl4
+// Define our particles again
+struct Particle {
+    vec2 Position;
+    vec2 Velocity;
+    vec4 Color;
+};
+
+// The restrict keyword allows the compiler to optimize the buffer access better.
+// Readonly means we won't be writing to the buffer. (Which we want anyways since that's faster)
+// But it will also cause an error if we don't use the buffer as readonly in the shader.
+restrict readonly buffer Particles {
+    Particle particles[];
+};
+
+#ifdef VERTEX
+out vec4 vColor;
+vec4 position(mat4 transform_projection, vec4 vertex_position) {
+    gl_PointSize = 2.0;
+    uint index = love_VertexID;
+    vColor = particles[index].Color;
+
+    // Ignore the input vertex position and use the particle position instead.
+    return transform_projection * vec4(particles[index].Position, 0.0, 1.0);
+}
+#endif
+#ifdef PIXEL
+in vec4 vColor;
+vec4 effect(vec4 color, Image tex, vec2 texture_coords, vec2 screen_coords) {
+    return vColor;
+}
+#endif
+```
+
 ```lua
-local particleShaderCode = [[
-    // A final local size amounting to 64 is optimal.
-    layout(local_size_x = 64, local_size_y = 1, local_size_z = 1) in;
+local drawShader = love.graphics.newShader("drawParticles.glsl")
 
-    // Let's define a struct for our particles
-    struct Particle {
-        vec2 Position;
-        vec2 Velocity;
-        vec4 Color;
-    };
-
-    // The buffer will be called "Particles" when sending it from the CPU
-    restrict buffer Particles {
-        // An array of the `Particle` struct with an unknown size.
-        Particle particles[];
-    };
-
-    uniform mediump float DeltaTime;
-    uniform mediump uint ParticleCount;
-
-    // Min-X, min-Y, max-X, max-Y
-    uniform mediump vec4 WorldSize;
-
-    void computemain() {
-        // get the ID of this thread, which we'll use as the index of the particle to simulate.
-        uint index = gl_GlobalInvocationID.x;
-
-        // Since this compute shader has a group size bigger than 1 (Which we should always use),
-        // The Particle count might not be evenly divisible by the group size,
-        // causing us to launch a few extra threads that won't be doing anything.
-        if (index >= ParticleCount)
-            return;
-
-        // Move the particle
-        particles[index].Position += particles[index].Velocity * DeltaTime;
-
-        // Let's make the particles bounce around the screen.
-
-        vec2 Position = particles[index].Position;
-
-        if (Position.x < WorldSize[0]) particles[index].Velocity.x = abs(particles[index].Velocity.x);
-        if (Position.x > WorldSize[2]) particles[index].Velocity.x = -abs(particles[index].Velocity.x);
-
-        if (Position.y < WorldSize[1]) particles[index].Velocity.y = abs(particles[index].Velocity.y);
-        if (Position.y > WorldSize[3]) particles[index].Velocity.y = -abs(particles[index].Velocity.y);
-    }
-]]
-
-local drawShader = love.graphics.newShader([[
-    #pragma language glsl4
-    // Define our particles again
-    struct Particle {
-        vec2 Position;
-        vec2 Velocity;
-        vec4 Color;
-    };
-
-    // The restrict keyword allows the compiler to optimize the buffer access better.
-    // Readonly means we won't be writing to the buffer. (Which we want anyways since that's faster)
-    // But it will also cause an error if we don't use the buffer as readonly in the shader.
-    restrict readonly buffer Particles {
-        Particle particles[];
-    };
-
-    #ifdef VERTEX
-    out vec4 vColor;
-    vec4 position(mat4 transform_projection, vec4 vertex_position) {
-        gl_PointSize = 2.0;
-        uint index = love_VertexID;
-        vColor = particles[index].Color;
-
-        // Ignore the input vertex position and use the particle position instead.
-        return transform_projection * vec4(particles[index].Position, 0.0, 1.0);
-    }
-    #endif
-    #ifdef PIXEL
-    in vec4 vColor;
-    vec4 effect(vec4 color, Image tex, vec2 texture_coords, vec2 screen_coords) {
-        return vColor;
-    }
-    #endif
-]])
-
-local particleShader = love.graphics.newComputeShader(particleShaderCode)
+local particleShader = love.graphics.newComputeShader("updateParticles.glsl")
 
 local particleFormat = {
     -- name doesn't do anything but it's nicer to read
@@ -197,9 +201,8 @@ end
 
 This compute shader will take any image with a size that is a multiple of 8, and calculate the average of those 64 pixels, then store it in another image.
 
-```lua
-local particleShaderCode = [[
-    // 8*8*1 = 64 threads
+```c
+// 8*8*1 = 64 threads
 layout(local_size_x = 8, local_size_y = 8, local_size_z = 1) in;
 
 // Input Texture
@@ -263,9 +266,10 @@ void computemain() {
 
     imageStore(OutputImage, position, Average);
 }
-]]
+```
 
-local shader = love.graphics.newComputeShader(particleShaderCode)
+```lua
+local shader = love.graphics.newComputeShader("AveragingShader.glsl")
 
 local img = love.graphics.newImage("YourImage.png")
 local blurred = love.graphics.newTexture(love.graphics.getWidth(), love.graphics.getHeight(), { computewrite = true })
