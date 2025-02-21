@@ -44,7 +44,7 @@ And finally the global position (group pos + local pos in group) is stored in th
 let's start with a ~~small~~ compute shader for moving particles around on the screen.
 
 `updateParticles.glsl`
-```c
+```glsl
 // A final local size amounting to 64 is optimal.
 layout(local_size_x = 64, local_size_y = 1, local_size_z = 1) in;
 
@@ -93,7 +93,7 @@ void computemain() {
 ```
 
 `drawParticles.glsl`
-```c
+```glsl
 #pragma language glsl4
 // Define our particles again
 struct Particle {
@@ -201,7 +201,7 @@ end
 
 This compute shader will take any image with a size that is a multiple of 8, and calculate the average of those 64 pixels, then store it in another image.
 
-```c
+```glsl
 // 8*8*1 = 64 threads
 layout(local_size_x = 8, local_size_y = 8, local_size_z = 1) in;
 
