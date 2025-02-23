@@ -1,5 +1,6 @@
 import { EleventyHtmlBasePlugin } from "@11ty/eleventy";
 import markdownIt from "markdown-it";
+import markdownItAnchor from "markdown-it-anchor";
 import markdownItGithubAlerts from "markdown-it-github-alerts";
 import fs from "fs";
 import matter from "gray-matter";
@@ -9,7 +10,13 @@ export default function (eleventyConfig) {
     eleventyConfig.addPlugin(EleventyHtmlBasePlugin);
 
     const markdownLibrary = markdownIt({ html: true })
-        .use(markdownItGithubAlerts);
+        .use(markdownItGithubAlerts)
+        .use(markdownItAnchor, {
+            permalink: true,
+            permalinkClass: "anchor",
+            permalinkSymbol: "#",
+            permalinkBefore: false
+        });
 
     eleventyConfig.setLibrary("md", markdownLibrary);
 
