@@ -1,4 +1,6 @@
 import { EleventyHtmlBasePlugin } from "@11ty/eleventy";
+import Prism from "prismjs";
+import loadLanguages from 'prismjs/components/index.js';
 import markdownIt from "markdown-it";
 import markdownItAnchor from "markdown-it-anchor";
 import markdownItGithubAlerts from "markdown-it-github-alerts";
@@ -9,7 +11,21 @@ export default function (eleventyConfig) {
     eleventyConfig.addPassthroughCopy("assets");
     eleventyConfig.addPlugin(EleventyHtmlBasePlugin);
 
-    const markdownLibrary = markdownIt({ html: true })
+    const markdownLibrary = markdownIt({
+        html: true,
+        highlight: (code, lang, attrs) => {
+            if (!lang) {
+                return code;
+            }
+
+            if (!Object.hasOwn(Prism.languages, lang)) {
+                loadLanguages([lang]);
+            }
+
+            let html = Prism.highlight(code, Prism.languages[lang], lang);
+            return `<span data-attrs="${attrs}"></span>${html}`;
+        },
+    })
         .use(markdownItGithubAlerts)
         .use(markdownItAnchor, {
             permalink: true,
