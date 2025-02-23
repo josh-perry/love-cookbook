@@ -101,7 +101,7 @@ print(arithmetics(5, 40)) -- Ouput: 10, 20
 
 Functions allow us to execute the same code in different places, without having to copy that code. Instead we can call the function. If we ever want to change how the code works, we only need to change the function.
 
-In the example below we draw multiple rectangles. If we ever want to change the shape of the rectangle, we only need to change the function.
+In the example below we draw multiple rectangles. If we ever want to change the shape of all the rectangles, we only need to change the function.
 
 {% love 800, 200, true %}
 local function draw_rectangle(x)
