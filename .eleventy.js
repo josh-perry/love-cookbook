@@ -45,6 +45,7 @@ export default function (eleventyConfig) {
                 // Fix links to other chapters
                 href = "../" + href;
                 token.attrs[hrefIndex][1] = href;
+                token.attrSet("data-preview", href);
             }
         }
 
@@ -62,6 +63,10 @@ export default function (eleventyConfig) {
         }
         return chapter;
     }
+
+    eleventyConfig.addShortcode("abstract", (abstract) => {
+        return `<span data-abstract="${abstract}"></span>`;
+    });
 
     eleventyConfig.addShortcode("see", (chapter) => {
         const title = getTitleFromFrontMatter(chapter);
