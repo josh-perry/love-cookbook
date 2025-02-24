@@ -282,6 +282,8 @@ The variable `i` becomes the index of that iteration, and the variable `v` becom
 
 ## Objects
 
+{% abstract "Objects are tables that use keys rather than indexes. We call these the object's properties." %}
+
 Tables can be used as a list, where we use numbers as indexes, but we can also use strings as indexes.
 
 ```lua
