@@ -157,7 +157,6 @@ end
 There is one more type of loop. A **repeat-until loop**.
 
 ```lua
-
 local x = 0
 
 repeat
@@ -196,55 +195,7 @@ for i = 1, #fruits do
 end
 ```
 
-## Editing tables
-
-We have already learned that we can use `table.insert(table, value)` to insert a value into our table. Similarly, we can use `table.remove(table, index)` to remove a value.
-
-```lua
-local fruits = { "apple", "pear", "tomato" }
-
-table.remove(fruits, 2) -- This removes "pear"
-
-for i = 1, #fruits do
-    print(fruits[i]) -- Output: apple, tomato
-end
-```
-
-We can edit a value, by referring to that value's index.
-
-```lua
-local fruits = { "apple", "pear", "tomato" }
-
--- Change the value on the second index to "banana".
-fruits[2] = "banana"
-
-for i = 1, #fruits do
-    print(fruits[i]) -- Output: apple, banana, tomato
-end
-```
-
-This is also yet another way to add a value to our table.
-
-```lua
-local fruits = { "apple", "pear", "tomato" }
-
--- Change the value on the fourth index to "banana".
-fruits[4] = "banana"
-
-for i = 1, #fruits do
-    print(fruits[i]) -- Output: apple, banana, tomato, banana
-end
-```
-
-> [!WARNING]
-> Be careful when you set a value this way. If you leave a gap in the sequence, then Lua will be confused about how many items are in your table.
-> ```lua
-> local fruits = { "apple", "pear", "tomato" }
-> fruits[10] = "banana"
-> print(#fruits) -- Output: 3
-> ```
-
-## ipairs
+### ipairs
 
 Because looping through a table is so common, Lua provides a shortcut for this. Using a <ins>for-in</ins> loop, and the standard function `ipairs` we can do the following:
 
@@ -279,6 +230,55 @@ The variable `i` becomes the index of that iteration, and the variable `v` becom
 > ```lua
 > for index, value of ipairs(fruits) do
 > ```
+
+## Editing tables
+
+We have already learned that we can use `table.insert(table, value)` to insert a value into our table. Similarly, we can use `table.remove(table, index)` to remove a value.
+
+```lua 3
+local fruits = { "apple", "pear", "tomato" }
+
+table.remove(fruits, 2) -- This removes "pear"
+
+for i, v in ipairs(fruits) do
+    print(v) -- Output: apple, tomato
+end
+```
+
+We can edit a value, by referring to that value's index.
+
+```lua 4
+local fruits = { "apple", "pear", "tomato" }
+
+-- Change the value on the second index to "banana".
+fruits[2] = "banana"
+
+for i, v in ipairs(fruits) do
+    print(v) -- Output: apple, banana, tomato
+end
+```
+
+This is also yet another way to add a value to our table.
+
+```lua 4
+local fruits = { "apple", "pear", "tomato" }
+
+-- Change the value on the fourth index to "banana".
+fruits[4] = "banana"
+
+for i, v in ipairs(fruits) do
+    print(v) -- Output: apple, pear, tomato, banana
+end
+```
+
+> [!WARNING]
+> Be careful when you set a value this way. If you leave a gap in the sequence, then Lua will be confused about how many items are in your table.
+> ```lua
+> local fruits = { "apple", "pear", "tomato" }
+> fruits[10] = "banana"
+> print(#fruits) -- Output: 3
+> ```
+
 
 ## Objects
 
@@ -317,6 +317,34 @@ local rectangle = {
     height = 120
 }
 ```
+
+> [!TIP]
+> You can use any type of value as a table key. Yes, that includes functions and tables! Though you should probably keep it at numbers and strings.
+
+### Pairs
+
+We use `ipairs` for looping through a list table. We can use `pairs` for looping through an object table.
+
+```lua
+local rectangle = {}
+rectangle.x = 10
+rectangle.y = 20
+rectangle.width = 50
+rectangle.height = 120
+
+for k, v in pairs(rectangle) do
+    print(k, v)
+end
+
+-- Output:
+-- width, 50
+-- y, 20
+-- height, 120
+-- x, 10,
+```
+
+> [!WARNING]
+> Though it's possible to use `pairs` for list tables as well, the order which you get the indexes is random. Because of this, you should always use `ipairs` for list tables.
 
 ## Usage
 
