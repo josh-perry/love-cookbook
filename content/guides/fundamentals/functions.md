@@ -97,6 +97,47 @@ end
 print(arithmetics(5, 40)) -- Ouput: 10, 20
 ```
 
+## Callbacks
+
+As we stated earlier, when we execute a function, we call that a <ins>function call</ins>. It's as if we're *calling* someone to help us with something.
+
+```lua
+local function my_math_teacher(a, b)
+    return a - b
+end
+
+print(my_math_teacher(10, 4))
+```
+
+Here we call our math teacher to ask him what 10 minus 4 is. I don't think we're gonna get good grades.
+
+In fact, our math teacher isn't gonna be so helpful this time. He wants us to do the math ourselves. When we call him, we need to provide a function. Using a function like this is called a **callback**. It's as if we provide a phone number for him to <ins>call back</ins>.
+
+```lua
+local function my_math_teacher(f)
+    f(8, 2)
+end
+
+local function addition (a, b)
+    print(a + b) -- Output: 10
+end
+
+my_math_teacher(addition)
+
+-- We don't necessarily need to put it in a variable first.
+-- We call this an anonymous function.
+my_math_teacher(function (a, b)
+    print(a - b) -- Output: 6
+end)
+```
+
+We call the function `my_math_teacher`, and pass a function (a <ins>callback</ins>) for the parameter `f`. Our teacher then calls this function, and passes two numbers. Our function `addition` prints the summed up numbers.
+
+In the second call we pass a function as we create it. We don't put it in a variable first. This is what we call an <ins>anonymous function</ins>.
+
+> [!NOTE]
+> `love.load`, `love.update` and `love.draw` are also callbacks. We provide LÖVE with a function to call upon these events happening.
+
 ## Usage
 
 Functions allow us to execute the same code in different places, without having to copy that code. Instead we can call the function. If we ever want to change how the code works, we only need to change the function.
