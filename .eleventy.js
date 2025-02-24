@@ -32,7 +32,24 @@ export default function (eleventyConfig) {
             permalinkClass: "anchor",
             permalinkSymbol: "#",
             permalinkBefore: false
-        });
+        })
+
+    markdownLibrary.renderer.rules.link_open = function (tokens, idx, options, env, self) {
+        const token = tokens[idx];
+        const hrefIndex = token.attrIndex("href");
+
+        if (hrefIndex !== -1) {
+            let href = token.attrs[hrefIndex][1];
+
+            if (!href.startsWith("http") && !href.startsWith("#") && !href.startsWith("/")) {
+                // Fix links to other chapters
+                href = "../" + href;
+                token.attrs[hrefIndex][1] = href;
+            }
+        }
+
+        return self.renderToken(tokens, idx, options);
+    };
 
     eleventyConfig.setLibrary("md", markdownLibrary);
 
