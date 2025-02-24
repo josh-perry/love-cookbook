@@ -12,6 +12,7 @@
   --color-faded-1: #887D97;
   --color-faded-2: #C1A9B8;
   --color-blue: #8FB7B7;
+  --color-whale: #3d7fb6;
   --color-red: #FF4278;
   --color-yellow: #FFd2A8;
   --color-orange: #FF8E61;
@@ -137,6 +138,10 @@ article img {
   border: var(--color-faded-1) .1rem solid;
 }
 
+article a {
+  color: var(--color-whale);
+}
+
 article h1 {
   font-size: 3rem;
   border-bottom: solid .1rem var(--color-text);
@@ -154,10 +159,14 @@ article h4,
 article h5,
 article h6 {
   margin: 0;
-  margin-top: 1.5rem;
+  margin-top: 1rem;
   
   color: var(--color-text);
   font-family: "Nunito", serif;
+}
+
+article :is(h1, h2, h3, h4, h5, h6) + :is(h1, h2, h3, h4, h5, h6) {
+  margin-top: 0;
 }
 
 article h1 a,
