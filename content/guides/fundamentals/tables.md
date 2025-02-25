@@ -233,6 +233,32 @@ The variable `i` becomes the index of that iteration, and the variable `v` becom
 > for index, value of ipairs(fruits) do
 > ```
 
+## unpack
+
+With the function `unpack` we can "unpack" a table.
+
+```lua
+local fruits = { "apple", "pear", "tomato" }
+print(unpack(fruits)) -- Output: apple, pear, tomato
+```
+
+We can use it to clone a table for example.
+
+```lua
+local fruits = { "apple", "pear", "tomato" }
+local fruits_clone = { unpack(fruits) }
+print(fruits_clone[2]) -- Output: pear
+```
+
+Or to assign the contents of the table to individual variables.
+
+```lua
+local fruits = { "apple", "pear", "tomato" }
+local fruit1, fruit2, fruit3 = unpack(fruits)
+print(fruit2) -- Output: pear
+```
+
+
 ## Editing tables
 
 We have already learned that we can use `table.insert(table, value)` to insert a value into our table. Similarly, we can use `table.remove(table, index)` to remove a value.
