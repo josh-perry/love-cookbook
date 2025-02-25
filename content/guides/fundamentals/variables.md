@@ -100,6 +100,21 @@ test = nil -- We assign nil to remove the value.
 print(test) -- Output: nil
 ```
 
+## Types
+
+We have shown that variables can be a number, or a string, or no value at all. We call this the variable's **type**.
+
+You can get the type of a variable by using `type`.
+
+```lua
+local a = 10
+local animal = "whale"
+
+print(type(a)) -- Output: number
+print(type(animal)) -- Output: string
+print(type(test)) -- Output: nil
+```
+
 ## Naming variables
 
 The word in which you store a value can be almost anything.
@@ -175,7 +190,7 @@ Local variables are only accessible where they are declared. We call this its *s
 > [!TIP]
 > Every time you see and `end`, then that is the end of a *code block*.
 
-Because it is good practice, we will use local variables throughout this codebook.
+Because it is good practice, we will use local variables throughout this cookbook.
 
 ## Usage
 
