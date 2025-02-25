@@ -16,12 +16,12 @@
     {
         "name": "Lua Basics",
         "guide_urls": [
-            "/guides/fundamentals/lua/",
-            "/guides/fundamentals/variables/",
-            "/guides/fundamentals/functions/",
-            "/guides/fundamentals/if-statements/",
-            "/guides/fundamentals/tables/",
-            "/guides/fundamentals/recap/"
+            "/guides/lua-basics/lua/",
+            "/guides/lua-basics/variables/",
+            "/guides/lua-basics/functions/",
+            "/guides/lua-basics/if-statements/",
+            "/guides/lua-basics/tables/",
+            "/guides/lua-basics/recap/"
         ]
     },
     {

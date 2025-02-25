@@ -41,7 +41,7 @@ end
 sum(4, "whale") -- Error: 'b' must be a number
 ```
 
-With `assert` we can combine `error` with an <ins>if-statement</ins>. We *assert* that something is [truthy](../fundamentals/if-statements#truthy-and-falsy), and if not we throw an error.
+With `assert` we can combine `error` with an <ins>if-statement</ins>. We *assert* that something is [truthy](../lua-basics/if-statements#truthy-and-falsy), and if not we throw an error.
 
 ```lua
 function sum(a, b)
@@ -129,7 +129,7 @@ end)
 print(unpack(animals)) -- Output: whale, tiger, bear
 ```
 
-We pass a [callback](../fundamentals/functions#callbacks) to `table.sort`. To sort the table, it provides the callback with two values from the table to compare them to each other. If we return `true`, then `a` will be placed on a lower index than `b` (so pushed to the front of the table). In our case, we return `true` if `a` is higher than `b`, to get it sorted from high to low.
+We pass a [callback](../lua-basics/functions#callbacks) to `table.sort`. To sort the table, it provides the callback with two values from the table to compare them to each other. If we return `true`, then `a` will be placed on a lower index than `b` (so pushed to the front of the table). In our case, we return `true` if `a` is higher than `b`, to get it sorted from high to low.
 
 That makes sense for numbers, but how does that work for strings? Well, something that we had yet to tell you is that `<` and `>` can also be used on strings. It checks if they are alphabetically higher or lower. `"bear" > "whale"` equals `false`, because `"w"` is higher alphabetically than `"b"`.
 

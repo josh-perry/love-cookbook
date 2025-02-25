@@ -4,7 +4,7 @@ authors: [Sheepolution]
 date: 2025-02-24
 ---
 
-We have been using [local variables](../fundamentals/variables#local-variables), and explained that they are only available within their **scope**. Let's expand on what that exactly means.
+We have been using [local variables](../lua-basics/variables#local-variables), and explained that they are only available within their **scope**. Let's expand on what that exactly means.
 
 ```lua
 local one = 1

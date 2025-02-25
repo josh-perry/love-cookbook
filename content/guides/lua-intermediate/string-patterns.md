@@ -90,7 +90,7 @@ By using a table, `gsub` searches for keys that match the substrings it found, a
 > [!NOTE]
 > This is another good example of where the difference between `+` and `-` is important. Had we used `+`, it would have matched with `"{animal} and {fruit}"`, as that is the longest string that opens and closes with `{}`.
 
-But what if we don't simply want to replace the string that we find? For example, what if we want to reverse each word individually? We can use `%a+` to search for each word (`%a` represents all letters). Then instead of a replacement string, we're going to use a function, a [callback](../fundamentals/functions#callbacks). `gsub` will feed the function all the matches it could find, and the value we return is what that match will be replaced with.
+But what if we don't simply want to replace the string that we find? For example, what if we want to reverse each word individually? We can use `%a+` to search for each word (`%a` represents all letters). Then instead of a replacement string, we're going to use a function, a [callback](../lua-basics/functions#callbacks). `gsub` will feed the function all the matches it could find, and the value we return is what that match will be replaced with.
 
 ```lua
 local message = "Hello world how are you?"

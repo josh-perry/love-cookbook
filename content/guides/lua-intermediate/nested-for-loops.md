@@ -4,7 +4,7 @@ authors: [Sheepolution]
 date: 2025-02-24
 ---
 
-You have already learned that you can [nest statements](../fundamentals/if-statements#nested-statements). So of course, we can also nest for-loops.
+You have already learned that you can [nest statements](../lua-basics/if-statements#nested-statements). So of course, we can also nest for-loops.
 
 ```lua
 for i = 1, 10 do
@@ -61,7 +61,7 @@ end
 -- Output: 1, 1
 ```
 
-Or we could put the for-loop inside a function, and use a [return-statement](../fundamentals/functions#return).
+Or we could put the for-loop inside a function, and use a [return-statement](../lua-basics/functions#return).
 
 ```lua
 local function counting()
@@ -98,7 +98,7 @@ end
 We create a **label** named `retry`, which we can do by surrounding a word with double colons. In the `else`, after changed the value of `a`, we tell Lua to go to that label. After doing so, it tries the if-statement again. This time the condition is `true`.
 
 > [!WARNING]
-> Be careful! Similar to [while-loops](../fundamentals/tables#while-loops), it is possible to create an infinite loop, which will cause LÖVE to hang.
+> Be careful! Similar to [while-loops](../lua-basics/tables#while-loops), it is possible to create an infinite loop, which will cause LÖVE to hang.
 
 We can use a <ins>goto</ins> statement to jump out of a nested for-loop.
 
