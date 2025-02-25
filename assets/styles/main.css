@@ -189,13 +189,22 @@ article h6:hover a {
   visibility: visible;
 }
 
-code:not(.language-lua), .code-block {
+article code, .code-block {
   border: .1rem solid var(--color-faded-2);
   border-radius: .25rem;
   background-color: var(--color-vanilla);
   padding: 0 .2rem;
 
   font-family: "Fira Code", serif;
+}
+
+.code-block code {
+  border: none;
+  border-radius: 0;
+  padding: 0;
+
+  font-family: "Fira Code", serif;
+  background-color: transparent;
 }
 
 .logo-hover-img {
