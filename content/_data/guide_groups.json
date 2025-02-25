@@ -38,8 +38,8 @@
     {
         "name": "LÖVE Basics",
         "guide_urls": [
-            "/guides/love/drawing-a-rectangle/",
             "/guides/love/drawing-image/",
+            "/guides/love/drawing-shapes/",
             "/guides/love/playing-sound/",
             "/guides/love/input/",
             "/guides/love/filesystem/",
