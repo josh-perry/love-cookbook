@@ -43,7 +43,6 @@ local higher_than_or_equal_to = 4 <= 4
 > local arithmetic_operator = 5 * 7
 > local relation_operator = 8 > 2
 > local logical_operators = true and false
-
 > local concatenation = "Hello " .. "world"l
 
 You have learned about **control structures**.
@@ -103,3 +102,71 @@ for key, value in pairs(my_object_table) do
     print(key, value)
 end
 ```
+
+## Fundamentals combined
+
+In the demo below, we combine all the fundamentals we learned. We create a moving rectangle each time we press the left or right arrow key (make sure you click on it first). Based on the arrow key, it moves either left or right. 
+
+> [!TIP]
+> Don't be discouraged if you have trouble understanding the code below. Learning individual concepts is one thing, but learning how to use them combined is a challenge on its own. Reread the chapters, experiment with the demos, try to make things yourself, and dare to take the next step even if you feel like you're not ready. Because that's how you learn.
+
+{% love 800, 200, true %}
+-- We declare the local variable rectangles, and assign a table as its value.
+local rectangeList = {}
+
+-- We create the function createRectangle.
+local function createRectangle(direction)
+
+    -- We create a new local variable named rectangle.
+    -- It won't be available outside of this function.
+    local rectangle = {
+        -- We make it an object, and give it these properties.
+        x = 375,
+        y = 20,
+        width = 50,
+        height = 120,
+        -- This will be either "left" or "right",
+        -- based on what is passed as argument.
+        direction = direction
+    }
+
+    -- We return the rectangle
+    return rectangle
+end
+
+function love.update()
+    -- We loop through the list of rectangles
+    for i, rectangle in ipairs(rectangeList) do
+        -- Move the rectangle to the left or right based on its direction.
+        if rectangle.direction == "left" then
+            rectangle.x = rectangle.x - 1
+        elseif rectangle.direction == "right" then
+            rectangle.x = rectangle.x + 1
+        end
+    end
+end
+
+function love.draw()
+    -- We loop through the list of rectangles
+    for i, rectangle in ipairs(rectangeList) do
+        -- Draw the rectangle using its properties.
+        love.graphics.rectangle("fill", rectangle.x, rectangle.y,
+            rectangle.width, rectangle.height)
+    end
+end
+
+function love.keypressed(key)
+    -- If the key pressed is not "left" and is not "right"...
+    if key ~= "left" and key ~= "right" then
+        -- Go out of this function.
+        return
+    end
+
+    -- We are still here, so the key is either "left" or "right".
+    -- Because of the 'return', we don't need to use an 'else'.
+
+    -- Call createRectangle, and pass the key as argument.
+    -- We add its returned value to the list of rectangles.
+    table.insert(rectangeList, createRectangle(key))
+end
+{% endlove %}

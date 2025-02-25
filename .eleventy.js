@@ -68,11 +68,6 @@ export default function (eleventyConfig) {
         return `<span data-abstract="${abstract}"></span>`;
     });
 
-    eleventyConfig.addShortcode("see", (chapter) => {
-        const title = getTitleFromFrontMatter(chapter);
-        return `see [${title}](/guides/${chapter})`;
-    });
-
     const usedIds = new Set();
 
     const getId = () => {

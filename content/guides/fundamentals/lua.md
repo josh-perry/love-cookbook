@@ -4,4 +4,8 @@ authors: []
 date: 2025-02-19
 ---
 
-Not yet written: contribute to this page on [GitHub](https://github.com/Diminim/love-cookbook).
+Lua is the **programming language** that LÖVE uses.
+
+> [!IMPORTANT]
+> Lua is a name, <ins>not</ins> an abbreviation. Writing it as *LUA* is therefore <ins>wrong</ins>.
+
