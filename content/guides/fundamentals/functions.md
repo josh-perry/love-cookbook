@@ -84,7 +84,7 @@ end
 sum(10, 20)
 ```
 
-A function can have multiple parameters, arguments, and return values, by separating them with a comma.
+A function can have multiple parameters, arguments, and return-values, by separating them with a comma.
 
 ```lua
 local function arithmetics(a, b)
@@ -100,6 +100,8 @@ print(arithmetics(5, 40)) -- Ouput: 10, 20
 ```
 
 ## Callbacks
+
+{% abstract "A callback is a function that is passed to another function. The latter function will, at some point, call the callback, often while passing useful information." %}
 
 As we stated earlier, when we execute a function, we call that a <ins>function call</ins>. It's as if we're *calling* someone to help us with something.
 
