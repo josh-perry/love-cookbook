@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,6 +23,7 @@
   </head>
   <body>
     <div class="sidebar">
+    
       <header>
         <a href="/">
             <div class="logo">
@@ -33,15 +35,15 @@
         </a>
       </header>
 
-      <nav>
-        <ul>
+      <nav class="table-of-contents">
+        <ul class="chapters">
           {%- for group in guide_groups -%}
             <li class="group-header">
               {%- if group.name -%}
                 {{ group.name }}
               {%- endif -%}
 
-              <ul>
+              <ul class="guides">
                 {%- for guide_url in group.guide_urls -%}
                   <li>
                     {%- set guide_template = collections.guide | filterByUrl(guide_url) | first -%}
@@ -52,9 +54,11 @@
                   </li>
                 {%- endfor -%}
               </ul>
+
             </li>
           {%- endfor -%}
         </ul>
+
       </nav>
     </div>
 
@@ -63,5 +67,6 @@
         {{ content | safe }}
       </article>
     </main>
+    
   </body>
 </html>
