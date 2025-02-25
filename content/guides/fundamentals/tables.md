@@ -110,6 +110,8 @@ print(i) -- Output: nil
 
 ### While-loops
 
+{% abstract "A while-loop is a loop that keeps looping as long as the provided condition is true." %}
+
 Besides the for-loops there is also a **while-loop**. It's like an if-statement and for-loop combined.
 
 ```lua
