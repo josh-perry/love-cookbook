@@ -4,7 +4,7 @@ authors: [Sheepolution]
 date: 2025-02-24
 ---
 
-We have been using [local variables](../fundamentals/variables#local-variables), and explained that they are only available within their **scope**. Let's expand on what that exactly means.
+We have been using [local variables](../lua-basics/variables#local-variables), and explained that they are only available within their **scope**. Let's expand on what that exactly means.
 
 ```lua
 local one = 1
@@ -49,3 +49,31 @@ some_function(30)
 print(a) -- Output: 20
 -- The local variable is unaffected by the parameter
 ```
+
+## _G
+
+All global variables are actually part of the table `_G`.
+
+```lua
+animal = "whale"
+print(_G.animal) -- Output: whale
+
+_G.fruit = "apple"
+print(fruit) -- Output: apple
+```
+
+This means that we can use `_G` to check out all the global variables.
+
+```lua
+animal = "whale"
+fruit = "apple"
+
+for k, v in pairs(_G) do
+    print(k, v)
+end
+-- Output:
+-- animal, whale
+-- fruit, apple
+```
+
+In a [later chapter](metatables#strict-mode) we will learn how we can modify `_G` to prevent the creation of global variables.

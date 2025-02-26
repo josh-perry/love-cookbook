@@ -85,7 +85,7 @@ As you can see, our numbers are being doubled. But something weird is going on t
 
 ## index
 
-The event `index` will trigger when trying to acces a property that the table doesn't have. With this, we can create special properties would normally take a function. Well, do they do take a function, but we don't need to call that function ourselves. We only need to access the non-existing property.
+The event `index` will trigger when trying to acces a property that the table doesn't have. With this, we can create special properties that would normally require us to use a function. Well, we do use a function, but we don't need to call that function ourselves. We only need to access the non-existing property.
 
 In the example below we have a triangle. We set the length of `a` and `b`, and let the metamethod calculate the length of `c`.
 
@@ -117,6 +117,31 @@ my_triangle.b = 20
 print(my_triangle.c) -- Output: 22.36
 ```
 
-Upon trying to access `c`, the metamethod return us a number calculated with the [Pythagorean theorem](https://en.wikipedia.org/wiki/Pythagorean_theorem). By changing `a` and `b`, we automatically change the value of `c`.
+Upon trying to access `c`, the metamethod returns us a number calculated with the [Pythagorean theorem](https://en.wikipedia.org/wiki/Pythagorean_theorem). By changing `a` and `b`, we automatically change the value of `c`.
 
 In the metamethod, we use `rawget(t, key)`. Similar to `rawset`, it is to get a value without triggering the event. In this case we wouldn't need it, since `my_triangle` definitely has the properties `a` and `b`, but it's always good to be safe.
+
+## Strict mode
+
+In [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript) we can enable [strict mode](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode). This prevents the creation of global variables, among other things.
+
+Using the power of metatables, we can create our own strict mode. We do this by setting a metatable to [`_G`](scope#_g), where the metamethods for `newindex` and `index` throw an error.
+
+```lua
+animal = "whale"
+
+setmetatable(_G, {
+  __newindex = function(t, k, v)
+      error("Cannot set undefined variable: " .. k, 2)
+  end,
+  __index = function(t, k)
+    error("Cannot get undefined variable: " .. k, 2)
+  end
+})
+
+print(animal) -- Output: whale
+print(onimal) -- Error: Cannot get undefined variable: onimal
+fruit = "apple" -- Error: Cannot set undefined variable: fruit
+```
+
+As you can see, this also helps us with finding mistyped variable names.

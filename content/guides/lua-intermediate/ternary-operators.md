@@ -24,7 +24,7 @@ print(thing) -- Output: whale
 
 A **ternary operator** is a feature in many other programming languages, [like JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Conditional_operator). It is a short way to get a value based on a condition, and saves us from using an if-statement.
 
-Officially, <ins>Lua does not have a ternary operator</ins>. But, by using `and` & `or` (see [If-statements#and & or](../fundamentals/if-statements#and-%26-or)) we can <ins>simulate</ins> it.
+Officially, <ins>Lua does not have a ternary operator</ins>. But, by using `and` & `or` (see [If-statements#and & or](../lua-basics/if-statements#and-%26-or)) we can <ins>simulate</ins> it.
 
 ```lua 5
 local a = 20
@@ -45,7 +45,7 @@ print("whale" or "apple" or "blue") -- Output: whale
 print( "whale" and "apple" or "blue") -- Output: apple
 ```
 
-In the first expression, we start with the [truthy](../fundamentals/if-statements#truthy-and-falsy) value `"whale"`. Because it is truthy, the `and` will continue to the next value. `"apple"` is also truthy, so again it will continue onto the next `and`. There we have the value `"blue"`. There is not another `and`, so this is the value that this expression ends up with.
+In the first expression, we start with the [truthy](../lua-basics/if-statements#truthy-and-falsy) value `"whale"`. Because it is truthy, the `and` will continue to the next value. `"apple"` is also truthy, so again it will continue onto the next `and`. There we have the value `"blue"`. There is not another `and`, so this is the value that this expression ends up with.
 
 In the second expression, we again start with `"whale"`. Because it is truthy, we are done. The `or` is for when the value on the left is falsy, which it's not. So `"whale"` is the value of this expression.
 

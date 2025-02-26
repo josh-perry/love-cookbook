@@ -16,12 +16,12 @@
     {
         "name": "Lua Basics",
         "guide_urls": [
-            "/guides/fundamentals/lua/",
-            "/guides/fundamentals/variables/",
-            "/guides/fundamentals/functions/",
-            "/guides/fundamentals/if-statements/",
-            "/guides/fundamentals/tables/",
-            "/guides/fundamentals/recap/"
+            "/guides/lua-basics/lua/",
+            "/guides/lua-basics/variables/",
+            "/guides/lua-basics/functions/",
+            "/guides/lua-basics/if-statements/",
+            "/guides/lua-basics/tables/",
+            "/guides/lua-basics/recap/"
         ]
     },
     {
@@ -31,6 +31,8 @@
             "/guides/lua-intermediate/scope/",
             "/guides/lua-intermediate/modulo/",
             "/guides/lua-intermediate/nested-for-loops/",
+            "/guides/lua-intermediate/standard-library/",
+            "/guides/lua-intermediate/string-patterns/",
             "/guides/lua-intermediate/ternary-operators/",
             "/guides/lua-intermediate/metatables/"
         ]
