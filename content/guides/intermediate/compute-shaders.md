@@ -4,7 +4,7 @@ authors: [Jasper]
 date: 2025-02-21
 ---
 > [!CAUTION]
-> This guide is made for löve 12.0!
+> This guide is made for LÖVE 12.0!
 
 **Compute shaders** are a more general way to do calculations on the GPU, as opposed to the vertex and fragment shader, which are a lot more constrained.
 
@@ -31,7 +31,7 @@ the format can only be `uint16` and `uint32`.
 
 * `indirectarguments`, allows the buffer to be used parameters for a draw command, effectively allowing the gpu to generate it's own work without needing readbacks.
 
-> [!NOTE] When defining `buffers` in GLSL, löve automatically adds the std430 qualifier, which allows for better packing of data. So we don't have to add that.
+> [!NOTE] When defining `buffers` in GLSL, LÖVE automatically adds the std430 qualifier, which allows for better packing of data. So we don't have to add that.
 
 ## Thread groups
 

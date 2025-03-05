@@ -5,11 +5,11 @@ date: 2025-02-20
 ---
 
 > [!CAUTION]
-> This guide is made for löve 12.0!
+> This guide is made for LÖVE 12.0!
 
 With **shaders** we can create fun graphical effects for our games.
 
-There are multiple types of shaders available to be used in löve
+There are multiple types of shaders available to be used in LÖVE
 * The **Fragment**, AKA **Pixel** shader
 * The **Vertex** shader
 * The **Compute** shader
@@ -21,7 +21,7 @@ Compute shaders won't be covered here.
 
 ## Syntax
 
-löve shaders are written in GLSL, which is quite a bit different to lua.
+LÖVE shaders are written in GLSL, which is quite a bit different to lua.
 Some notable difference are that GLSL is statically typed, semicolon line breaks, curly brackets to define code blocks instead of `then / do`, `end`.       
 
 There are some limitations to take in to consideration when writing shader code, the main one is that, due to the way GPUs work the entire register usage needs to be known beforehand, meaning dynamic memory allocations like these:
@@ -65,20 +65,25 @@ Type suffixes
 This shader is executed for every pixel the effect covers.
 Let's make a simple fragment shader from a string to show it's functionality.
 
+During this guide, we will be creating new shader files, usually with the `.fs`, `.vs` or `.glsl` extension.
+However, if needed, shaders can be created from a string (`love.graphics.newShader(yourCodeString)`) as well. 
+
 ---
 
 ### Simple color
 
-```lua
-local shaderCode = [[
+`solidColor.fs`
+```glsl
 vec4 effect(vec4 color, Image tex, vec2 texture_coords, vec2 screen_coords)
 {
     // Colors are returned as (Red, Green, Blue, Alpha)
     return vec4(1.0, 0.0, 0.0, 1.0); // Color the square red
 }
-]]
+```
 
-local shader = love.graphics.newShader(shaderCode)
+`main.lua`
+```lua
+local shader = love.graphics.newShader("solidColor.fs")
 
 function love.draw()
     love.graphics.setShader(shader)
@@ -91,13 +96,11 @@ end
 ### Drawing images
 
 Let's step things up by drawing an image this time.
-We'll have to change our shader a bit to allow it to draw images
+We'll have to change our shader a bit to allow it to draw images.
 We do this by telling the GPU to load the color values of our image when coloring a pixel.
 
-```lua
-local image = love.graphics.newImage("YourImage.png")
-
-local shaderCode = [[
+`drawImage.fs`
+```glsl
 vec4 effect(vec4 color, Image tex, vec2 texture_coords, vec2 screen_coords)
 {
     // Use Texel to sample the color of a texture at a coordinate
@@ -106,9 +109,13 @@ vec4 effect(vec4 color, Image tex, vec2 texture_coords, vec2 screen_coords)
     // Make the image red by multiplying by our Red vec4
     return imageColor * vec4(1.0, 0.0, 0.0, 1.0);
 }
-]]
+```
 
-local shader = love.graphics.newShader(shaderCode)
+`main.lua`
+```lua
+local image = love.graphics.newImage("YourImage.png")
+
+local shader = love.graphics.newShader("drawImage.fs")
 
 function love.draw()
     love.graphics.setShader(shader)
@@ -250,7 +257,7 @@ The output of a vertex shader is in NDC-space (Normalised Device Coordinates),
 which is just a fancy name for [-1 to 1], though it is important to keep in mind.       
 As a post processing step to the vertex shader, the gpu divides the output vertex coordinates by the w component and brings the coordinates to [0 to 1], which is the final position of the vertex on-screen.
 
-Let's start with the standard shader löve uses and break it down.
+Let's start with the standard shader LÖVE uses and break it down.
 
 ```glsl
 varying vec4 vpos;
@@ -281,7 +288,7 @@ end
 
 `mat4 transform_projection` is the variable which is doing all of the hard work,        
 it's the matrix which stores the current coordinate system transform, so translation, rotation and scale and the projection matrix.         
-By default löve uses an orthographic projection matrix which goes [-10, 10] on the z-axis, meaning if objects are outside of that range, they won't be visible anymore.        
+By default LÖVE uses an orthographic projection matrix which goes [-10, 10] on the z-axis, meaning if objects are outside of that range, they won't be visible anymore.        
 This is because the z values of the pixels will lie outside of the [-1 to 1] range and the gpu will "clip" the fragments.
 
 `vec4 vertex_position` is the input vertex's position, by default `w = 1`, any time a position is multiplied with a projection matrix, it should be `1` otherwise it will cause issues.
@@ -290,7 +297,7 @@ Let's do some shader magic and create a vertex shader which automatically covers
 
 ## Fullscreen triangle
 
-This shader uses an entry point which is introduced in 12.0, it allows us to completely skip löves default inputs and outputs
+This shader uses an entry point which is introduced in 12.0, it allows us to completely skip LÖVEs default inputs and outputs
 
 `fullscreenTriangle.vs`
 ```glsl
