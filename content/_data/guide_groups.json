@@ -67,7 +67,9 @@
             "/guides/intermediate/oop/",
             "/guides/intermediate/collision-resolving/",
             "/guides/intermediate/stencil-states/",
-            "/guides/intermediate/coroutines/"
+            "/guides/intermediate/coroutines/",
+            "/guides/intermediate/shaders/",
+            "/guides/intermediate/compute-shaders/"
         ]
     },
     {
