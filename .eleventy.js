@@ -68,11 +68,6 @@ export default function (eleventyConfig) {
         return `<span data-abstract="${abstract}"></span>`;
     });
 
-    eleventyConfig.addShortcode("see", (chapter) => {
-        const title = getTitleFromFrontMatter(chapter);
-        return `see [${title}](/guides/${chapter})`;
-    });
-
     const usedIds = new Set();
 
     const getId = () => {
@@ -96,7 +91,7 @@ export default function (eleventyConfig) {
 
         // Note: No indenting to prevent rendering as code block.
         return `${code ? `\`\`\`lua${content}\`\`\`` : ''}
-<iframe id="love-iframe-${id}" src="/assets/love/love-js" width="${width}" height="${height}"></iframe>
+<iframe class="love-embed" id="love-iframe-${id}" src="/assets/love/love-js" width="${width}" height="${height}"></iframe>
 <script>
 const iframe_${id} = document.getElementById('love-iframe-${id}');
 iframe_${id}.addEventListener('load', function() {

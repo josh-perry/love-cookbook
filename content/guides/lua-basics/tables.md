@@ -110,6 +110,8 @@ print(i) -- Output: nil
 
 ### While-loops
 
+{% abstract "A while-loop is a loop that keeps looping as long as the provided condition is true." %}
+
 Besides the for-loops there is also a **while-loop**. It's like an if-statement and for-loop combined.
 
 ```lua
@@ -231,6 +233,32 @@ The variable `i` becomes the index of that iteration, and the variable `v` becom
 > for index, value of ipairs(fruits) do
 > ```
 
+## unpack
+
+With the function `unpack` we can "unpack" a table.
+
+```lua
+local fruits = { "apple", "pear", "tomato" }
+print(unpack(fruits)) -- Output: apple, pear, tomato
+```
+
+We can use it to clone a table for example.
+
+```lua
+local fruits = { "apple", "pear", "tomato" }
+local fruits_clone = { unpack(fruits) }
+print(fruits_clone[2]) -- Output: pear
+```
+
+Or to assign the contents of the table to individual variables.
+
+```lua
+local fruits = { "apple", "pear", "tomato" }
+local fruit1, fruit2, fruit3 = unpack(fruits)
+print(fruit2) -- Output: pear
+```
+
+
 ## Editing tables
 
 We have already learned that we can use `table.insert(table, value)` to insert a value into our table. Similarly, we can use `table.remove(table, index)` to remove a value.
@@ -349,69 +377,3 @@ end
 ## Usage
 
 By using tables, we can store multiple items in a single variable. If we have multiple enemies in our game, we won't need to make a separate variable for each of them. We can store these enemies inside our table (and remove them when defeated).
-
-In the demo below, we combine all the fundamentals we learned. We create a moving rectangle each time we press the left or right arrow key (make sure you click on it first). Based on the arrow key, it moves either left or right. 
-
-> [!TIP]
-> Don't be discouraged if you have trouble understanding the code below. Learning individual concepts is one thing, but learning how to use them combined is a challenge on its own. Reread the chapters, experiment with the demos, try to make things yourself, and dare to take the next step even if you feel like you're not ready. Because that's how you learn.
-
-{% love 800, 200, true %}
--- We declare the local variable rectangles, and assign a table as its value.
-local rectangeList = {}
-
--- We create the function createRectangle.
-local function createRectangle(direction)
-
-    -- We create a new local variable named rectangle.
-    -- It won't be available outside of this function.
-    local rectangle = {
-        -- We make it an object, and give it these properties.
-        x = 375,
-        y = 20,
-        width = 50,
-        height = 120,
-        -- This will be either "left" or "right",
-        -- based on what is passed as argument.
-        direction = direction
-    }
-
-    -- We return the rectangle
-    return rectangle
-end
-
-function love.update()
-    -- We loop through the list of rectangles
-    for i, rectangle in ipairs(rectangeList) do
-        -- Move the rectangle to the left or right based on its direction.
-        if rectangle.direction == "left" then
-            rectangle.x = rectangle.x - 1
-        elseif rectangle.direction == "right" then
-            rectangle.x = rectangle.x + 1
-        end
-    end
-end
-
-function love.draw()
-    -- We loop through the list of rectangles
-    for i, rectangle in ipairs(rectangeList) do
-        -- Draw the rectangle using its properties.
-        love.graphics.rectangle("fill", rectangle.x, rectangle.y,
-            rectangle.width, rectangle.height)
-    end
-end
-
-function love.keypressed(key)
-    -- If the key pressed is not "left" and is not "right"...
-    if key ~= "left" and key ~= "right" then
-        -- Go out of this function.
-        return
-    end
-
-    -- We are still here, so the key is either "left" or "right".
-    -- Because of the 'return', we don't need to use an 'else'.
-
-    -- Call createRectangle, and pass the key as argument.
-    -- We add its returned value to the list of rectangles.
-    table.insert(rectangeList, createRectangle(key))
-end
-{% endlove %}
