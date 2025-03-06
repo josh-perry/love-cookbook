@@ -1,5 +1,5 @@
 ---
-title: "Tables and For-loops"
+title: "Tables and for-loops"
 authors: [Sheepolution]
 date: 2025-02-20
 ---
@@ -126,7 +126,7 @@ end
 The loop repeats as long as the condition is true.
 
 > [!WARNING]
-> Be careful! If the condition never becomes false, the while-loop will repeat indefintely, causing LÖVE to hang.
+> Be careful! If the condition never becomes false, the while-loop will repeat indefinitely, causing LÖVE to hang.
 
 It is possible to exit a loop early by using a `break`. It's somewhat similar to how you exit a function with `return`.
 

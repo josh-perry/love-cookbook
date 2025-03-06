@@ -500,7 +500,7 @@ end
 ```
 
 > [!NOTE]
-> Don't worry if a lot of this is unfamilar!
+> Don't worry if a lot of this is unfamiliar!
 >
 > Some of the concepts like the transformation stack (`love.graphics.push/pop/translate/scale`) will be covered in later chapters.
 

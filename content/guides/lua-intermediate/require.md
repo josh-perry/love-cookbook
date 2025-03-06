@@ -30,7 +30,7 @@ We call `require("arithmetics")`, which executes the file `arithmetics.lua`. Not
 Because the file has been executed, the <ins>global</ins> functions `add` and `abstract` have been created, which we can then use in our `main.lua`.
 
 > [!TIP]
-> When passing a single argument, and that single argument is a string or a table (not a variable but a [literal](https://en.wikipedia.org/wiki/Literal_(computer_programming))), then it is optional to add parantheses to the function call.
+> When passing a single argument, and that single argument is a string or a table (not a variable but a [literal](https://en.wikipedia.org/wiki/Literal_(computer_programming))), then it is optional to add parentheses to the function call.
 >
 > This means we can write require like this:
 > ```lua

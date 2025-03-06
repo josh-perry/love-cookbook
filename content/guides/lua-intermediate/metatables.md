@@ -85,7 +85,7 @@ As you can see, our numbers are being doubled. But something weird is going on t
 
 ## index
 
-The event `index` will trigger when trying to acces a property that the table doesn't have. With this, we can create special properties that would normally require us to use a function. Well, we do use a function, but we don't need to call that function ourselves. We only need to access the non-existing property.
+The event `index` will trigger when trying to access a property that the table doesn't have. With this, we can create special properties that would normally require us to use a function. Well, we do use a function, but we don't need to call that function ourselves. We only need to access the non-existing property.
 
 In the example below we have a triangle. We set the length of `a` and `b`, and let the metamethod calculate the length of `c`.
 
