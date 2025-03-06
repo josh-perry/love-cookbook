@@ -42,7 +42,7 @@
         "guide_urls": [
             "/guides/love/drawing-image/",
             "/guides/love/drawing-shapes/",
-            "/guides/love/playing-sound/",
+            "/guides/love/playing-audio/",
             "/guides/love/input/",
             "/guides/love/filesystem/",
             "/guides/love/deltatime/",
