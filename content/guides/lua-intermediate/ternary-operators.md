@@ -54,7 +54,7 @@ In the third example we again start with the value `"whale"`. Truthy, so we cont
 > [!TIP]
 > Don't worry if you find this confusing. Play around with these expressions. Move around the `and`s and `or`s, and see what it prints to get a good understanding of they work.
 
-If you can keep up, let's use some parantheses to combine these expressions. Can you figure out the output of the code below?
+If you can keep up, let's use some parentheses to combine these expressions. Can you figure out the output of the code below?
 
 ```lua
 local a = 20

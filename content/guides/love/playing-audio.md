@@ -1,5 +1,5 @@
 ---
-title: "Playing Audio"
+title: "Playing audio"
 authors: [Dim]
 date: 2025-03-04
 ---

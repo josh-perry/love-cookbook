@@ -4,12 +4,12 @@ date: 2025-02-20
 authors: [Nykenik]
 ---
 
-When using NeoVim for LÖVE we need to use S1M0N38's [`love2d.nvim`](https://github.com/S1M0N38/love2d.nvim) plugin.
+When using Neovim for LÖVE we need to use S1M0N38's [`love2d.nvim`](https://github.com/S1M0N38/love2d.nvim) plugin.
 
 ## Disclaimer
 This guide already supposes you have a proper [lsp configuration](https://github.com/neovim/nvim-lspconfig), `lua_lsp` installed and a plugin manager.
 
-If you don't have any of these, the easiest way is to install an already made NeoVim configuration, or a "NeoVim distribution".
+If you don't have any of these, the easiest way is to install an already made Neovim configuration, or a "Neovim distribution".
 
 ## Setup
 
@@ -68,11 +68,11 @@ return {
 ```
 
 ## Usage
-After completing the plugin's setup, we now can use it to develop games with LÖVE and NeoVim. 
+After completing the plugin's setup, we now can use it to develop games with LÖVE and Neovim. 
 
 To run a new LÖVE instance, run the command `:LoveRun` to start. You have to do this in the same directory with the `main.lua` file. To stop LÖVE, run the `:LoveStop` command.
 
-The plugin will load when running `:LoveRun` by default, so it will not recognize the `love` variable until you run a LÖVE instance. To make it load when NeoVim is started, comment (or completely remove) the `cmd` line:
+The plugin will load when running `:LoveRun` by default, so it will not recognize the `love` variable until you run a LÖVE instance. To make it load when Neovim is started, comment (or completely remove) the `cmd` line:
 ```lua
 {
   "S1M0N38/love2d.nvim",
@@ -89,6 +89,6 @@ The plugin will load when running `:LoveRun` by default, so it will not recogniz
 ## GLSL highlighting
 As a bonus, we can also get shader syntax highlighting.
 
-To do this, just install the parser for GLSL with `:TSInstall`. After doing so, NeoVim will recognize the strings passed to `love.graphics.newShader()` as GLSL code.
+To do this, just install the parser for GLSL with `:TSInstall`. After doing so, Neovim will recognize the strings passed to `love.graphics.newShader()` as GLSL code.
 
 
