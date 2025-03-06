@@ -21,7 +21,7 @@ This is because we don't have complete control over when threads are accessing d
 
 Let's go over some of the different types of `buffers`, these can be combined if need be.
 * `shaderstorage`, allows the buffer to be read and written to and from in a shader 
-(we can read in fragment, vertex and compute shaders, but only write in compute shaders). One thing to keep in mind is memory alignment of 4 bytes
+(we can read in fragment, vertex and compute shaders, but only write in compute shaders). One thing to keep in mind is memory alignment of 4 bytes.
 
 * `vertex`, allows the buffer to be used as inputs to a vertex shader, this is what is used when creating a new mesh. Memory alignment isn't as strict allowing for more compact data storage,
 If we combine this with `shaderstorage`, the memory alignment will be forced to 4 bytes again, which is something that needs to be accounted for

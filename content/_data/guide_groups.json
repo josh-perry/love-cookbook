@@ -69,7 +69,11 @@
             "/guides/intermediate/stencil-states/",
             "/guides/intermediate/coroutines/",
             "/guides/intermediate/shaders/",
-            "/guides/intermediate/compute-shaders/"
+            "/guides/intermediate/compute-shaders/",
+            "/guides/intermediate/box-blur/",
+            "/guides/intermediate/outlines/",
+            "/guides/intermediate/palette/",
+            "/guides/intermediate/pixelation/"
         ]
     },
     {
