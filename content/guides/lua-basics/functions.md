@@ -1,6 +1,6 @@
 ---
 title: "Functions"
-authors: ["Sheepolution", "josh"]
+authors: [Sheepolution]
 date: 2025-02-19
 description: "description"
 ---
