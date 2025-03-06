@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>LÖVE cookbook | Tables and For-loops</title>
+    <title>LÖVE cookbook | Tables and for-loops</title>
 
     <script src="/love-cookbook/assets/js/codeblock.js"></script>
     <script src="/love-cookbook/assets/js/hover_preview.js"></script>
@@ -22,6 +23,7 @@
   </head>
   <body>
     <div class="sidebar">
+    
       <header>
         <a href="/love-cookbook/">
             <div class="logo">
@@ -33,36 +35,43 @@
         </a>
       </header>
 
-      <nav>
-        <ul><li class="group-header"><ul><li><a class="" href="/love-cookbook/guides/getting-started/">Getting started</a>
+      <nav class="table-of-contents">
+        <ul class="chapters"><li class="group-header"><ul class="guides"><li><a class="" href="/love-cookbook/guides/getting-started/">Getting started</a>
                   </li></ul>
-            </li><li class="group-header">Installation<ul><li><a class="" href="/love-cookbook/guides/installation/love/">LÖVE</a>
+
+            </li><li class="group-header">Installation<ul class="guides"><li><a class="" href="/love-cookbook/guides/installation/love/">LÖVE</a>
                   </li><li><a class="" href="/love-cookbook/guides/installation/vscode/">VSCode</a>
                   </li><li><a class="" href="/love-cookbook/guides/installation/neovim/">Neovim</a>
                   </li></ul>
-            </li><li class="group-header">Lua Basics<ul><li><a class="" href="/love-cookbook/guides/fundamentals/lua/">Lua</a>
-                  </li><li><a class="" href="/love-cookbook/guides/fundamentals/variables/">Variables</a>
-                  </li><li><a class="" href="/love-cookbook/guides/fundamentals/functions/">Functions</a>
-                  </li><li><a class="" href="/love-cookbook/guides/fundamentals/if-statements/">If-statements</a>
-                  </li><li><a class="active" href="/love-cookbook/guides/fundamentals/tables/">Tables and For-loops</a>
-                  </li><li><a class="" href="/love-cookbook/guides/fundamentals/recap/">Recap</a>
+
+            </li><li class="group-header">Lua Basics<ul class="guides"><li><a class="" href="/love-cookbook/guides/lua-basics/lua/">Lua</a>
+                  </li><li><a class="" href="/love-cookbook/guides/lua-basics/variables/">Variables</a>
+                  </li><li><a class="" href="/love-cookbook/guides/lua-basics/functions/">Functions</a>
+                  </li><li><a class="" href="/love-cookbook/guides/lua-basics/if-statements/">If-statements</a>
+                  </li><li><a class="active" href="/love-cookbook/guides/lua-basics/tables/">Tables and for-loops</a>
+                  </li><li><a class="" href="/love-cookbook/guides/lua-basics/recap/">Recap</a>
                   </li></ul>
-            </li><li class="group-header">Lua Intermediate<ul><li><a class="" href="/love-cookbook/guides/lua-intermediate/require/">Require</a>
+
+            </li><li class="group-header">Lua Intermediate<ul class="guides"><li><a class="" href="/love-cookbook/guides/lua-intermediate/require/">Require</a>
                   </li><li><a class="" href="/love-cookbook/guides/lua-intermediate/scope/">Scope</a>
                   </li><li><a class="" href="/love-cookbook/guides/lua-intermediate/modulo/">Modulo</a>
                   </li><li><a class="" href="/love-cookbook/guides/lua-intermediate/nested-for-loops/">Nested for-loops</a>
+                  </li><li><a class="" href="/love-cookbook/guides/lua-intermediate/standard-library/">Standard library</a>
+                  </li><li><a class="" href="/love-cookbook/guides/lua-intermediate/string-patterns/">String patterns</a>
                   </li><li><a class="" href="/love-cookbook/guides/lua-intermediate/ternary-operators/">Ternary operators</a>
                   </li><li><a class="" href="/love-cookbook/guides/lua-intermediate/metatables/">Metatables</a>
                   </li></ul>
-            </li><li class="group-header">LÖVE Basics<ul><li><a class="" href="/love-cookbook/guides/love/drawing-image/">Drawing an image</a>
+
+            </li><li class="group-header">LÖVE Basics<ul class="guides"><li><a class="" href="/love-cookbook/guides/love/drawing-image/">Drawing an image</a>
                   </li><li><a class="" href="/love-cookbook/guides/love/drawing-shapes/">Drawing shapes</a>
-                  </li><li><a class="" href="/love-cookbook/guides/love/playing-sound/">Playing sound</a>
+                  </li><li><a class="" href="/love-cookbook/guides/love/playing-audio/">Playing audio</a>
                   </li><li><a class="" href="/love-cookbook/guides/love/input/">Input</a>
                   </li><li><a class="" href="/love-cookbook/guides/love/filesystem/">Filesystem</a>
                   </li><li><a class="" href="/love-cookbook/guides/love/deltatime/">Deltatime</a>
                   </li><li><a class="" href="/love-cookbook/guides/love/reading-errors/">Reading errors</a>
                   </li></ul>
-            </li><li class="group-header">Basics<ul><li><a class="" href="/love-cookbook/guides/basic/aabb/">AABB</a>
+
+            </li><li class="group-header">Basics<ul class="guides"><li><a class="" href="/love-cookbook/guides/basic/aabb/">AABB</a>
                   </li><li><a class="" href="/love-cookbook/guides/basic/angle-and-distance/">Angle &amp; distance</a>
                   </li><li><a class="" href="/love-cookbook/guides/basic/tiles/">Tiles</a>
                   </li><li><a class="" href="/love-cookbook/guides/basic/animation/">Animation</a>
@@ -70,22 +79,32 @@
                   </li><li><a class="" href="/love-cookbook/guides/basic/canvases/">Canvases</a>
                   </li><li><a class="" href="/love-cookbook/guides/basic/stencil-modes/">Stencil modes</a>
                   </li></ul>
-            </li><li class="group-header">Intermediate<ul><li><a class="" href="/love-cookbook/guides/intermediate/oop/">OOP</a>
+
+            </li><li class="group-header">Intermediate<ul class="guides"><li><a class="" href="/love-cookbook/guides/intermediate/oop/">OOP</a>
                   </li><li><a class="" href="/love-cookbook/guides/intermediate/collision-resolving/">Collision resolution</a>
                   </li><li><a class="" href="/love-cookbook/guides/intermediate/stencil-states/">Stencil states</a>
                   </li><li><a class="" href="/love-cookbook/guides/intermediate/coroutines/">Coroutines</a>
+                  </li><li><a class="" href="/love-cookbook/guides/intermediate/shaders/">Shaders</a>
+                  </li><li><a class="" href="/love-cookbook/guides/intermediate/compute-shaders/">Compute Shaders</a>
+                  </li><li><a class="" href="/love-cookbook/guides/intermediate/box-blur/">Box Blur</a>
+                  </li><li><a class="" href="/love-cookbook/guides/intermediate/outlines/">Outlines</a>
+                  </li><li><a class="" href="/love-cookbook/guides/intermediate/palette/">Palette</a>
+                  </li><li><a class="" href="/love-cookbook/guides/intermediate/pixelation/">Pixelation</a>
                   </li></ul>
-            </li><li class="group-header">Advanced<ul><li><a class="" href="/love-cookbook/guides/advanced/physics/">Physics</a>
+
+            </li><li class="group-header">Advanced<ul class="guides"><li><a class="" href="/love-cookbook/guides/advanced/physics/">Physics</a>
                   </li><li><a class="" href="/love-cookbook/guides/advanced/threads/">Threads</a>
                   </li></ul>
+
             </li></ul>
+
       </nav>
     </div>
 
     <main>
       <article class="guide">
         
-<h1>Tables and For-loops</h1>
+<h1 class="title">Tables and for-loops</h1>
 
 <p><strong>Tables</strong> are a type of value in which you can store multiple values. We create a table by using curly braces.</p>
 <pre><code class="language-lua"><span data-attrs=""></span><span class="token keyword">local</span> fruits <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
@@ -165,7 +184,7 @@ table<span class="token punctuation">.</span><span class="token function">insert
 <span class="token keyword">end</span>
 </code></pre>
 <p>The loop repeats as long as the condition is true.</p>
-<div class="markdown-alert markdown-alert-warning"><p class="markdown-alert-title"><svg class="octicon octicon-alert mr-2" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="M6.457 1.047c.659-1.234 2.427-1.234 3.086 0l6.082 11.378A1.75 1.75 0 0 1 14.082 15H1.918a1.75 1.75 0 0 1-1.543-2.575Zm1.763.707a.25.25 0 0 0-.44 0L1.698 13.132a.25.25 0 0 0 .22.368h12.164a.25.25 0 0 0 .22-.368Zm.53 3.996v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 11a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"></path></svg>Warning</p><p>Be careful! If the condition never becomes false, the while-loop will repeat indefintely, causing LÖVE to hang.</p>
+<div class="markdown-alert markdown-alert-warning"><p class="markdown-alert-title"><svg class="octicon octicon-alert mr-2" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="M6.457 1.047c.659-1.234 2.427-1.234 3.086 0l6.082 11.378A1.75 1.75 0 0 1 14.082 15H1.918a1.75 1.75 0 0 1-1.543-2.575Zm1.763.707a.25.25 0 0 0-.44 0L1.698 13.132a.25.25 0 0 0 .22.368h12.164a.25.25 0 0 0 .22-.368Zm.53 3.996v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 11a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"></path></svg>Warning</p><p>Be careful! If the condition never becomes false, the while-loop will repeat indefinitely, causing LÖVE to hang.</p>
 </div>
 <p>It is possible to exit a loop early by using a <code>break</code>. It's somewhat similar to how you exit a function with <code>return</code>.</p>
 <pre><code class="language-lua"><span data-attrs=""></span><span class="token keyword">local</span> a <span class="token operator">=</span> <span class="token number">0</span>
@@ -243,6 +262,21 @@ table<span class="token punctuation">.</span><span class="token function">insert
 <pre><code class="language-lua"><span data-attrs=""></span><span class="token keyword">for</span> index<span class="token punctuation">,</span> value of <span class="token function">ipairs</span><span class="token punctuation">(</span>fruits<span class="token punctuation">)</span> <span class="token keyword">do</span>
 </code></pre>
 </div>
+<h2 id="unpack" tabindex="-1">unpack <a class="anchor" href="#unpack">#</a></h2>
+<p>With the function <code>unpack</code> we can &quot;unpack&quot; a table.</p>
+<pre><code class="language-lua"><span data-attrs=""></span><span class="token keyword">local</span> fruits <span class="token operator">=</span> <span class="token punctuation">{</span> <span class="token string">"apple"</span><span class="token punctuation">,</span> <span class="token string">"pear"</span><span class="token punctuation">,</span> <span class="token string">"tomato"</span> <span class="token punctuation">}</span>
+<span class="token function">print</span><span class="token punctuation">(</span><span class="token function">unpack</span><span class="token punctuation">(</span>fruits<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">-- Output: apple, pear, tomato</span>
+</code></pre>
+<p>We can use it to clone a table for example.</p>
+<pre><code class="language-lua"><span data-attrs=""></span><span class="token keyword">local</span> fruits <span class="token operator">=</span> <span class="token punctuation">{</span> <span class="token string">"apple"</span><span class="token punctuation">,</span> <span class="token string">"pear"</span><span class="token punctuation">,</span> <span class="token string">"tomato"</span> <span class="token punctuation">}</span>
+<span class="token keyword">local</span> fruits_clone <span class="token operator">=</span> <span class="token punctuation">{</span> <span class="token function">unpack</span><span class="token punctuation">(</span>fruits<span class="token punctuation">)</span> <span class="token punctuation">}</span>
+<span class="token function">print</span><span class="token punctuation">(</span>fruits_clone<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token comment">-- Output: pear</span>
+</code></pre>
+<p>Or to assign the contents of the table to individual variables.</p>
+<pre><code class="language-lua"><span data-attrs=""></span><span class="token keyword">local</span> fruits <span class="token operator">=</span> <span class="token punctuation">{</span> <span class="token string">"apple"</span><span class="token punctuation">,</span> <span class="token string">"pear"</span><span class="token punctuation">,</span> <span class="token string">"tomato"</span> <span class="token punctuation">}</span>
+<span class="token keyword">local</span> fruit1<span class="token punctuation">,</span> fruit2<span class="token punctuation">,</span> fruit3 <span class="token operator">=</span> <span class="token function">unpack</span><span class="token punctuation">(</span>fruits<span class="token punctuation">)</span>
+<span class="token function">print</span><span class="token punctuation">(</span>fruit2<span class="token punctuation">)</span> <span class="token comment">-- Output: pear</span>
+</code></pre>
 <h2 id="editing-tables" tabindex="-1">Editing tables <a class="anchor" href="#editing-tables">#</a></h2>
 <p>We have already learned that we can use <code>table.insert(table, value)</code> to insert a value into our table. Similarly, we can use <code>table.remove(table, index)</code> to remove a value.</p>
 <pre><code class="language-lua"><span data-attrs="3"></span><span class="token keyword">local</span> fruits <span class="token operator">=</span> <span class="token punctuation">{</span> <span class="token string">"apple"</span><span class="token punctuation">,</span> <span class="token string">"pear"</span><span class="token punctuation">,</span> <span class="token string">"tomato"</span> <span class="token punctuation">}</span>
@@ -341,5 +375,6 @@ rectangle<span class="token punctuation">.</span>height <span class="token opera
 </footer>
       </article>
     </main>
+    
   </body>
 </html>
