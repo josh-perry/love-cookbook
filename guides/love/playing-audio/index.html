@@ -22,7 +22,7 @@
 <meta property="og:description" content="Playing audio is done with:">
 <meta property="og:image" content="https://diminim.github.io/love-cookbook/assets/logo.png">
 <meta property="og:image:alt" content="LÖVE Cookbook">
-<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:card" content="summary">
 <meta name="twitter:url" content="https://diminim.github.io/love-cookbook/guides/love/playing-audio/">
 <meta name="twitter:title" content="Playing audio">
 <meta name="twitter:description" content="Playing audio is done with:">
@@ -254,11 +254,11 @@ source<span class="token punctuation">:</span><span class="token function">stop<
 	<span class="token punctuation">)</span>
 <span class="token keyword">end</span>
 </code></pre>
-<iframe class="love-embed" id="love-iframe-972" src="/love-cookbook/assets/love/love-js" width="300" height="300"></iframe>
+<iframe class="love-embed" id="love-iframe-201" src="/love-cookbook/assets/love/love-js" width="300" height="300"></iframe>
 <script>
-const iframe_972 = document.getElementById('love-iframe-972');
-iframe_972.addEventListener('load', function() {
-iframe_972.contentWindow.postMessage({lua: `love.window.setMode(300, 300) 
+const iframe_201 = document.getElementById('love-iframe-201');
+iframe_201.addEventListener('load', function() {
+iframe_201.contentWindow.postMessage({lua: `love.window.setMode(300, 300) 
 local sfx = love.audio.newSource("assets/chirp.ogg", "static")
 local music = love.audio.newSource("assets/bach.ogg", "stream")
 function love.keypressed(_, scancode)

@@ -22,7 +22,7 @@
 <meta property="og:description" content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur lorem justo, maximus ut justo non, ornare tristique urna. Suspendisse laoreet scelerisque est quis aliquet. Aliquam neque velit, hendrerit eu sollicitudin ut, commodo eu dolor.">
 <meta property="og:image" content="https://diminim.github.io/love-cookbook/assets/logo.png">
 <meta property="og:image:alt" content="LÖVE Cookbook">
-<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:card" content="summary">
 <meta name="twitter:url" content="https://diminim.github.io/love-cookbook/demo/">
 <meta name="twitter:title" content="Demo">
 <meta name="twitter:description" content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur lorem justo, maximus ut justo non, ornare tristique urna. Suspendisse laoreet scelerisque est quis aliquet. Aliquam neque velit, hendrerit eu sollicitudin ut, commodo eu dolor.">
@@ -163,11 +163,11 @@
 </code></pre>
 <h2 id="embedded-love" tabindex="-1">Embedded LOVE <a class="anchor" href="#embedded-love">#</a></h2>
 <p>We can embed LOVE windows with the <code>{% love %}</code> shortcode.</p>
-<iframe class="love-embed" id="love-iframe-630" src="/love-cookbook/assets/love/love-js" width="300" height="150"></iframe>
+<iframe class="love-embed" id="love-iframe-46" src="/love-cookbook/assets/love/love-js" width="300" height="150"></iframe>
 <script>
-const iframe_630 = document.getElementById('love-iframe-630');
-iframe_630.addEventListener('load', function() {
-iframe_630.contentWindow.postMessage({lua: `love.window.setMode(300, 150) 
+const iframe_46 = document.getElementById('love-iframe-46');
+iframe_46.addEventListener('load', function() {
+iframe_46.contentWindow.postMessage({lua: `love.window.setMode(300, 150) 
 function love.draw()
  love.graphics.printf("this is how we embed love.js", 0, 50, love.graphics.getWidth(), "center")
 end

@@ -22,7 +22,7 @@
 <meta property="og:description" content="Running into errors in your code is an inevitable part of the process and it's important to understand how to read them effectively.">
 <meta property="og:image" content="https://diminim.github.io/love-cookbook/assets/logo.png">
 <meta property="og:image:alt" content="LÖVE Cookbook">
-<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:card" content="summary">
 <meta name="twitter:url" content="https://diminim.github.io/love-cookbook/guides/love/reading-errors/">
 <meta name="twitter:title" content="Reading errors">
 <meta name="twitter:description" content="Running into errors in your code is an inevitable part of the process and it's important to understand how to read them effectively.">
@@ -164,11 +164,11 @@
 <span class="token keyword">end</span>
 </code></pre>
 <p>Changing that line to instead pass through <code>image</code> and rerunning the code shows us a lovely picture of a whale instead of an error.</p>
-<iframe class="love-embed" id="love-iframe-452" src="/love-cookbook/assets/love/love-js" width="800" height="600"></iframe>
+<iframe class="love-embed" id="love-iframe-556" src="/love-cookbook/assets/love/love-js" width="800" height="600"></iframe>
 <script>
-const iframe_452 = document.getElementById('love-iframe-452');
-iframe_452.addEventListener('load', function() {
-iframe_452.contentWindow.postMessage({lua: `love.window.setMode(800, 600) 
+const iframe_556 = document.getElementById('love-iframe-556');
+iframe_556.addEventListener('load', function() {
+iframe_556.contentWindow.postMessage({lua: `love.window.setMode(800, 600) 
 local image = love.graphics.newImage("assets/whale.png")
 function love.draw()
  love.graphics.draw(image, 100, 100)
@@ -217,11 +217,11 @@ end
 <li><code>main.lua:18: in function 'load'</code> - aha!</li>
 </ul>
 <p>Our <code>make_whale</code> function was called from line 18 in main.lua's load function and that call was the one that directly led to the error being thrown. Looking back at our code we can see that line 18 looks a little different from the others with a typo: <code>make_whale(imaeg)</code> should be <code>make_whale(image)</code>!</p>
-<iframe class="love-embed" id="love-iframe-205" src="/love-cookbook/assets/love/love-js" width="800" height="600"></iframe>
+<iframe class="love-embed" id="love-iframe-655" src="/love-cookbook/assets/love/love-js" width="800" height="600"></iframe>
 <script>
-const iframe_205 = document.getElementById('love-iframe-205');
-iframe_205.addEventListener('load', function() {
-iframe_205.contentWindow.postMessage({lua: `love.window.setMode(800, 600) 
+const iframe_655 = document.getElementById('love-iframe-655');
+iframe_655.addEventListener('load', function() {
+iframe_655.contentWindow.postMessage({lua: `love.window.setMode(800, 600) 
 local image = love.graphics.newImage("assets/whale.png")
 local whales = {}
 local function make_whale(sprite)
