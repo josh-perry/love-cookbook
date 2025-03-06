@@ -1,7 +1,8 @@
 ---
 title: "Functions"
-authors: [Sheepolution]
+authors: ["Sheepolution", "josh"]
 date: 2025-02-19
+description: "description"
 ---
 
 With **functions** we can store a piece of code to be executed at different times, and multiple times.

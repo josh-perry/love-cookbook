@@ -4,12 +4,14 @@ import loadLanguages from 'prismjs/components/index.js';
 import markdownIt from "markdown-it";
 import markdownItAnchor from "markdown-it-anchor";
 import markdownItGithubAlerts from "markdown-it-github-alerts";
+import metagen from 'eleventy-plugin-metagen';
 import fs from "fs";
 import matter from "gray-matter";
 
 export default function (eleventyConfig) {
     eleventyConfig.addPassthroughCopy("assets");
     eleventyConfig.addPlugin(EleventyHtmlBasePlugin);
+    eleventyConfig.addPlugin(metagen);
 
     const markdownLibrary = markdownIt({
         html: true,
@@ -115,6 +117,13 @@ iframe_${id}.contentWindow.postMessage({lua: \`love.window.setMode(${width}, ${h
         }
 
         return results;
+    });
+
+    eleventyConfig.addNunjucksFilter("preview", function (content) {
+        const match = content.match(/<p>(.*?)<\/p>/);
+
+        // strip tags
+        return match ? match[1].replace(/<[^>]*>?/gm, '') : '';
     });
 
     return {
