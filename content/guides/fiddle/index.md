@@ -1,0 +1,7 @@
+---
+title: "Fiddle"
+---
+
+{% fiddle %}
+
+{% endfiddle %}
