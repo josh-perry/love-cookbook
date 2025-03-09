@@ -7,11 +7,29 @@ import markdownItGithubAlerts from "markdown-it-github-alerts";
 import metagen from 'eleventy-plugin-metagen';
 import fs from "fs";
 import matter from "gray-matter";
+import dirOutputPlugin from "@11ty/eleventy-plugin-directory-output";
 
 export default function (eleventyConfig) {
-    eleventyConfig.addPassthroughCopy("assets");
+    eleventyConfig.setQuietMode(true);
+
+
     eleventyConfig.addPlugin(EleventyHtmlBasePlugin);
     eleventyConfig.addPlugin(metagen);
+    eleventyConfig.addPlugin(dirOutputPlugin, {
+		columns: {
+			filesize: false,
+			benchmark: false,
+		},
+	});
+
+
+    eleventyConfig.addPassthroughCopy("assets");
+    eleventyConfig.addPassthroughCopy("content",
+        {
+            filter : ["guides/**", "!guides/**/*.md"],
+        }
+    )
+
 
     const markdownLibrary = markdownIt({
         html: true,
@@ -66,7 +84,8 @@ export default function (eleventyConfig) {
         return chapter;
     }
 
-    eleventyConfig.addShortcode("abstract", (abstract) => {
+    eleventyConfig.addShortcode("abstract", function(abstract) {
+        this.page.abstract = abstract
         return `<span data-abstract="${abstract}"></span>`;
     });
 
@@ -99,6 +118,39 @@ const iframe_${id} = document.getElementById('love-iframe-${id}');
 iframe_${id}.addEventListener('load', function() {
 iframe_${id}.contentWindow.postMessage({lua: \`love.window.setMode(${width}, ${height}) ${formattedContent}\`}, '*');
 });
+</script>
+        `;
+    });
+
+    eleventyConfig.addPairedShortcode("fiddle", function(content, width = 800, height = 600, entranceFile = "main.lua", code = false) {
+        const id = getId();
+
+        const url = this.page.url
+        const readDir = "../.."+url+"assets/"
+        const folderPath = "content"+this.page.url+"assets/"
+
+        const isFile = fileName => {
+            return fs.lstatSync(folderPath+fileName).isFile();
+        };
+        const files = fs.readdirSync(folderPath, {recursive: true})
+            .filter(isFile)
+            .toString()
+
+        const formattedContent = content
+            .replace(/(\n){2,}/g, '\n')
+            .replace(/(\r\n){2,}/g, '\r\n')
+            .replace(/(\t){2,}/g, ' ')
+            .replace(/( ){2,}/g, ' ')
+            .replace(/`/g, '\\`')
+
+        // Note: No indenting to prevent rendering as code block.
+        return `${code ? `\`\`\`lua${content}\`\`\`` : ''}
+<iframe class="love-embed" id="love-iframe-${id}" src="/assets/fiddle" width="${width}" height="${height}"></iframe>
+
+<script>
+const iframe_${id} = document.getElementById('love-iframe-${id}');
+iframe_${id}.addEventListener('load', function() {
+iframe_${id}.contentWindow.postMessage({readDir: "${readDir}", files: "${files}", entranceFile: "${entranceFile}" }) } )
 </script>
         `;
     });

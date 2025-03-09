@@ -21,6 +21,7 @@
   "description": "",
   "dependencies": {
     "@11ty/eleventy": "^3.0.0",
+    "@11ty/eleventy-plugin-directory-output": "^1.0.1",
     "eleventy-plugin-metagen": "^1.8.3",
     "markdown-it-anchor": "^9.2.0",
     "markdown-it-github-alerts": "^0.3.0",
