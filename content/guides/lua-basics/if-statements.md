@@ -118,8 +118,12 @@ print(4 ~= 4) -- false, 4 IS equal to four.
 > * `a >​= b` - Whether `a` is higher than or equal to `b`.
 > * `a <​= b` - Whether `a` is lower than or equal to `b`.
 
-We can use the keyword `not` to check if a value is **not** true.
+> [!TIP]
+> We can do the same for strings!
+> * `"whale" == "apple"` is `false` because it's not the same string.
+> * `"whale" > "apple"` is `true` because `"w"` is *higher* <ins>alphabetically</ins> than `"a"`.
 
+We can use the keyword `not` to check if a value is **not** true.
 
 ```lua
 local a = 5 == 8
@@ -191,7 +195,7 @@ end
 
 {% abstract "Truthy and falsy refer to state of values when used as a condition. The values `false` and `nil` are falsy. All other values are truthy." %}
 
-So far we have talked about booleans, and `true` or `false`, but if-statements can accept other values as well. We call these values **truthy**.
+So far we have talked about booleans, `true` and `false`, but if-statements can accept other values as well. We call these values **truthy**.
 
 ```lua
 if 15 then
