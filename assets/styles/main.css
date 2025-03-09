@@ -35,6 +35,7 @@ body {
 main {
   flex: 1;
   min-width: 0;
+  margin: 0 1rem;
 }
 
 /* html {
@@ -153,13 +154,14 @@ main {
   display: inline-block;
   width: .25rem;
   height: 1rem;
-  background-color: var(--color-text);
-  opacity: 0;
   position: absolute;
   left: -.75rem;
   top: .1rem;
-  transition: opacity 0.1s;
   border-radius: .1rem;
+  
+  background-color: var(--color-text);
+  opacity: 0;
+  transition: opacity 0.1s;
 }
 
 .table-of-contents .guides > li a:hover:before {
@@ -186,6 +188,8 @@ main {
 .guide ul,
 .guide ol {
   margin: 0;
+
+  line-height: 1.5;
 }
 
 .guide img {
@@ -197,8 +201,8 @@ main {
   color: var(--color-whale);
 }
 
-.guide button {
-  display: flex;
+.guide .menu-button {
+  display: none; /* is flexbox for mobile */
   align-items: center;
   justify-content: center;
   width: 3rem;
@@ -210,10 +214,10 @@ main {
   background-color: var(--color-background);
   transition: background-color .05s;
 }
-.guide button:active {
+.guide .menu-button:active {
   background-color: var(--color-faded-2);
 }
-.guide button i {
+.guide .menu-button i {
   font-size: 2rem;
 }
 
@@ -224,6 +228,7 @@ main {
 .guide-header .title {
   border-bottom: solid .1rem var(--color-faded-2);
   padding: .5rem 0;
+  margin-top: 1.5rem;
   
   font-size: 3rem;
   line-height: 1;
@@ -268,6 +273,7 @@ main {
   padding: 0 .2rem;
 
   font-family: "Fira Code", serif;
+  /* font-size: .9rem; */
 }
 
 .guide .code-block code {
@@ -304,6 +310,10 @@ main {
 @media only screen and (max-width: 1000px) {
   body {
     padding: 1.5rem;
+  }
+
+  .menu-button {
+    display: flex;
   }
 
   .sidebar {
