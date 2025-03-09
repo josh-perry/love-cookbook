@@ -20,6 +20,24 @@
 }
 
 html {
+  background: var(--color-background);
+}
+
+body {
+  display: flex;
+  gap: 2rem;
+  margin: 0;
+  padding: 2rem;
+
+  font-family: "Inter", serif;
+}
+
+main {
+  flex: 1;
+  min-width: 0;
+}
+
+/* html {
   scroll-behavior: smooth;
   overflow-y: scroll;
   overscroll-behavior: contain;
@@ -35,10 +53,10 @@ body {
   box-sizing: border-box;
   overflow: hidden;
   overflow-x: scroll; 
-  /* 
+  
   ^ this creates a scrollbar at the bottom even when content fits. 
   in the future, horizontal scrolling should never be a thing 
-  */
+ 
   
   font-family: "Inter", serif;
   line-height: 1.6;
@@ -48,16 +66,17 @@ body {
 
 main {
   flex: 6;
-}
+} */
 
 
 /* ---- sidebar ---- */
 
 .sidebar {
+  flex: 0;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
-  width: 15rem;
+  gap: 1rem;
+  min-width: 15rem;
 }
 
 .sidebar header img {
@@ -104,7 +123,7 @@ main {
 
 .table-of-contents {
   background-color: var(--color-background-panel);
-  border-radius: .5rem;
+  border-radius: .25rem;
   flex-grow: 1;
 }
 
@@ -159,7 +178,6 @@ main {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  padding-top: 2.5rem;
 
   color: var(--color-text-dark);
 }
@@ -179,10 +197,36 @@ main {
   color: var(--color-whale);
 }
 
-.guide .title {
+.guide button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border: none;
+  border-radius: 50%;
+
+  color: var(--color-text-dark);
+  background-color: var(--color-background);
+  transition: background-color .05s;
+}
+.guide button:active {
+  background-color: var(--color-faded-2);
+}
+.guide button i {
+  font-size: 2rem;
+}
+
+.guide-header {
+  margin: .5rem 0;
+}
+
+.guide-header .title {
+  border-bottom: solid .1rem var(--color-faded-2);
+  padding: .5rem 0;
+  
   font-size: 3rem;
-  border-bottom: solid .1rem var(--color-text);
-  margin: 0;
+  line-height: 1;
 }
 
 .guide h1 { font-size: 2.0rem; font-weight: bold; }
@@ -252,7 +296,28 @@ main {
 }
 
 .love-embed {
-  margin-left: auto;
-  margin-right: auto;
   display: block;
+  border-radius: .25rem;
 }
+
+/* ---- mobile ---- */
+@media only screen and (max-width: 1000px) {
+  body {
+    padding: 1.5rem;
+  }
+
+  .sidebar {
+    position: absolute;
+    width: 20rem;
+    padding: 3rem 1rem;
+    left: -25rem;
+    top: 0;
+    border-right: .1rem solid var(--color-faded-2);
+    
+    background-color: var(--color-background-panel);
+    transition: left .1s;
+  }
+  .sidebar.active {
+    left: 0;
+  }
+} 
