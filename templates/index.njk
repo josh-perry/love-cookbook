@@ -2,10 +2,12 @@
 layout: base.njk
 ---
 
-<section class="guide-content">
-  <header class="guide-header">
-    <h1 class="guide-title">{{ title }}</h1>
-  </header>
+<header class="guide-header">
+  <button type="button" class="menu-button">
+    <i class="material-symbols-outlined">menu</i>
+  </button>
 
-  {{ content | safe }}
-</section>
+  <h1 class="title">{{ title }}</h1>
+</header>
+
+{{ content | safe }}
