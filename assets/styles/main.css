@@ -276,10 +276,12 @@ main {
   border: .1rem solid var(--color-faded-2);
   border-radius: .25rem;
   background-color: var(--color-vanilla);
-  padding: 0 .2rem;
 
   font-family: "Fira Code", serif;
   /* font-size: .9rem; */
+}
+.guide code {
+  padding: 0 .2rem;
 }
 
 .guide .code-block code {
@@ -317,8 +319,12 @@ main {
 
 /* ---- mobile ---- */
 @media only screen and (max-width: 1000px) {
+  html:has( .sidebar.active) {
+    overflow-y: hidden;
+  }
+
   body {
-    padding: 1.5rem;
+    padding: 1rem .25rem;
   }
 
   .guide-header .menu-button {
@@ -326,17 +332,25 @@ main {
   }
 
   .sidebar {
+    box-sizing: border-box;
     position: absolute;
     width: 20rem;
+    height: 100%;
+    overflow-y: scroll;
     padding: 3rem 1rem;
     left: -25rem;
     top: 0;
-    border-right: .1rem solid var(--color-faded-2);
+    border-right: .1rem solid var(--color-faded-1);
     
     background-color: var(--color-background-panel);
     transition: left .1s;
   }
   .sidebar.active {
     left: 0;
+  }
+
+  .guide {
+    opacity: 1;
+    transition: opacity .1s;
   }
 } 

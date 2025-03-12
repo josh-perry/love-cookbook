@@ -1,6 +1,23 @@
 // Mobile/Responsive functions
 
 addEventListener("DOMContentLoaded", () => {
+
+    // Menu Button
+    const sidebar = document.querySelector(".sidebar")
+    //const menuButton = document.querySelector(".menu-button")
+    
+    /* menuButton.addEventListener("click", () => {
+        sidebar.classList.add("active")
+    }) */
+
+    addEventListener("click", event => {
+        if (event.target.closest(".menu-button")) {
+            sidebar.classList.add("active")
+        } else if (!event.target.closest(".sidebar")) {
+            sidebar.classList.remove("active")
+        }
+    })
+
     // Resize Embeds
     const originalDimensions = []
     const embeds = document.querySelectorAll(".love-embed")
