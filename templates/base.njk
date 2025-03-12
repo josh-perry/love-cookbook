@@ -59,7 +59,7 @@
                 {%- for guide_url in group.guide_urls -%}
                   <li>
                     {%- set guide_template = collections.guide | filterByUrl(guide_url) | first -%}
-                    <a 
+                    <a
                       class="{%- if page.url == guide_url -%}active{%- endif -%}"
                       href="{{ guide_template.url }}"
                     >{{ guide_template.data.title }}</a>
@@ -79,6 +79,6 @@
         {{ content | safe }}
       </article>
     </main>
-    
+
   </body>
 </html>

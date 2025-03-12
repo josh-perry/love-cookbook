@@ -1,7 +1,8 @@
 [
     {
         "guide_urls": [
-            "/guides/getting-started/"
+            "/guides/getting-started/",
+            "/guides/fiddle/"
         ]
     },
     {

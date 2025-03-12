@@ -38,7 +38,7 @@ local higher_than_or_equal_to = 4 <= 4
 ```
 
 > [!NOTE]
-> To be more precise, these are also <ins>expressions</ins>. They all use a different type of **operators**. [Read more about expressions](https://www.lua.org/pil/contents.html#4).
+> To be more precise, these are also <ins>expressions</ins>. They all use a different type of **operator**. [Read more about expressions](https://www.lua.org/pil/contents.html#4).
 > ```lua
 > local arithmetic_operator = 5 * 7
 > local relation_operator = 8 > 2
