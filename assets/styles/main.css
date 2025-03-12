@@ -324,7 +324,7 @@ main {
   }
 
   body {
-    padding: 1.5rem;
+    padding: 1rem .25rem;
   }
 
   .guide-header .menu-button {
@@ -332,11 +332,12 @@ main {
   }
 
   .sidebar {
+    box-sizing: border-box;
     position: absolute;
     width: 20rem;
     height: 100%;
     overflow-y: scroll;
-    /* padding: 3rem 1rem; */
+    padding: 3rem 1rem;
     left: -25rem;
     top: 0;
     border-right: .1rem solid var(--color-faded-1);

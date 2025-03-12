@@ -13,7 +13,7 @@ addEventListener("DOMContentLoaded", () => {
     addEventListener("click", event => {
         if (event.target.closest(".menu-button")) {
             sidebar.classList.add("active")
-        } else if (event.target.closest(".guide")) {
+        } else if (!event.target.closest(".sidebar")) {
             sidebar.classList.remove("active")
         }
     })
