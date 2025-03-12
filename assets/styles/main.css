@@ -276,10 +276,12 @@ main {
   border: .1rem solid var(--color-faded-2);
   border-radius: .25rem;
   background-color: var(--color-vanilla);
-  padding: 0 .2rem;
 
   font-family: "Fira Code", serif;
   /* font-size: .9rem; */
+}
+.guide code {
+  padding: 0 .2rem;
 }
 
 .guide .code-block code {
@@ -328,6 +330,8 @@ main {
   .sidebar {
     position: absolute;
     width: 20rem;
+    height: 100vh;
+    overflow-y: scroll;
     padding: 3rem 1rem;
     left: -25rem;
     top: 0;

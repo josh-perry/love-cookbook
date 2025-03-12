@@ -1,6 +1,16 @@
 // Mobile/Responsive functions
 
 addEventListener("DOMContentLoaded", () => {
+
+    const sidebar = document.querySelector(".sidebar")
+    const menuButton = document.querySelector(".menu-button")
+    let sidebarShown = false
+    
+    menuButton.addEventListener("click", () => {
+        sidebar.classList.add("active")
+        sidebarShown = true
+    })
+
     // Resize Embeds
     const originalDimensions = []
     const embeds = document.querySelectorAll(".love-embed")

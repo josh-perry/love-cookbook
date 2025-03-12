@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const highlightDiv = document.createElement("div");
         highlightDiv.className = "highlight-lines";
 
-        for (let i = 1; i <= totalLines; i++) {
+        for (let i = 1; i < totalLines; i++) {
             const highlightLine = document.createElement("div");
             highlightLine.className = "highlight-line";
             if (highlightLines.has(i)) {
