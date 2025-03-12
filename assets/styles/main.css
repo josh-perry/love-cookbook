@@ -319,6 +319,10 @@ main {
 
 /* ---- mobile ---- */
 @media only screen and (max-width: 1000px) {
+  html:has( .sidebar.active) {
+    overflow-y: hidden;
+  }
+
   body {
     padding: 1.5rem;
   }
@@ -330,17 +334,22 @@ main {
   .sidebar {
     position: absolute;
     width: 20rem;
-    height: 100vh;
+    height: 100%;
     overflow-y: scroll;
-    padding: 3rem 1rem;
+    /* padding: 3rem 1rem; */
     left: -25rem;
     top: 0;
-    border-right: .1rem solid var(--color-faded-2);
+    border-right: .1rem solid var(--color-faded-1);
     
     background-color: var(--color-background-panel);
     transition: left .1s;
   }
   .sidebar.active {
     left: 0;
+  }
+
+  .guide {
+    opacity: 1;
+    transition: opacity .1s;
   }
 } 

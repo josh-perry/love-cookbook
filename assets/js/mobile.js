@@ -2,13 +2,20 @@
 
 addEventListener("DOMContentLoaded", () => {
 
+    // Menu Button
     const sidebar = document.querySelector(".sidebar")
-    const menuButton = document.querySelector(".menu-button")
-    let sidebarShown = false
+    //const menuButton = document.querySelector(".menu-button")
     
-    menuButton.addEventListener("click", () => {
+    /* menuButton.addEventListener("click", () => {
         sidebar.classList.add("active")
-        sidebarShown = true
+    }) */
+
+    addEventListener("click", event => {
+        if (event.target.closest(".menu-button")) {
+            sidebar.classList.add("active")
+        } else if (event.target.closest(".guide")) {
+            sidebar.classList.remove("active")
+        }
     })
 
     // Resize Embeds

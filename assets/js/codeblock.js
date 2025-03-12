@@ -39,8 +39,8 @@ document.addEventListener("DOMContentLoaded", function () {
             highlightDiv.appendChild(highlightLine);
         }
 
-        wrapper.appendChild(pre.cloneNode(true));
         wrapper.appendChild(highlightDiv);
+        wrapper.appendChild(pre.cloneNode(true));
         pre.replaceWith(wrapper);
     });
 });
