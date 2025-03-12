@@ -319,16 +319,30 @@ main {
 
 /* ---- mobile ---- */
 @media only screen and (max-width: 1000px) {
+  html {
+    overflow: hidden;
+  }
   html:has( .sidebar.active) {
     overflow-y: hidden;
   }
 
   body {
+    height: 100vh;
+    width: 100vw;
+    box-sizing: border-box;
+    overflow: scroll;
     padding: 1rem .25rem;
   }
 
   .guide-header .menu-button {
     display: flex;
+  }
+  .guide {
+    /* 
+    Setting the body element's box-sixing to border-box ignores its bottom padding?
+    This gives it a little space to breathe.
+    */
+    padding-bottom: 1rem;
   }
 
   .sidebar {
