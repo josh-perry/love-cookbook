@@ -1,7 +1,8 @@
 [
     {
         "guide_urls": [
-            "/guides/getting-started/"
+            "/guides/getting-started/",
+            "/guides/fiddle/"
         ]
     },
     {
@@ -42,7 +43,7 @@
         "guide_urls": [
             "/guides/love/drawing-image/",
             "/guides/love/drawing-shapes/",
-            "/guides/love/playing-sound/",
+            "/guides/love/playing-audio/",
             "/guides/love/input/",
             "/guides/love/filesystem/",
             "/guides/love/deltatime/",

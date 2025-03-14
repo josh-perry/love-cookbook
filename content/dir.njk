@@ -1,0 +1,14 @@
+---
+permalink: '/dir.json'
+---
+{
+  "posts": [
+    {% for item in collections.all %}
+      {
+        "title": "{{ item.data.title }}",
+        "url": "{{ item.url }}",
+        "abstract": "{{item.page.abstract}}"
+      }{% if not loop.last %},{% endif %}
+    {% endfor %}
+  ]
+}

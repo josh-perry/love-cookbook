@@ -38,7 +38,7 @@ local higher_than_or_equal_to = 4 <= 4
 ```
 
 > [!NOTE]
-> To be more precise, these are also <ins>expressions</ins>. They all use a different type of **operators**. [Read more about expressions](https://www.lua.org/pil/contents.html#4).
+> To be more precise, these are also <ins>expressions</ins>. They all use a different type of **operator**. [Read more about expressions](https://www.lua.org/pil/contents.html#4).
 > ```lua
 > local arithmetic_operator = 5 * 7
 > local relation_operator = 8 > 2
@@ -112,7 +112,7 @@ In the demo below, we combine all the fundamentals we learned. We create a movin
 
 {% love 800, 200, true %}
 -- We declare the local variable rectangles, and assign a table as its value.
-local rectangeList = {}
+local rectangleList = {}
 
 -- We create the function createRectangle.
 local function createRectangle(direction)
@@ -136,7 +136,7 @@ end
 
 function love.update()
     -- We loop through the list of rectangles
-    for i, rectangle in ipairs(rectangeList) do
+    for i, rectangle in ipairs(rectangleList) do
         -- Move the rectangle to the left or right based on its direction.
         if rectangle.direction == "left" then
             rectangle.x = rectangle.x - 1
@@ -148,7 +148,7 @@ end
 
 function love.draw()
     -- We loop through the list of rectangles
-    for i, rectangle in ipairs(rectangeList) do
+    for i, rectangle in ipairs(rectangleList) do
         -- Draw the rectangle using its properties.
         love.graphics.rectangle("fill", rectangle.x, rectangle.y,
             rectangle.width, rectangle.height)
@@ -167,6 +167,6 @@ function love.keypressed(key)
 
     -- Call createRectangle, and pass the key as argument.
     -- We add its returned value to the list of rectangles.
-    table.insert(rectangeList, createRectangle(key))
+    table.insert(rectangleList, createRectangle(key))
 end
 {% endlove %}

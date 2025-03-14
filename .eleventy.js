@@ -4,12 +4,32 @@ import loadLanguages from 'prismjs/components/index.js';
 import markdownIt from "markdown-it";
 import markdownItAnchor from "markdown-it-anchor";
 import markdownItGithubAlerts from "markdown-it-github-alerts";
+import metagen from 'eleventy-plugin-metagen';
 import fs from "fs";
 import matter from "gray-matter";
+import dirOutputPlugin from "@11ty/eleventy-plugin-directory-output";
 
 export default function (eleventyConfig) {
-    eleventyConfig.addPassthroughCopy("assets");
+    eleventyConfig.setQuietMode(true);
+
+
     eleventyConfig.addPlugin(EleventyHtmlBasePlugin);
+    eleventyConfig.addPlugin(metagen);
+    eleventyConfig.addPlugin(dirOutputPlugin, {
+		columns: {
+			filesize: false,
+			benchmark: false,
+		},
+	});
+
+
+    eleventyConfig.addPassthroughCopy("assets");
+    eleventyConfig.addPassthroughCopy("content",
+        {
+            filter : ["guides/**", "!guides/**/*.md"],
+        }
+    )
+
 
     const markdownLibrary = markdownIt({
         html: true,
@@ -64,7 +84,8 @@ export default function (eleventyConfig) {
         return chapter;
     }
 
-    eleventyConfig.addShortcode("abstract", (abstract) => {
+    eleventyConfig.addShortcode("abstract", function(abstract) {
+        this.page.abstract = abstract
         return `<span data-abstract="${abstract}"></span>`;
     });
 
@@ -101,6 +122,39 @@ iframe_${id}.contentWindow.postMessage({lua: \`love.window.setMode(${width}, ${h
         `;
     });
 
+    eleventyConfig.addPairedShortcode("fiddle", function(content, width = 800, height = 600, entranceFile = "main.lua", code = false) {
+        const id = getId();
+
+        const url = this.page.url
+        const readDir = "../.."+url+"assets/"
+        const folderPath = "content"+this.page.url+"assets/"
+
+        const isFile = fileName => {
+            return fs.lstatSync(folderPath+fileName).isFile();
+        };
+        const files = fs.readdirSync(folderPath, {recursive: true})
+            .filter(isFile)
+            .toString()
+
+        const formattedContent = content
+            .replace(/(\n){2,}/g, '\n')
+            .replace(/(\r\n){2,}/g, '\r\n')
+            .replace(/(\t){2,}/g, ' ')
+            .replace(/( ){2,}/g, ' ')
+            .replace(/`/g, '\\`')
+
+        // Note: No indenting to prevent rendering as code block.
+        return `${code ? `\`\`\`lua${content}\`\`\`` : ''}
+<iframe class="love-embed" id="love-iframe-${id}" src="/assets/fiddle" width="${width}" height="${height}"></iframe>
+
+<script>
+const iframe_${id} = document.getElementById('love-iframe-${id}');
+iframe_${id}.addEventListener('load', function() {
+iframe_${id}.contentWindow.postMessage({readDir: "${readDir}", files: "${files}", entranceFile: "${entranceFile}" }) } )
+</script>
+        `;
+    });
+
     eleventyConfig.addShortcode("api", (name) => {
         const nameWithoutParantheses = name.replace(/\(.*\)$/, "");
         const url = `https://love2d.org/wiki/${nameWithoutParantheses}`;
@@ -115,6 +169,13 @@ iframe_${id}.contentWindow.postMessage({lua: \`love.window.setMode(${width}, ${h
         }
 
         return results;
+    });
+
+    eleventyConfig.addNunjucksFilter("preview", function (content) {
+        const match = content.match(/<p>(.*?)<\/p>/);
+
+        // strip tags
+        return match ? match[1].replace(/<[^>]*>?/gm, '') : '';
     });
 
     return {

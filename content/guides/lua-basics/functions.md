@@ -2,6 +2,7 @@
 title: "Functions"
 authors: [Sheepolution]
 date: 2025-02-19
+description: "description"
 ---
 
 With **functions** we can store a piece of code to be executed at different times, and multiple times.
@@ -35,7 +36,7 @@ hello() -- Output: Hello world!
 
 ## Parameters
 
-Parameters are special kind of variables that functions can have. In the example below, the function has the parameter `animal`. What we put inbetween the parantheses when we call the function decides the value of the parameter for that function call.
+Parameters are special kind of variables that functions can have. In the example below, the function has the parameter `animal`. What we put between the parentheses when we call the function decides the value of the parameter for that function call.
 
 ```lua
 local function favorite(animal)
@@ -51,7 +52,7 @@ print(animal) -- Output: nil
 At the end we print `animal`, and it outputs `nil`. This is because parameters are automatically <ins>local variables</ins>. They are only available inside that function.
 
 > [!NOTE]
-> The value we put inbetween the parantheses is called the **argument**.
+> The value we put between the parentheses is called the **argument**.
 >
 > Adding an argument to your function call is called **passing**.
 >

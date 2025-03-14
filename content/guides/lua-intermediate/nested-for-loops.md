@@ -134,7 +134,7 @@ for i = 1, 10 do
 end
 ```
 
-This is a very short and simple example, but with long for-loops this saves us from havings lots of nested if-else statements.
+This is a very short and simple example, but with long for-loops this saves us from having lots of nested if-else statements.
 
 > [!WARNING]
 > Goto-statements are not available in [love.js](https://github.com/Davidobot/love.js), the unofficial LÖVE port for web.

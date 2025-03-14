@@ -24,3 +24,6 @@ heres how you do things
 * Replace the title, authors and date with relevant info
 * Edit _data/guide_groups.json and add your page URL to the right group (or create a new group if appropriate)
 * Write your cool new page
+
+## Features
+See the [demo page](https://diminim.github.io/love-cookbook/demo) for a reference on how to use various embed features.

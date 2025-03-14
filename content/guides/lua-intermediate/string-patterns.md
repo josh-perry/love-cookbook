@@ -59,9 +59,9 @@ print(message:match("%u.-%u")) -- Output: Hello W
 
 ## Capturing
 
-But what if we don't care about the uppercase letters? Yes, the text we are looking for is surrounded by uppercase letters, but we only care about the characters inbetween. For this, we can use **capturing**.
+But what if we don't care about the uppercase letters? Yes, the text we are looking for is surrounded by uppercase letters, but we only care about the characters in-between. For this, we can use **capturing**.
 
-We can create a capture with parantheses `()`. Let's capture the characters inbetween the uppercase letters.
+We can create a capture with parentheses `()`. Let's capture the characters in-between the uppercase letters.
 
 ```lua
 local message = "Hello WORLD how ARE You?"
