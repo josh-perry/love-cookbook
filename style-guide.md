@@ -1,3 +1,4 @@
+# LÖVE Cookbook Style Guide
 To keep the quality of the cookbook consistent, it's imperative to have a consistent style guide for the whole project. This makes it much easier to read and write, especially for an open-source body of work with potentially dozens of contributors. This guide covers both code and the written word.
 
 These decisions focus on **readability.** This book is a resource for all devs, including total beginners, so it's important to minimize obscurity, inconsistency, and gotchas.
