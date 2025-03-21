@@ -3,10 +3,12 @@ title: "Compute Shaders"
 authors: [Jasper]
 date: 2025-02-21
 ---
+
+**Compute shaders** are a more general way to do calculations with GLSL, as opposed to the vertex and fragment shader, which are a lot more constrained.
+
 > [!CAUTION]
 > This guide is made for LÖVE 12.0!
 
-**Compute shaders** are a more general way to do calculations with GLSL, as opposed to the vertex and fragment shader, which are a lot more constrained.
 
 To edit data outside of the shader, we can use **SSBO's** (Shader storage buffer object) and textures.
 Textures need to be marked as computewritable with the `computewrite` tag, but we'll get to that.

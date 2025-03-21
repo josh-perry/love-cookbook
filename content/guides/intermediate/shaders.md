@@ -4,10 +4,11 @@ authors: [Jasper]
 date: 2025-03-05
 ---
 
+With **shaders** we can create fun but advanced graphical effects for our games.
+
 > [!CAUTION]
 > This guide is made for LÖVE 12.0!
 
-With **shaders** we can create fun but advanced graphical effects for our games.
 Ranging from simple color changes to complex post-processing effects.
 
 There are multiple types of shaders available to be used in LÖVE
@@ -332,6 +333,59 @@ function love.draw()
 end
 ```
 
+### Wave effect
+
+Let's create a wave effect using a sine wave, something that's quite difficult to do without shaders.
+
+`wave.fs`
+
+```glsl
+#define PI 3.14159265359
+
+uniform float Time;
+uniform float WaveCount;
+uniform float Scale;
+
+vec4 effect(vec4 color, Image tex, vec2 texture_coords, vec2 screen_coords)
+{
+    // Create a sine wave using the time value.
+    float wave = sin(texture_coords.y * PI * 2.0 * WaveCount + Time);
+
+    // Use the sine wave to offset the texture coordinates.
+    vec2 offsetCoords = texture_coords + vec2(wave * Scale, 0.0);
+
+    // Use Texel to sample the color of a texture at a coordinate.
+    vec4 imageColor = Texel(tex, offsetCoords);
+
+    return imageColor * color;
+}
+```
+
+`main.lua`
+
+```lua
+local image = love.graphics.newImage("YourImage.png")
+
+local shader = love.graphics.newShader("wave.fs")
+
+local time = 0
+local waveCount = 5
+local scale = 0.1
+
+function love.update(dt)
+    time = time + dt
+end
+
+function love.draw()
+    shader:send("Time", time)
+    shader:send("WaveCount", waveCount)
+    shader:send("Scale", scale)
+
+    love.graphics.setShader(shader)
+    love.graphics.draw(image)
+end
+```
+
 There are some limitations to take in to consideration when writing shader code, the main one is that, due to the way GPUs work the entire [register](#Registers) usage needs to be known beforehand, meaning dynamic memory allocations like these:
 ```glsl
 uniform int IntCount;
@@ -400,27 +454,6 @@ When present, each vertex stores the coordinates on the texture where it should 
 usually ranging from [0, 1] but can be outside of that range.
 
 > [!WARNING] These are quite in-depth terms and you probably won't need to know much about them when creating shaders.
-
-### Matrices
-Matrices are a way to store a 2D array of values, like a 4x4 array of floats.
-Matrices are very useful for transforming coordinates, like rotating, scaling and translating.      
-Usually starting from the identity matrix, which looks like:
-```
-1 0 0 0
-0 1 0 0
-0 0 1 0
-0 0 0 1
-```
-
-### Projection-Matrix
-The projection matrix is a [4x4 matrix](#Matrices) which brings the 3D world to a 2D screen, more specifically, transforms a 3D point in view space to a 2D point in [NDC space](#NDC-space).
-
-### NDC-space
-Normalized Device Coordinates, a vec3 ranging from [-1, 1] on the x, y and z axis.      
-vec3(-1) is the top left corner of the screen, vec3(1) is the bottom right corner of the screen.
-
-### Orthographic
-An orthographic projection is a way to project 3D objects to a 2D screen, without any perspective, meaning things don't get smaller the further away they are, as opposed to a perspective projection.
 
 ### Registers
 Registers are a way to store data on the GPU, like variables in lua, each "register" can old a 32-bit value, like a float or an int. There are two types of registers on the gpu,       
