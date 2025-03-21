@@ -18,26 +18,67 @@ There are multiple types of shaders available to be used in LÖVE
 A shader edits the color of what's drawn, like when drawing images or text.
 
 Shaders can be created using `love.graphics.newShader`.
+
 Compute shaders are covered in the [Compute Shaders](compute-shaders) guide, but it's more advanced and it's recommended to read this guide first.
 
 ## Syntax
 
-LÖVE shaders are written in the shading language GLSL, which is quite a bit different to lua.
-Because of this, we can transfer shaders between different engines and languages, like Unity, with some minor changes.
+LÖVE shaders are written in the shading language GLSL, which is quite a bit different from lua.
+Because of this, we can transfer shaders between different languages and engines, like Unity, with some minor changes.
+
+Let's start out with a grayscale shader and break it down from there.
+
+```glsl
+vec4 effect(vec4 color, Image tex, vec2 texture_coords, vec2 screen_coords)
+{
+    color *= Texel(tex, texture_coords);
+    float gray = length(color.rgb);
+    return vec4(gray, gray, gray, 1.0);
+}
+```
+
+In lua this would look something like:
+
+```lua
+
+function length(vec3)
+    return math.sqrt(vec3.x * vec3.x + vec3.y * vec3.y + vec3.z * vec3.z)
+end
+
+function effect(color, tex, texture_coords, screen_coords)
+    color = color * Texel(tex, texture_coords)
+    local gray = length(color)
+    return { gray, gray, gray, 1.0 }
+end
+
+```
+
+> [!NOTE] this code won't actually work but it illustrates how the syntax is different.
 
 Let's compare the syntax of a simple shader in GLSL and lua.
 
 ### Variables
+
 ```lua
-local x = 1.0
-local y = 2.0
+local x = 1
+local y = 2
 local z = x + y
 ```
+
+We can write this in two ways, either using floats or ints.
+A float stands for floating point number, meaning the . can be anywhere in the number.
+On the other hand, an int is an integer, which can't have a decimal point.
 
 ```glsl
 float x = 1.0;
 float y = 2.0;
 float z = x + y;
+```
+
+```glsl
+int x = 1;
+int y = 2;
+int z = x + y;
 ```
 
 ### Conditionals
@@ -123,17 +164,23 @@ MyDataStruct myData = { 1.0, 2.0, true };
 GLSL also supports overloading, meaning you can have multiple functions with the same name, as long as the parameters are different.
 
 ## The Fragment shader
+
 This shader is executed for every pixel the effect covers.
 This is possible because shaders are really fast and so is the GPU.
+
 Let's make a simple fragment shader from a string to show it's functionality.
 
 During this guide, we will be creating new shader files, usually with the `.fs`: Fragment Shader, `.vs`: Vertex Shader or `.glsl` extension.
 
-We start by defining the output, `vec4`.        
-`vec4 color` is the color we provide with `love.graphics.setColor`.      
-`Image tex` is the texture of our draw call, like the image from `love.graphics.draw(image)`.        
-`vec2 texture_coords` are the uv-coordinates defined by the vertices of our mesh or automatically by LÖVE for images and similar [0-1].     
-`vec2 screen_coords` are the coordinates on screen, [0.5 to love_ScreenSize.xy-0.5].      
+We start by defining the output, `vec4`.
+You can think of a vec4 as a table with 4 numbers, like { x, y, z, w }.
+`vec4 color` is the color we provide with `love.graphics.setColor`.
+
+`Image tex` is the texture of our draw call, like the image from `love.graphics.draw(image)`.
+
+`vec2 texture_coords` are the [uv-coordinates](#UV-coordinates) defined by the vertices of our mesh or automatically by LÖVE for images and similar [0-1].
+
+`vec2 screen_coords` are the coordinates on screen, [0.5 to love_ScreenSize.xy-0.5].
 
 ### Grayscale color
 
@@ -153,7 +200,7 @@ local shader = love.graphics.newShader(shaderCode)
 
 function love.draw()
     love.graphics.setShader(shader)
-    -- We'll draw a couple of differently colored squares to see the effect
+    -- We'll draw a couple of differently colored squares to see the effect.
     love.graphics.setColor(1, 0.2, 0)
     love.graphics.rectangle("fill", 100, 100, 200, 200)
 
@@ -169,7 +216,7 @@ end
 
 ### Drawing images
 
-Let's step things up by drawing an image this time and by using a different file instead of a string.     
+Let's step things up by drawing an inverted image this time and by using a different file instead of a string.     
 We'll have to change our shader a bit to allow it to draw images.       
 We do this by telling the shader to load the color values of our image when coloring a pixel.
 
@@ -177,11 +224,13 @@ We do this by telling the shader to load the color values of our image when colo
 ```glsl
 vec4 effect(vec4 color, Image tex, vec2 texture_coords, vec2 screen_coords)
 {
-    // Use Texel to sample the color of a texture at a coordinate
-    vec4 imageColor = Texel(tex, texture_coords);
+    // Use Texel to sample the color of a texture at a coordinate.
+    // We can use .rgb to convert a vec4 to a vec3, as we don't need the alpha value.
+    vec3 imageColor = Texel(tex, texture_coords).rgb;
 
-    // Make the image red by multiplying by our Red vec4
-    return imageColor * vec4(1.0, 0.0, 0.0, 1.0);
+    // Make the image red by multiplying by our Red vec4.
+    // Invert the color and create a vec4 with w set to 1.0;
+    return vec4(1.0 - imageColor, 1.0);
 }
 ```
 
@@ -203,6 +252,7 @@ end
 
 Uniform values are a way for LÖVE send data from Lua to GLSL **Not the other way around!**     
 Let's edit our shader to change the color of our image over time, using a uniform value.
+In this recipe we'll be using `camelCase` for local variables and `PascalCase` for global variables and uniform values.
 
 > [!NOTE]
 > Uniform values can get optimised out of shader code,      
@@ -212,7 +262,7 @@ Let's edit our shader to change the color of our image over time, using a unifor
 `unusedUniform.fs`
 
 ```glsl
-uniform float AUniformValue;
+uniform float AnUnusedUniform;
 
 vec4 effect(vec4 color, Image tex, vec2 texture_coords, vec2 screen_coords)
 {
@@ -226,7 +276,7 @@ vec4 effect(vec4 color, Image tex, vec2 texture_coords, vec2 screen_coords)
 local shader = love.graphics.newShader("unusedUniform.fs")
 
 function love.draw()
-    shader:send("AUniformValue", 1.0)
+    shader:send("AnUnusedUniform", 1.0)
     love.graphics.setShader(shader)
     love.graphics.rectangle("fill", 100, 100, 200, 200)
 end
@@ -237,7 +287,7 @@ This will throw an error, because the uniform value is not used in the shader co
 ```
 Error
 
-main.lua:4: Shader uniform 'AUniformValue' does not exist.
+main.lua:4: Shader uniform 'AnUnusedUniform' does not exist.
 A common error is to define but not use the variable.
 ```
 
@@ -261,7 +311,6 @@ vec4 effect(vec4 color, Image tex, vec2 texture_coords, vec2 screen_coords)
 ]]
 
 local shader = love.graphics.newShader(shaderCode)
-local colorOffset = { 0, 0, 0, 0 }
 
 local time = 0
 
@@ -283,72 +332,7 @@ function love.draw()
 end
 ```
 
-## Vertex shaders
-
-Vertex shaders are programs which calculate the final position of a vertex on screen.     
-
-Let's start with the standard shader LÖVE uses and break it down.
-
-```glsl
-varying vec4 vpos;
-
-vec4 position( mat4 transform_projection, vec4 vertex_position )
-{
-    vpos = vertex_position;
-    return transform_projection * vertex_position;
-}
-```
-
-`varying` is a keyword which defines a variable that will be shared between the vertex and fragment shader stage.       
-By default, these values are interpolated, meaning halfway between, for example, pure red and green, the final value will be [0.5, 0.5, 0.0]
-
-{% love 200, 200, true %}
-local PI13 = math.pi * 2 / 3
-local mesh = love.graphics.newMesh({
-    { 100 + math.cos(PI13 * 2 + math.pi / 6) * 100, 120 + math.sin(PI13 * 2 + math.pi / 6) * 100, 0, 0, 1, 0, 0 },
-    { 100 + math.cos(PI13 * 3 + math.pi / 6) * 100, 120 + math.sin(PI13 * 3 + math.pi / 6) * 100, 0, 0, 0, 1, 0 },
-    { 100 + math.cos(PI13 + math.pi / 6) * 100,     120 + math.sin(PI13 + math.pi / 6) * 100,     0, 1, 0, 0, 1 },
-}, "triangles", "static")
-
-function love.draw()
-    love.graphics.draw(mesh)
-end
-
-{% endlove %}
-
-`mat4 transform_projection` is the variable which is doing all of the hard work,        
-it's the matrix which stores the current coordinate system transform, so translation, rotation and scale and the projection matrix.         
-By default LÖVE uses an orthographic projection matrix which goes [-10, 10] on the z-axis, meaning if objects are outside of that range, they won't be visible anymore.        
-This is because the z values of the pixels will lie outside of the [-1 to 1] range and the gpu will "clip" the fragments.
-
-`vec4 vertex_position` is the input vertex's position, by default `w = 1`, any time a position is multiplied with a projection matrix, it should be `1` otherwise it will cause issues.
-
-Let's do some shader magic and create a vertex shader which automatically covers the entire screen with a single triangle, instead of having to create a 1x1 image like we did before.
-
-## Fullscreen triangle
-
-One thing to note is that this shader is written with `void vertexmain` instead of `vec4 position`, because we don't need the standard inputs.
-
-`fullscreenTriangle.vs`
-```glsl
-// Store UV-Coordinates to be used in the fragment shader
-varying vec2 VarVertexCoord;
-#ifdef VERTEX
-void vertexmain() {
-    // We want a triangle which covers the entire screen, so we need to generate a triangle with vertices at the positions:
-    // [0, 0], [0, 2], [2, 0]
-    
-    // Bit shifting magic to create these coordinates
-    VarVertexCoord = vec2((love_VertexID << 1) & 2, love_VertexID & 2);
-
-    vec4 VarScreenPosition = vec4(VarVertexCoord.xy * vec2(2.0) + vec2(-1.0), 0.0, 1.0);
-
-    gl_Position = VarScreenPosition;
-}
-#endif
-```
-
-There are some limitations to take in to consideration when writing shader code, the main one is that, due to the way GPUs work the entire register usage needs to be known beforehand, meaning dynamic memory allocations like these:
+There are some limitations to take in to consideration when writing shader code, the main one is that, due to the way GPUs work the entire [register](#Registers) usage needs to be known beforehand, meaning dynamic memory allocations like these:
 ```glsl
 uniform int IntCount;
 uniform int[IntCount] UniformIntegers
@@ -358,7 +342,7 @@ Which leads to another limitation, recursive code is not allowed either, use a s
 
 ### Types
 
-Scalar types:
+Scalar (single value) types:
 * `float`: 32-bit floating point number, for storing fractional values
 * `int`: 32-bit integer value
 * `uint`: unsigned version of int, meaning it can't be negative, allowing for twice the range of values
@@ -370,12 +354,8 @@ Vector types:
 * `uvecn`: unsigned integer type vector
 * `bvecn`: boolean type vector
 
-Matrix types:
+[Matrix](#matrices) types:
 * mat*n*x*m*: n columns, m rows (column major) 
-
->[!NOTE] Matrices are a way to store a 2D array of values, like a 4x4 array of floats.
-> Matrices are very useful for transforming coordinates, like rotating, scaling and translating.
-
 
 >[!IMPORTANT]
 > When doing math in shaders, make sure to use the correct literal number formatting        
@@ -390,10 +370,11 @@ Type suffixes
 [This](https://learnwebgl.brown37.net/12_shader_language/glsl_mathematical_operations.html) page explains operators.
 
 ## Object Management
-When providing shaders with objects, like `Textures` and `Buffers`
-we provide the reference to the data already stored in VRAM. 
+You can think of `Textures` and `Buffers` like tables,
+like tables, they have a reference to the actual data, but they're not the data itself.
+meaning if you change the data in the table, the data will change as well.
 
-Meaning if we for example, send a canvas to a shader and render to it with a `setCanvas` call, the memory in VRAM will have changed.
+For example, if we send a canvas to a shader and render to it with a `setCanvas` call, the memory in [VRAM](#Vram) will have changed.
 So when using that canvas later, the contents will be different from when you sent the image, as it's just a reference.
 Sending images and buffers to the gpu is expensive (Using newTexture, newBuffer or similar), but sending the reference (Using shader:send) is not.
 
@@ -409,3 +390,49 @@ While shader optimisation is an incredibly advanced topic, these are still some 
 These are also useful but might not be as relevant when creating normal effects.
 * Data packing, instead of using 4 32-bit integers to store 4 8-bit integer values, if the size is known beforehand, they can be packed before writing and unpacked before reading.
 * Register usage, using more registers (determined by the maximum amount of values used at any point in a shader) *can* cause the shader to run slower.
+
+## Technical terms
+
+### UV-coordinates
+UV-coordinates are a way to map a 2D texture to an object of any shape, 2D and 3D alike.
+The U and V stand for the horizontal and vertical axis, respectively.
+When present, each vertex stores the coordinates on the texture where it should be drawn,
+usually ranging from [0, 1] but can be outside of that range.
+
+> [!WARNING] These are quite in-depth terms and you probably won't need to know much about them when creating shaders.
+
+### Matrices
+Matrices are a way to store a 2D array of values, like a 4x4 array of floats.
+Matrices are very useful for transforming coordinates, like rotating, scaling and translating.      
+Usually starting from the identity matrix, which looks like:
+```
+1 0 0 0
+0 1 0 0
+0 0 1 0
+0 0 0 1
+```
+
+### Projection-Matrix
+The projection matrix is a [4x4 matrix](#Matrices) which brings the 3D world to a 2D screen, more specifically, transforms a 3D point in view space to a 2D point in [NDC space](#NDC-space).
+
+### NDC-space
+Normalized Device Coordinates, a vec3 ranging from [-1, 1] on the x, y and z axis.      
+vec3(-1) is the top left corner of the screen, vec3(1) is the bottom right corner of the screen.
+
+### Orthographic
+An orthographic projection is a way to project 3D objects to a 2D screen, without any perspective, meaning things don't get smaller the further away they are, as opposed to a perspective projection.
+
+### Registers
+Registers are a way to store data on the GPU, like variables in lua, each "register" can old a 32-bit value, like a float or an int. There are two types of registers on the gpu,       
+Vector and Scalar registers, the name is very misleading, you'd expect that a vector register can hold multiple values and scalar only one, but it has nothing to do with the data type.        
+Rather it's about how the data is used.     
+
+A vector register can store a single variable which varies per thread, like the color of a pixel. These are usually allocated in batches of 8, using too many can slow down your shaders considerably.
+
+A scalar register can store a single variable which is the same for all threads, like a uniform value. They're also usually allocated in batches of 256, so you have a lot of them to work with.
+
+### VRAM
+Vram is just the memory on your GPU, where all the textures, buffers and shaders are stored. It's a lot faster than normal RAM, but usually a lot smaller.
+
+### Thread
+A thread is a single unit of execution, like a single pixel on the screen, a vertex to transform or instance of a [compute shader](compute-shaders).
