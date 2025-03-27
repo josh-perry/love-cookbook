@@ -12,39 +12,40 @@ These decisions focus on **readability.** This book is a resource for all devs, 
 	* **Don't be afraid to give instructions**: "Be punchy" instead of "you should aim to be punchy";
 	* **Avoid nominalizations**: "We discussed it" instead of "we had a discussion about it";
 	* **Use lists when appropriate**.
+* Don't make this a LÖVE Wiki 2.0. It should be more high-level and abstract, focusing on strategies, interactions, and common problems you might come across. It shouldn't be a list explaining what everything does.
 
 # Code
 * Indent all code blocks with 2 spaces. This makes it easier to read multiple levels of indentation, especially on a smaller screen.
 ```lua
 -- Good:
-function add_10(n)
+function add10(n)
   return n + 10
 end
 
 -- Bad:
-function add_10(n)
+function add10(n)
 	return n + 10
 end
 
-function add_10(n)
+function add10(n)
     return n + 10
 end
 
-function add_10(n)
+function add10(n)
  return n + 10
 end
 ```
 
-* Name all variables in `snake_case`, including functions. Reserve `PascalCase` for classes and `UPPER_SNAKE_CASE` for constant globals - although those are rare.
+* Name all variables in `camelCase`, including functions. Reserve `PascalCase` for classes and `UPPER_SNAKE_CASE` for constant globals (although those are rare).
 ```lua
 -- Good:
 local NewClass = Class:extend()
-local current_temperature = self:get_current_temperature()
-_G.MAXIMUM_TEMPERATURE = 100
+local currentTemperature = self:getCurrentTemperature()
+MAXIMUM_TEMPERATURE = 100
 -- Bad:
 local new_class = Class:extend()
-local currentTemperature = self:getCurrentTemperature()
-_G.maximumtemperature = 100
+local current_temperature = self:get_current_temperature()
+maximumtemperature = 100
 ```
 
 * Write comments as fully-formed sentences, with proper capitalizing and punctuation, to make them easier to read at a glance. Put a space before the start of the comment.
@@ -53,18 +54,18 @@ _G.maximumtemperature = 100
 -- This is a better comment. It reads like a regular sentence.
 ```
 
-* Avoid writing comments that just reinstate a line of code. Prefer comments that explain overarching concepts at a high level, explain some tricky or unintuitive operation, or clarify a decision.
+* Don't write comments that just reinstate a line of code. Prefer comments that describe overarching concepts at a high level, explain some tricky or unintuitive operation, or clarify a decision.
 ```lua
 -- Good:
 
--- The amount of spaces that're placed to the left and right of every line,
+-- The amount of blank space added to the left and right of every line,
 -- in pixels.
-local horizontal_padding = 4
+local horizontalPadding = 4
 
 -- Bad:
 
 -- The amount of padding to be applied horizontally.
-local horizontal_padding = 4
+local horizontalPadding = 4
 
 -- Good:
 
@@ -82,28 +83,28 @@ self.distance = self.length * self.progress * self.progress
 -- Set a new max temperature.
 -- Since previously stored calculations become invalid when the max temperature
 -- changes, this also clears the cache.
-function self:set_max_temperature(new_max)
-  self.max_temperature = new_max
-  self:clear_cache()
+function self:setMaxTemperature(newMax)
+  self.maxTemperature = newMax
+  self:clearCache()
 end
 
 -- Bad:
 
--- Set maximum_temperature, then clear the cache.
-function self:set_max_temperature(new_max)
-  self.max_temperature = new_max
-  self:clear_cache()
+-- Set maxTemperature, then clear the cache.
+function self:setMaxTemperature(newMax)
+  self.maxTemperature = newMax
+  self:clearCache()
 end
 ```
 
-* Prefer double-quotes instead of single-quotes. Single-quotes are OK if it makes the string more readable.
+* Prefer double-quotes over single-quotes. Single-quotes are OK if it makes the string more readable.
 ```lua
 -- Good:
 name = "John"
 -- Bad:
 name = 'John'
 -- This is ok:
-print('Between "do" or "die," the right choice is obvious.')
+print('Between "do" or "die," the choice is obvious.')
 ```
 
 * Put whitespace around operators and after commas.
@@ -116,23 +117,23 @@ result="The answer was: "..tostring(a+b)
 numbers={1,2,3}
 ```
 
-* Avoid putting whitespace around parentheses.
+* Don't put whitespace around parentheses.
 ```lua
 -- Good:
 print(a + b)
 print(results[1])
-print_each({1, 2, 3})
+printEach({1, 2, 3})
 -- Bad:
 print (a + b)
 print( a + b )
 print(results[ 1 ])
-print_each({ 1, 2, 3 })
+printEach({ 1, 2, 3 })
 ```
 
-* Avoid omitting parenthesis for functions that take string and table literals, as that makes it harder to tell where functions start and end - and obscures precedence rules.
+* Don't omit parenthesis for functions that take string and table literals, as that makes it harder to tell where functions start and end, and obscures precedence rules.
 ```lua
 -- Good:
-local data = get_data("john") .. inspect({name, age, birthday})
+local data = getData("john") .. inspect({name, age, birthday})
 -- Bad:
-local data = get_data"john"..inspect{name, age, birthday}
+local data = getData"john"..inspect{name, age, birthday}
 ```
