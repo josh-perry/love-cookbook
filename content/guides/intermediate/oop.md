@@ -634,6 +634,8 @@ love.mousepressed = function()
 end
 ```
 
+## Next Steps
+
 Want some homework? Why not try taking this example and expand it further! 
 Here's some ideas for you:
 * Right now the player just flashes when they get hit, but what about taking damage? 
