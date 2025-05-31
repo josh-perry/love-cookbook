@@ -323,7 +323,13 @@ asteroid.destroy = function(self)
 end
 
 -- planet class
-local planet = asteroid:new(0, 0, 1000)
+local planet = asteroid:new()
+planet.new = function(self, x, y)
+  self.x = x
+  self.y = y
+  self.size = 1000
+  return self
+end
 planet.destroy = function(self)
   print('bigger boom!')
 end
@@ -335,17 +341,16 @@ inst:split() -- prints 'split!', still works!
 ```
 
 In this version, we're defining the `asteroid` class as normal, but for the `planet` class, we first make a new instance of the `asteroid` to use AS our class.  
-This means when we call `planet:new()` we're passing in the `planet` table as the reference for the metatable, but because we created it initially as an instance of `asteroid` we have all the existing methods too.
+This means when we call `asteroid:new()` we're passing in the `planet` table as the reference for the metatable, but because we created it initially as an instance of `asteroid` we have all the existing methods too.
 
-A limitation of this route is not having an initial `new` function for the `planet` class, which might restrict you.
+You can see a more advanced example with rxi's [classic](https://github.com/rxi/classic/blob/master/classic.lua), which is small bit of code that lets you create classes, extend them, and also use 'mixins', which are essentially some predefined set of functions that you can then add to a class. You should be able to make sense of the code after what you've learned here and in the [metatables](../lua-intermediate/metatables) page, or maybe try using it to build your own class system!  
 
-You can see a more advanced example with rxi's [classic](https://github.com/rxi/classic/blob/master/classic.lua), which is small bit of code that lets you create classes, extend them, and also use 'mixins', which are essentially some predefined set of functions that you can then add to a class.  
+# Futher Abstraction
+You have your Player, Asteroid, and a Bullet class. All 3 have an 'x' and a 'y' and a 'direction' and a 'speed' - you could make some sort of generic 'Object' class and all 3 classes are extensions of that, which initially wouldn't be that useful as all you're doing is saving yourself writing out those four keys 3 times.
 
-You should be able to make sense of the code after what you've learned here and in the [metatables](../lua-intermediate/metatables) page, or maybe try using it to build your own class system!  
-For example, you have your Player, Asteroid, and Bullet class. All 3 have an 'x' and a 'y' and a 'direction' and a 'speed' - you could make some sort of generic 'Object' class and all 3 classes are extensions of that. 
+However, if all those classes had some common logic, say some generic methods like a `destroy` or some default drawing code, then it might make sense to do this sort of abstraction. 
 
-As it stands it isn't that useful to do, as it's just saving you writing out those four keys 3 times, but if you had some generic methods like a `destroy` or some default drawing code, then it might make sense to do so. You could even play with having some common 'event' hooks that your base class implements, that you can then define in your extended classes.
-
+You could even play with having some common 'event' hooks that your base class implements, that you can then define in your extended classes:
 ```lua
 local object = {}
 object.__index = object
@@ -385,7 +390,6 @@ asteroid:destroy()
 With what we just looked at, you can see how you could have a way of setting up your own hooks, but what about the standard love hooks?
 
 Doing this is pretty easy, all you'd need to do is standardise the naming for the various event scripts across all your classes - if you make sure all asteroids and the player and bullets have an 'update' script and a 'draw' script, we can add all these objects into a big table and iterate over that inside the main love hooks.
-
 ```lua
 -- a list of objects to easily iterate over all instances
 local all_asteroids = {}
@@ -423,6 +427,8 @@ end
 ```
 
 In this way you could set up hooks for all the main events, `update`, `mousepressed`, `keypressed`, `draw`, and then let each of the objects handle their own logic when any of these events are called. Combine this with your own custom hooks, like say a `destroy` or a `gameover`, and you'll be able to have some complex logic without losing track of where everything is.
+
+You could also have different lists, maybe one for each type of class, and then you only iterate over the type of object you need rather than all of them.
 
 ## Overcomplicating
 When making a game with OOP, it's worth remembering that not every single thing has to fall under an object, and you do not always need to keep making more abstracted and 'simpler' objects - this can end up making things messier. OOP is a general approach to structuring the architecture of your game and helping you plan things out, but it doesn't have to be completely strict.
