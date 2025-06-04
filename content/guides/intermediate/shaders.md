@@ -24,8 +24,9 @@ Compute shaders are covered in the [Compute Shaders](compute-shaders) guide, but
 
 ## Syntax
 
-LÖVE shaders are written in the shading language GLSL, which is quite a bit different from lua.
-Because of this, we can transfer shaders between different languages and engines, like Unity, with some minor changes.
+LÖVE shaders are written in the shading language GLSL, which is quite different from lua.
+
+Because of this, we can transfer shaders between different languages and engines, with some minor changes.
 
 Let's start out with a grayscale shader and break it down from there.
 
@@ -56,7 +57,7 @@ end
 
 > [!NOTE] this code won't actually work but it illustrates how the syntax is different.
 
-Let's compare the syntax of a simple shader in GLSL and lua.
+Let's compare the syntax of GLSL and lua.
 
 ### Variables
 
@@ -66,8 +67,8 @@ local y = 2
 local z = x + y
 ```
 
-We can write this in two ways, either using floats or ints.
-A float stands for floating point number, meaning the . can be anywhere in the number.
+We can write this in two ways, either using floats or ints. A float stands for floating point number, meaning the . can be anywhere in the number.
+
 On the other hand, an int is an integer, which can't have a decimal point.
 
 ```glsl
@@ -81,6 +82,29 @@ int x = 1;
 int y = 2;
 int z = x + y;
 ```
+
+However, in some situations we might want to add a float and an int together. We can do this in two ways, converting the values to an int, or a float.
+
+```lua
+local x = 1.5
+local y = 2
+local z = x + y
+```
+
+We can do the calculation resulting in a float like this:
+```glsl
+float x = 1.5;
+int y = 2;
+float z = x + float(y); // z = 3.5
+```
+
+Or resulting in an int like this:
+```glsl
+float x = 1.5;
+int y = 2;
+int z = int(x) + y; // z = 3, because x = 1.5 -> int = 1
+```
+
 
 ### Conditionals
 ```lua
@@ -100,6 +124,16 @@ else
 {
     return y;
 }
+```
+Note that brackets for statements {}, aren't needed if you only have a single line of code inside, This does not apply to functions however.
+
+It does mean we can write it like this as well:
+
+```glsl
+if (x > y)
+    return x;
+else
+    return y;
 ```
 
 ### Loops
@@ -159,21 +193,21 @@ struct {
     bool isActive;
 } MyDataStruct;
 
-MyDataStruct myData = { 1.0, 2.0, true };
+MyDataStruct myData = MyDataStruct(1.0, 2.0, true);
 ```
 
-GLSL also supports overloading, meaning you can have multiple functions with the same name, as long as the parameters are different.
+GLSL also supports overloading, meaning you can have multiple functions with the same name, as long as the output type is the same.
 
 ## The Fragment shader
 
-This shader is executed for every pixel the effect covers.
-This is possible because shaders are really fast and so is the GPU.
+This shader is executed for every pixel the effect covers.This is possible because shaders are really fast and so is the GPU.
 
 Let's make a simple fragment shader from a string to show it's functionality.
 
 During this guide, we will be creating new shader files, usually with the `.fs`: Fragment Shader, `.vs`: Vertex Shader or `.glsl` extension.
 
 We start by defining the output, `vec4`.
+
 You can think of a vec4 as a table with 4 numbers, like { x, y, z, w }.
 `vec4 color` is the color we provide with `love.graphics.setColor`.
 
@@ -263,7 +297,7 @@ In this recipe we'll be using `camelCase` for local variables and `PascalCase` f
 `unusedUniform.fs`
 
 ```glsl
-uniform float AnUnusedUniform;
+uniform float myUniformValue;
 
 vec4 effect(vec4 color, Image tex, vec2 texture_coords, vec2 screen_coords)
 {
@@ -277,7 +311,7 @@ vec4 effect(vec4 color, Image tex, vec2 texture_coords, vec2 screen_coords)
 local shader = love.graphics.newShader("unusedUniform.fs")
 
 function love.draw()
-    shader:send("AnUnusedUniform", 1.0)
+    shader:send("myUniformValue", 1.0)
     love.graphics.setShader(shader)
     love.graphics.rectangle("fill", 100, 100, 200, 200)
 end
@@ -424,12 +458,14 @@ Type suffixes
 [This](https://learnwebgl.brown37.net/12_shader_language/glsl_mathematical_operations.html) page explains operators.
 
 ## Object Management
-You can think of `Textures` and `Buffers` like tables,
-like tables, they have a reference to the actual data, but they're not the data itself.
-meaning if you change the data in the table, the data will change as well.
+You can think of `Textures` and `Buffers` like tables, like tables, they have a reference to the actual data, but they're not the data itself.
+
+Meaning if you change the data in the table, the data will change as well.
 
 For example, if we send a canvas to a shader and render to it with a `setCanvas` call, the memory in [VRAM](#Vram) will have changed.
+
 So when using that canvas later, the contents will be different from when you sent the image, as it's just a reference.
+
 Sending images and buffers to the gpu is expensive (Using newTexture, newBuffer or similar), but sending the reference (Using shader:send) is not.
 
 ## Shader optimisation
