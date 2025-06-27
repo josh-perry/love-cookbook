@@ -5,10 +5,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>LÖVE cookbook | {{ title }}</title>
+    <title>LÖVE Cookbook | {{ title }}</title>
+
+    {% metagen
+      title=title,
+      desc=content | preview,
+      url='https://diminim.github.io/love-cookbook' + page.url,
+      img='https://diminim.github.io/love-cookbook/assets/logo.png',
+      img_alt='LÖVE Cookbook',
+      twitter_card_type='summary',
+      name=authors,
+      generator='eleventy'
+    %}
 
     <script src="/assets/js/codeblock.js"></script>
     <script src="/assets/js/hover_preview.js"></script>
+    <script src="/assets/js/mobile.js"></script>
 
     <link rel="stylesheet" href="/assets/styles/fonts.css">
     <link rel="stylesheet" href="/assets/styles/main.css">
@@ -20,10 +32,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Mali:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=menu" rel="stylesheet">
   </head>
   <body>
     <div class="sidebar">
-    
       <header>
         <a href="/">
             <div class="logo">
@@ -47,7 +59,7 @@
                 {%- for guide_url in group.guide_urls -%}
                   <li>
                     {%- set guide_template = collections.guide | filterByUrl(guide_url) | first -%}
-                    <a 
+                    <a
                       class="{%- if page.url == guide_url -%}active{%- endif -%}"
                       href="{{ guide_template.url }}"
                     >{{ guide_template.data.title }}</a>
@@ -67,6 +79,6 @@
         {{ content | safe }}
       </article>
     </main>
-    
+
   </body>
 </html>

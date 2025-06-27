@@ -2,14 +2,20 @@
 layout: base.njk
 ---
 
-<h1 class="title">{{ title }}</h1>
+<header class="guide-header">
+  <button type="button" class="menu-button">
+    <i class="material-symbols-outlined">menu</i>
+  </button>
+
+  <h1 class="title">{{ title }}</h1>
+</header>
 
 {{ content | safe }}
 
 <footer class="guide-footer">
   <p></p>
 
-  <p>By: 
+  <p>By:
   {% for author in authors %}
       <em>{{ author }}</em>
     {% endfor %}

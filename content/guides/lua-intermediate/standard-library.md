@@ -253,5 +253,4 @@ print(message:gsub("o", "a")) -- Output: Hella warld haw are yau?, 4
 > [!NOTE]
 > The `1` and `4` tell us how many instances have been replaced.
 
-
 But to unlock the full potential of `string.gsub, you will have to learn about [string patterns](string-patterns).
