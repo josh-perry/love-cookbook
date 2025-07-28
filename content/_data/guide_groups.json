@@ -89,6 +89,7 @@
     {
         "name": "Recipes",
         "guide_urls": [
+            "/guides/recipes/screen-resizing/",
             "/guides/recipes/steam/"
         ]
     }
