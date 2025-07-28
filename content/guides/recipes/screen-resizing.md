@@ -150,31 +150,31 @@ local screen = {}
 function screen.init(width, height)
     screen.width = width
     screen.height = height
-	screen.canvas = love.graphics.newCanvas(width, height)
+    screen.canvas = love.graphics.newCanvas(width, height)
     screen.transform = love.math.newTransform()
 end
 
 function screen.capture()
     -- Push the current state (including the main canvas) onto the stack.
-	love.graphics.push("all")
+    love.graphics.push("all")
     -- Set our canvas. From now on everything will be drawn on our canvas.
-	love.graphics.setCanvas(screen.canvas)
+    love.graphics.setCanvas(screen.canvas)
     love.graphics.clear()
 end
 
 function screen.draw()
     -- Pop the state, back to the main canvas.
-	love.graphics.pop()
+    love.graphics.pop()
     -- Draw our canvas using the transform.
-	love.graphics.draw(screen.canvas, screen.transform)
+    love.graphics.draw(screen.canvas, screen.transform)
 end
 
 function screen.resize(w, h)
     local scale = math.min(w / screen.width, h / screen.height)
     local x = (w - screen.width * scale) / 2
-	local y = (h - screen.height * scale) / 2
+    local y = (h - screen.height * scale) / 2
 
-	screen.transform:setTransformation(x, y, 0, scale, scale)
+    screen.transform:setTransformation(x, y, 0, scale, scale)
 end
 
 function screen.getMousePosition()
