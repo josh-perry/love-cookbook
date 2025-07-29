@@ -138,6 +138,46 @@ end
 
 Now our circle draws on the correct position!
 
+## Pixel art
+
+You might notice that your game looks fuzzy when you scale it. This is especially noticable with *pixel art*. To fix this, we can change the <ins>filtering</ins> to `nearest`. Let's do this based on a third parameter, `pixelArt`.
+
+```lua
+function screen.init(width, height, pixelArt)
+    screen.width = width
+    screen.height = height
+    screen.canvas = love.graphics.newCanvas(width, height)
+    if pixelArt then
+        screen.canvas:setFilter("nearest")
+        screen.pixelArt = true -- We will use this in a moment.
+    end
+    screen.transform = love.math.newTransform()
+end
+```
+
+Another thing you might want to add is add flooring to our scaling. This way we will only scale whole numbers (2x, 3x, etc.). This way our pixel art stays looking proper.
+
+```lua
+function screen.resize(w, h)
+    local scale = math.min(w / screen.width, h / screen.height)
+
+    if screen.pixelArt then
+        scale = math.floor(scale)
+    end
+
+    local x = (w - screen.width * scale) / 2
+    local y = (h - screen.height * scale) / 2
+
+    screen.transform:setTransformation(x, y, 0, scale, scale)
+end
+```
+
+If we make a pixel art game, we can now init the screen with passing `true` as third argument.
+
+```lua
+screen.init(960, 540, true)
+```
+
 ## Libraries
 
 For more advanced options, check out the libraries [push](https://github.com/Ulydev/push) and [shove](https://github.com/Oval-Tutu/shove).
@@ -147,10 +187,16 @@ For more advanced options, check out the libraries [push](https://github.com/Uly
 ```lua
 local screen = {}
 
-function screen.init(width, height)
+function screen.init(width, height, pixelArt)
     screen.width = width
     screen.height = height
     screen.canvas = love.graphics.newCanvas(width, height)
+
+    if pixelArt then
+        screen.canvas:setFilter("nearest")
+        screen.pixelArt = true
+    end
+
     screen.transform = love.math.newTransform()
 end
 
@@ -171,6 +217,11 @@ end
 
 function screen.resize(w, h)
     local scale = math.min(w / screen.width, h / screen.height)
+
+    if screen.pixelArt then
+        scale = math.floor(scale)
+    end
+
     local x = (w - screen.width * scale) / 2
     local y = (h - screen.height * scale) / 2
 
