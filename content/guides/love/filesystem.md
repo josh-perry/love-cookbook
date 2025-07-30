@@ -123,7 +123,7 @@ end
 
 
 ## Running Files
-Reading files is not the save as running them - if you were to read the contents of one of our 'mod' `.lua` files you'd just get the raw contents back.
+Reading files is not the same as running them - if you were to read the contents of one of our 'mod' `.lua` files you'd just get the raw contents back.
 ```lua
 love.filesystem.write('mods/mod1.lua', 'print("Hello World!")')
 local data = love.filesystem.read('mods/mod1.lua')
@@ -139,6 +139,11 @@ chunk() -- executes our file, which will then print 'Hello World!'
 ```
 
 This can be useful for executing mod code, player-written code, or for loading data from your game directly.  
+
+> [!WARNING]
+> You should be careful not to directly execute external code without some form of sandboxing or restrictions
+> The code you run with love.filesystem.load() has the same access and functional capability as your own
+> This could be abused by players in the context of modding code or multiplayer functionality
 
 While you can't write to the source directory where your game code is, {% api "love.filesystem.read" %} is allowed to read from it!  
 Using this you can create files that are part of your game's source code, and read them in when the game runs.
