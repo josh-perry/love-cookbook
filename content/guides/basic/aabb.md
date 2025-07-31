@@ -585,7 +585,7 @@ love.update = function()
     end
     if box.x2 >= 800 then
       box.angle = box.angle * math.pi
-      box.x1 = 800-16
+      box.x2 = 800-16
     end
     if box.y1 <= 0 then
       box.angle = box.angle * (2*math.pi)
