@@ -19,6 +19,7 @@ pre[class*=language-] {
     -moz-hyphens: none;
     -ms-hyphens: none;
     hyphens: none;
+
     position: relative;
     z-index: 2;
 }
@@ -142,19 +143,22 @@ pre:has(code[class*=language-]) {
 }
 
 .code-block {
-    position: relative;
+    display: grid;
+    grid-template-columns: 1;
+    grid-template-rows: 1;
+}
+.code-block > * {
+    grid-area: 1 / 1 / -1 / -1;
 }
 
 .highlight-lines {
-    position: absolute;
-    top: 1.2rem;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .highlight-line {
-    display: relative;
     width: 100%;
     height: 1.5em;
 }

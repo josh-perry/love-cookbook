@@ -32,6 +32,7 @@
 
     <script src="/love-cookbook/assets/js/codeblock.js"></script>
     <script src="/love-cookbook/assets/js/hover_preview.js"></script>
+    <script src="/love-cookbook/assets/js/mobile.js"></script>
 
     <link rel="stylesheet" href="/love-cookbook/assets/styles/fonts.css">
     <link rel="stylesheet" href="/love-cookbook/assets/styles/main.css">
@@ -43,6 +44,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Mali:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=menu" rel="stylesheet">
   </head>
   <body>
     <div class="sidebar">
@@ -59,6 +61,7 @@
 
       <nav class="table-of-contents">
         <ul class="chapters"><li class="group-header"><ul class="guides"><li><a class="" href="/love-cookbook/guides/getting-started/">Getting started</a>
+                  </li><li><a class="" href="/love-cookbook/guides/fiddle/">Fiddle</a>
                   </li></ul>
 
             </li><li class="group-header">Installation<ul class="guides"><li><a class="" href="/love-cookbook/guides/installation/love/">LÖVE</a>
@@ -71,6 +74,7 @@
                   </li><li><a class="" href="/love-cookbook/guides/lua-basics/functions/">Functions</a>
                   </li><li><a class="" href="/love-cookbook/guides/lua-basics/if-statements/">If-statements</a>
                   </li><li><a class="" href="/love-cookbook/guides/lua-basics/tables/">Tables and for-loops</a>
+                  </li><li><a class="" href="/love-cookbook/guides/lua-basics/gotchas/">Gotchas</a>
                   </li><li><a class="" href="/love-cookbook/guides/lua-basics/recap/">Recap</a>
                   </li></ul>
 
@@ -112,10 +116,15 @@
                   </li><li><a class="" href="/love-cookbook/guides/intermediate/outlines/">Outlines</a>
                   </li><li><a class="" href="/love-cookbook/guides/intermediate/palette/">Palette</a>
                   </li><li><a class="" href="/love-cookbook/guides/intermediate/pixelation/">Pixelation</a>
+                  </li><li><a class="" href="/love-cookbook/guides/intermediate/vertex-shaders/">Vertex Shaders</a>
                   </li></ul>
 
             </li><li class="group-header">Advanced<ul class="guides"><li><a class="" href="/love-cookbook/guides/advanced/physics/">Physics</a>
                   </li><li><a class="" href="/love-cookbook/guides/advanced/threads/">Threads</a>
+                  </li></ul>
+
+            </li><li class="group-header">Recipes<ul class="guides"><li><a class="" href="/love-cookbook/guides/recipes/screen-resizing/">Screen resizing</a>
+                  </li><li><a class="" href="/love-cookbook/guides/recipes/steam/">Steam</a>
                   </li></ul>
 
             </li></ul>
@@ -126,7 +135,13 @@
     <main>
       <article class="guide">
         
-<h1 class="title">Standard library</h1>
+<header class="guide-header">
+  <button type="button" class="menu-button">
+    <i class="material-symbols-outlined">menu</i>
+  </button>
+
+  <h1 class="title">Standard library</h1>
+</header>
 
 <p>The <strong>standard library</strong> is what we call the built-in functions that Lua provides. We have already used a few of these functions, like <code>print</code>, <code>require</code>, and <code>table.insert</code>.</p>
 <p>The list of <a href="https://www.lua.org/manual/5.1/manual.html#2.8">all the functions</a> of the standard library is quite long, so we definitely won't be covering all of the standard library. In this chapter we will focus on what is most useful.</p>
@@ -214,8 +229,7 @@ table<span class="token punctuation">.</span><span class="token function">sort</
 <span class="token keyword">end</span><span class="token punctuation">)</span>
 <span class="token function">print</span><span class="token punctuation">(</span><span class="token function">unpack</span><span class="token punctuation">(</span>animals<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">-- Output: whale, tiger, bear</span>
 </code></pre>
-<p>We pass a <a href="../../lua-basics/functions#callbacks" data-preview="../../lua-basics/functions#callbacks">callback</a> to <code>table.sort</code>. To sort the table, it provides the callback with two values from the table to compare them to each other. If we return <code>true</code>, then <code>a</code> will be placed on a lower index than <code>b</code> (so pushed to the front of the table). In our case, we return <code>true</code> if <code>a</code> is higher than <code>b</code>, to get it sorted from high to low.</p>
-<p>That makes sense for numbers, but how does that work for strings? Well, something that we had yet to tell you is that <code>&lt;</code> and <code>&gt;</code> can also be used on strings. It checks if they are alphabetically higher or lower. <code>&quot;bear&quot; &gt; &quot;whale&quot;</code> equals <code>false</code>, because <code>&quot;w&quot;</code> is higher alphabetically than <code>&quot;b&quot;</code>.</p>
+<p>We pass a <a href="../../lua-basics/functions#callbacks" data-preview="../../lua-basics/functions#callbacks">callback</a> to <code>table.sort</code>. It uses this callback to compare two values, and does so repeatedly for a number of steps until your table is fully sorted. In our case, we return <code>true</code> if <code>a</code> is higher than <code>b</code>, to get it sorted from high to low.</p>
 <h2 id="math" tabindex="-1">math <a class="anchor" href="#math">#</a></h2>
 <p>The <strong>math library</strong> (<a href="https://www.lua.org/manual/5.1/manual.html#5.6">manual</a>) speaks for itself. You can do math with it. Some examples.</p>
 <pre><code class="language-lua"><span data-attrs=""></span><span class="token comment">-- Get the absolute value of a number</span>
@@ -314,7 +328,7 @@ t<span class="token punctuation">.</span><span class="token function">example</s
 <footer class="guide-footer">
   <p></p>
 
-  <p>By: 
+  <p>By:
   
       <em>Sheepolution</em>
     
@@ -322,6 +336,6 @@ t<span class="token punctuation">.</span><span class="token function">example</s
 </footer>
       </article>
     </main>
-    
+
   </body>
 </html>
